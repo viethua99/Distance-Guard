@@ -3,10 +3,23 @@ package com.thesis.distanceguard.presentation
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.thesis.distanceguard.R
+import com.thesis.distanceguard.presentation.base.BaseActivity
+import timber.log.Timber
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
+
+    override fun getResLayoutId(): Int {
+        return R.layout.activity_main
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        Timber.d("onCreate")
+        setupViews()
+    }
+
+    private fun setupViews(){
+        Timber.d("setupViews")
+
     }
 }
