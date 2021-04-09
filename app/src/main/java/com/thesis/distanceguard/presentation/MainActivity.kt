@@ -1,7 +1,8 @@
-package com.thesis.distanceguard
+package com.thesis.distanceguard.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.thesis.distanceguard.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
