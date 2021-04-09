@@ -1,6 +1,8 @@
 package com.thesis.distanceguard.presentation.base
 
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -8,12 +10,13 @@ import androidx.fragment.app.FragmentManager
 import timber.log.Timber
 
 abstract class BaseActivity : AppCompatActivity() {
-
     private lateinit var fragmentManager: FragmentManager
     protected abstract fun getResLayoutId(): Int
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(getResLayoutId())
     }
 

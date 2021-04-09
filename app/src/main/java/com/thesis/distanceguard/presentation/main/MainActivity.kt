@@ -3,6 +3,7 @@ package com.thesis.distanceguard.presentation.main
 import android.os.Bundle
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.presentation.base.BaseActivity
+import com.thesis.distanceguard.presentation.main.fragment.MainFragment
 import timber.log.Timber
 
 class MainActivity : BaseActivity() {
@@ -19,5 +20,6 @@ class MainActivity : BaseActivity() {
 
     private fun setupViews(){
         Timber.d("setupViews")
+        replaceFragment(MainFragment(),MainFragment.TAG,R.id.container_main)
     }
 }
