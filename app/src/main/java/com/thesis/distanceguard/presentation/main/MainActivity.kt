@@ -1,6 +1,5 @@
-package com.thesis.distanceguard.presentation
+package com.thesis.distanceguard.presentation.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.presentation.base.BaseActivity
@@ -20,6 +19,5 @@ class MainActivity : BaseActivity() {
 
     private fun setupViews(){
         Timber.d("setupViews")
-
     }
 }

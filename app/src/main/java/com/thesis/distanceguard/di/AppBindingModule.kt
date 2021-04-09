@@ -1,6 +1,6 @@
 package com.thesis.distanceguard.di
 
-import com.thesis.distanceguard.presentation.MainActivity
+import com.thesis.distanceguard.presentation.main.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
