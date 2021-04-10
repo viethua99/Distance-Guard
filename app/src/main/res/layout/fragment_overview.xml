@@ -47,6 +47,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_today_title" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cv_overview_count"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="10dp"
@@ -130,6 +131,30 @@
                     android:layout_height="wrap_content"
                     android:text="Deaths" />
             </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp"
+        android:layout_marginHorizontal="10dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintTop_toBottomOf="@id/cv_overview_count">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pie_chart"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="200dp"
+                android:layout_height="200dp"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
