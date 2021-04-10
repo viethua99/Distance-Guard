@@ -3,20 +3,28 @@ package com.thesis.distanceguard.presentation.main.fragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.thesis.distanceguard.presentation.countries.CountriesFragment
 import com.thesis.distanceguard.presentation.map.MapFragment
 import com.thesis.distanceguard.presentation.overview.OverviewFragment
+import com.thesis.distanceguard.presentation.scan.ScanFragment
+import com.thesis.distanceguard.presentation.team.TeamFragment
 
 class MainViewPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
     companion object {
         const val OVERVIEW_PAGE = 0
-        const val MAP_PAGE = 1
-        const val MAX_PAGES = 2
+        const val COUNTRIES_PAGE = 1
+        const val SCAN_PAGE = 2
+        const val TEAM_PAGE = 3
+
+        const val MAX_PAGES = 4
     }
 
     override fun getItem(position: Int): Fragment {
         return when(position) {
             0 -> OverviewFragment()
-            else -> MapFragment()
+            1 -> CountriesFragment()
+            2 -> ScanFragment()
+            else -> TeamFragment()
         }
     }
 

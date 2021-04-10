@@ -2,5 +2,9 @@
     <string name="app_name">Distance Guard</string>
 
     <string name="nav_item_overview">Overview</string>
+    <string name="nav_item_countries">Countries</string>
+    <string name="nav_item_scan">Scan</string>
+    <string name="nav_item_team">Team</string>
+
     <string name="nav_item_map">Map</string>
 </resources>

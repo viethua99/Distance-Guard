@@ -33,8 +33,16 @@ class MainFragment : BaseFragment() {
                     true
 
                 }
-                R.id.nav_item_map -> {
-                    main_view_pager.currentItem = MainViewPagerAdapter.MAP_PAGE
+                R.id.nav_item_countries -> {
+                    main_view_pager.currentItem = MainViewPagerAdapter.COUNTRIES_PAGE
+                    true
+                }
+                R.id.nav_item_scan -> {
+                    main_view_pager.currentItem = MainViewPagerAdapter.SCAN_PAGE
+                    true
+                }
+                R.id.nav_item_team -> {
+                    main_view_pager.currentItem = MainViewPagerAdapter.TEAM_PAGE
                     true
                 }
                 else -> false
@@ -57,9 +65,17 @@ class MainFragment : BaseFragment() {
                         bottom_nav_main.menu.findItem(R.id.nav_item_overview).isChecked = true
                         (activity as MainActivity).supportActionBar?.title = getString(R.string.nav_item_overview)
                     }
-                    MainViewPagerAdapter.MAP_PAGE ->  {
-                        bottom_nav_main.menu.findItem(R.id.nav_item_map).isChecked = true
-                        (activity as MainActivity).supportActionBar?.title = getString(R.string.nav_item_map)
+                    MainViewPagerAdapter.COUNTRIES_PAGE ->  {
+                        bottom_nav_main.menu.findItem(R.id.nav_item_countries).isChecked = true
+                        (activity as MainActivity).supportActionBar?.title = getString(R.string.nav_item_countries)
+                    }
+                    MainViewPagerAdapter.SCAN_PAGE ->  {
+                        bottom_nav_main.menu.findItem(R.id.nav_item_scan).isChecked = true
+                        (activity as MainActivity).supportActionBar?.title = getString(R.string.nav_item_scan)
+                    }
+                    MainViewPagerAdapter.TEAM_PAGE ->  {
+                        bottom_nav_main.menu.findItem(R.id.nav_item_team).isChecked = true
+                        (activity as MainActivity).supportActionBar?.title = getString(R.string.nav_item_team)
                     }
                 }
             }
