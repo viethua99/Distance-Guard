@@ -5,6 +5,7 @@ import android.view.View
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -27,7 +28,8 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     override fun onMyViewCreated(view: View) {
-
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map_fr) as SupportMapFragment
+        mapFragment.getMapAsync(this)
     }
 
     override fun onMapReady(p0: GoogleMap?) {
