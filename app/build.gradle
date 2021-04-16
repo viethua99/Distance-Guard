@@ -60,4 +60,7 @@ dependencies {
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     //google maps
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    //Barcode Libs
+    implementation 'com.google.zxing:core:3.4.0'
+    implementation 'com.google.zxing:android-core:3.3.0'
 }

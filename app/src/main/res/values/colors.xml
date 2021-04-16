@@ -3,7 +3,7 @@
     <color name="primary_color">#002097</color>
     <color name="button_clicked_color">#1565C0</color>
 
-    <color name="gray_background_color">#E7E7E7</color>
+    <color name="gray_background_color">#faf8f8</color>
     <color name="white">#FFFFFFFF</color>
 
     <color name="price_blue">#1090d1</color>
