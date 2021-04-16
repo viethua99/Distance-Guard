@@ -3,7 +3,7 @@
     <string name="API_MAPS">AIzaSyBmAI8AzEHb9BW7P3A_Zbr-jHBzShLoFHI</string>
     <string name="nav_item_overview">Overview</string>
     <string name="nav_item_countries">Countries</string>
-    <string name="nav_item_scan">Scan</string>
+    <string name="nav_item_scanner">Scanner</string>
     <string name="nav_item_team">Team</string>
 
     <string name="nav_item_map">Map</string>

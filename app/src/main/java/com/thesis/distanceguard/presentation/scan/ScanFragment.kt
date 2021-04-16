@@ -11,7 +11,7 @@ import timber.log.Timber
 
 class ScanFragment : BaseFragment() {
     override fun getResLayoutId(): Int {
-        return R.layout.fragment_scan
+        return R.layout.fragment_scanner
     }
 
     override fun onMyViewCreated(view: View) {

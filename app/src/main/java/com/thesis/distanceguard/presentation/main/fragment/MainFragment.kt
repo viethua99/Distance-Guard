@@ -37,7 +37,7 @@ class MainFragment : BaseFragment() {
                     main_view_pager.currentItem = MainViewPagerAdapter.COUNTRIES_PAGE
                     true
                 }
-                R.id.nav_item_scan -> {
+                R.id.nav_item_scanner -> {
                     main_view_pager.currentItem = MainViewPagerAdapter.SCAN_PAGE
                     true
                 }
@@ -70,8 +70,8 @@ class MainFragment : BaseFragment() {
                         (activity as MainActivity).supportActionBar?.title = getString(R.string.nav_item_countries)
                     }
                     MainViewPagerAdapter.SCAN_PAGE ->  {
-                        bottom_nav_main.menu.findItem(R.id.nav_item_scan).isChecked = true
-                        (activity as MainActivity).supportActionBar?.title = getString(R.string.nav_item_scan)
+                        bottom_nav_main.menu.findItem(R.id.nav_item_scanner).isChecked = true
+                        (activity as MainActivity).supportActionBar?.title = getString(R.string.nav_item_scanner)
                     }
                     MainViewPagerAdapter.TEAM_PAGE ->  {
                         bottom_nav_main.menu.findItem(R.id.nav_item_team).isChecked = true
