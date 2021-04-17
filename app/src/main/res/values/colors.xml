@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary_color">#0288D1</color>
+    <color name="primary_color">#002097</color>
     <color name="button_clicked_color">#1565C0</color>
 
-    <color name="gray_background_color">#ECECEC</color>
+    <color name="gray_background_color">#faf8f8</color>
     <color name="white">#FFFFFFFF</color>
 
     <color name="price_blue">#1090d1</color>

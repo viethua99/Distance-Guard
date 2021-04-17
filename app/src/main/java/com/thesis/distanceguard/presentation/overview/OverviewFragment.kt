@@ -7,6 +7,8 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.presentation.base.BaseFragment
+import com.thesis.distanceguard.presentation.main.MainActivity
+import com.thesis.distanceguard.presentation.map.MapFragment
 import kotlinx.android.synthetic.main.fragment_overview.*
 
 class OverviewFragment : BaseFragment() {
@@ -57,5 +59,9 @@ class OverviewFragment : BaseFragment() {
         pieData.setDrawValues(true)
         pie_chart.data = pieData
         pie_chart.invalidate()
+        fab_map.setOnClickListener {
+            val mainActivity = activity as MainActivity
+            mainActivity.replaceFragment(MapFragment(),"Map Fragment",R.id.container_main)
+        }
     }
 }
