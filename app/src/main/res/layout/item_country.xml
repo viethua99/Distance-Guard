@@ -8,7 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="10dp"
-        app:cardElevation="2dp"
         app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,11 +17,10 @@
             android:paddingHorizontal="10dp"
             android:paddingVertical="15dp">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_country"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="10dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/img_flag"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -32,10 +30,10 @@
                 android:id="@+id/tv_country_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="20dp"
                 android:text="France"
-                android:textSize="16sp"
                 android:textColor="#1A0628"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/img_country"
                 app:layout_constraintStart_toEndOf="@id/img_country"
@@ -45,9 +43,9 @@
                 android:id="@+id/tv_country_confirm_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:layout_marginStart="20dp"
                 android:text="4,903,965"
-                android:textColor="#555770"
+                android:textColor="#fd9555"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/tv_country_recovered_count"
@@ -60,24 +58,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="274,401"
+                android:textColor="#00b871"
                 android:textSize="16sp"
-
-                android:textColor="#555770"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tv_country_confirm_count"
                 app:layout_constraintEnd_toStartOf="@+id/tv_country_death_count"
+                app:layout_constraintStart_toEndOf="@id/tv_country_confirm_count"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_country_death_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:text="97,422"
+                android:textColor="#ff3839"
                 android:textSize="16sp"
-                android:textColor="#555770"
-                app:layout_constraintStart_toEndOf="@id/tv_country_recovered_count"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_country_recovered_count"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

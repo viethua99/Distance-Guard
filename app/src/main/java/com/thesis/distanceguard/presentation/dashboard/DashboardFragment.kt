@@ -1,4 +1,4 @@
-package com.thesis.distanceguard.presentation.overview
+package com.thesis.distanceguard.presentation.dashboard
 
 import android.graphics.Color
 import android.view.View
@@ -9,11 +9,11 @@ import com.thesis.distanceguard.R
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.main.MainActivity
 import com.thesis.distanceguard.presentation.map.MapFragment
-import kotlinx.android.synthetic.main.fragment_overview.*
+import kotlinx.android.synthetic.main.fragment_dashboard.*
 
-class OverviewFragment : BaseFragment() {
+class DashboardFragment : BaseFragment() {
     override fun getResLayoutId(): Int {
-        return R.layout.fragment_overview
+        return R.layout.fragment_dashboard
     }
 
     override fun onMyViewCreated(view: View) {
@@ -26,21 +26,15 @@ class OverviewFragment : BaseFragment() {
 
         //initializing data
         val typeAmountMap: MutableMap<String, Int> = HashMap()
-        typeAmountMap["Toys"] = 200
-        typeAmountMap["Snacks"] = 230
-        typeAmountMap["Clothes"] = 100
-        typeAmountMap["Stationary"] = 500
-        typeAmountMap["Phone"] = 50
+        typeAmountMap["Confirm"] = 200
+        typeAmountMap["Recovered"] = 230
+        typeAmountMap["Deaths"] = 100
 
         //initializing colors for the entries
         val colors: ArrayList<Int> = ArrayList()
-        colors.add(Color.parseColor("#304567"))
-        colors.add(Color.parseColor("#309967"))
-        colors.add(Color.parseColor("#476567"))
-        colors.add(Color.parseColor("#890567"))
-        colors.add(Color.parseColor("#a35567"))
-        colors.add(Color.parseColor("#ff5f67"))
-        colors.add(Color.parseColor("#3ca567"))
+        colors.add(Color.parseColor("#fd9555"))
+        colors.add(Color.parseColor("#00b871"))
+        colors.add(Color.parseColor("#ff3839"))
 
         //input data and fit data into pie chart entry
         for (type in typeAmountMap.keys) {
