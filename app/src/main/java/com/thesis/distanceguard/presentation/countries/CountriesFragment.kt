@@ -18,7 +18,7 @@ class CountriesFragment : BaseFragment() {
     private lateinit var countriesRecyclerViewAdapter: CountriesRecyclerViewAdapter
 
     override fun getResLayoutId(): Int {
-       return R.layout.fragment_countries
+        return R.layout.fragment_countries
     }
 
     override fun onMyViewCreated(view: View) {
@@ -30,7 +30,11 @@ class CountriesFragment : BaseFragment() {
         Timber.d("setupRecyclerView")
         val linearLayoutManager = LinearLayoutManager(view!!.context)
         countriesRecyclerViewAdapter = CountriesRecyclerViewAdapter(view!!.context)
-        countriesRecyclerViewAdapter.setDataList(listOf("Test a","Test b"))
+        countriesRecyclerViewAdapter.setDataList(
+            listOf("France", "France", "France", "France", "France", "France", "France", "France", "France", "France", "France", "France",
+                "France", "France", "France", "France", "France", "France", "France", "France"
+            )
+        )
         countriesRecyclerViewAdapter.itemClickListener = object :
             BaseRecyclerViewAdapter.ItemClickListener<String> {
             override fun onClick(position: Int, item: String) {
