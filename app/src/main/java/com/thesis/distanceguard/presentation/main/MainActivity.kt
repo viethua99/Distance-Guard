@@ -16,6 +16,8 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.d("onCreate")
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
         setupViews()
     }
 
@@ -25,6 +27,6 @@ class MainActivity : BaseActivity() {
 
     private fun setupViews(){
         Timber.d("setupViews")
-        replaceFragment(MainFragment(),MainFragment.TAG,R.id.container_main)
+        replaceFragmentWithoutAddToBackStack(MainFragment(), MainFragment.TAG, R.id.container_main)
     }
 }

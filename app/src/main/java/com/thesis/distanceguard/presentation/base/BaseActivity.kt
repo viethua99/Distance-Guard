@@ -44,6 +44,14 @@ abstract class BaseActivity : AppCompatActivity() {
             .commit()
     }
 
+    fun replaceFragmentWithoutAddToBackStack(fragment: Fragment, tag: String, containerId: Int) {
+        Timber.d("replaceFragment: name=${fragment.javaClass.name}")
+        generateFragmentManager()
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(containerId, fragment, tag)
+            .commit()
+    }
+
     fun replaceFragment(fragment: Fragment, tag: String, containerId: Int) {
         Timber.d("replaceFragment: name=${fragment.javaClass.name}")
         generateFragmentManager()

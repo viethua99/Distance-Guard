@@ -42,7 +42,7 @@
         android:clickable="true"
         android:elevation="10dp"
         android:focusable="true"
-        android:src="@drawable/ic_add_24"
+        android:src="@drawable/ic_camera"
         app:backgroundTint="@color/primary_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

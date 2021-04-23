@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary_color">#002097</color>
+    <color name="primary_orange">#fd9555</color>
+    <color name="primary_red">#ff3839</color>
+    <color name="primary_green">#00b871</color>
+
     <color name="button_clicked_color">#1565C0</color>
 
     <color name="barcode_reticle_background">#99000000</color>
