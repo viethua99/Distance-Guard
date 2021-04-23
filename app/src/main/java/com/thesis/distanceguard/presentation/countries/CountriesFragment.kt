@@ -7,7 +7,7 @@ import com.thesis.distanceguard.R
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
 import com.thesis.distanceguard.presentation.detail.DetailFragment
-import com.thesis.distanceguard.presentation.main.MainActivity
+import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import kotlinx.android.synthetic.main.fragment_countries.*
 import timber.log.Timber
 

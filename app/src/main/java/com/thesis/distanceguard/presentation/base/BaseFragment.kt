@@ -6,10 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.thesis.distanceguard.presentation.main.MainActivity
+import com.thesis.distanceguard.factory.ViewModelFactory
+import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import timber.log.Timber
+import javax.inject.Inject
 
 abstract class BaseFragment : Fragment() {
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     protected abstract fun getResLayoutId(): Int
     protected abstract fun onMyViewCreated(view: View)

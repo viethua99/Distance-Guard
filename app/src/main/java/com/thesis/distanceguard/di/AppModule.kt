@@ -1,5 +1,6 @@
 package com.thesis.distanceguard.di
 
+import ai.kun.opentracesdk_fat.BLETrace
 import android.content.Context
 import com.thesis.distanceguard.myapp.MyApplication
 import dagger.Module
@@ -12,6 +13,12 @@ class AppModule {
     @Singleton
     fun provideContext(myApplication: MyApplication): Context {
         return myApplication
+    }
+
+    @Provides
+    @Singleton
+    fun provideBLETrace(): BLETrace {
+        return BLETrace
     }
 
 }
