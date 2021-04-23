@@ -30,5 +30,5 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(ScannerViewModel::class)
-    abstract fun bindScannerViewModel(cameraViewModel: CameraViewModel): ViewModel
+    abstract fun bindScannerViewModel(scannerViewModel: ScannerViewModel): ViewModel
 }
