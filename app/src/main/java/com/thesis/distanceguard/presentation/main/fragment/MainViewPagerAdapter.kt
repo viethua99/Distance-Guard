@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.thesis.distanceguard.presentation.countries.CountriesFragment
 import com.thesis.distanceguard.presentation.dashboard.DashboardFragment
-import com.thesis.distanceguard.presentation.scan.ScanFragment
+import com.thesis.distanceguard.presentation.scanner.ScannerFragment
 import com.thesis.distanceguard.presentation.team.TeamFragment
 
 class MainViewPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
@@ -22,7 +22,7 @@ class MainViewPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdap
         return when(position) {
             0 -> DashboardFragment()
             1 -> CountriesFragment()
-            2 -> ScanFragment()
+            2 -> ScannerFragment()
             else -> TeamFragment()
         }
     }

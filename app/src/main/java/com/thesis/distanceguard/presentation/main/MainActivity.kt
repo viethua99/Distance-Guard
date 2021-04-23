@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.presentation.base.BaseActivity
 import com.thesis.distanceguard.presentation.main.fragment.MainFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
 class MainActivity : BaseActivity() {
@@ -16,6 +17,10 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         Timber.d("onCreate")
         setupViews()
+    }
+
+    fun setToolbarTitle(title:String){
+        tv_toolbar_title.text = title
     }
 
     private fun setupViews(){

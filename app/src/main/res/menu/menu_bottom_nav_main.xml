@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_item_overview"
-        android:icon="@drawable/ic_bottom_navigation_overview"
-        android:title="@string/nav_item_overview" />
+        android:icon="@drawable/ic_bottom_navigation_dashboard"
+        android:title="@string/nav_item_dashboard" />
     <item
         android:id="@+id/nav_item_countries"
         android:icon="@drawable/ic_bottom_navigation_countries"

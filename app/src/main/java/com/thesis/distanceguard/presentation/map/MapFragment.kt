@@ -12,6 +12,7 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.presentation.base.BaseFragment
+import com.thesis.distanceguard.presentation.main.MainActivity
 
 class MapFragment : BaseFragment(), OnMapReadyCallback {
     private val markers = mutableListOf<Marker>()
@@ -28,6 +29,8 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     override fun onMyViewCreated(view: View) {
+        setupToolbarTitle("Map")
+
         val mapFragment = childFragmentManager.findFragmentById(R.id.map_fr) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }

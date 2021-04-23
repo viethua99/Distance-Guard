@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Distance Guard</string>
     <string name="API_MAPS">AIzaSyBmAI8AzEHb9BW7P3A_Zbr-jHBzShLoFHI</string>
-    <string name="nav_item_overview">Overview</string>
+    <string name="nav_item_dashboard">Dashboard</string>
     <string name="nav_item_countries">Countries</string>
     <string name="nav_item_scanner">Scanner</string>
     <string name="nav_item_team">Team</string>

@@ -70,6 +70,7 @@
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        tools:listitem="@layout/item_country"
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

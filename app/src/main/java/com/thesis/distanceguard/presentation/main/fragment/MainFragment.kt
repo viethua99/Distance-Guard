@@ -18,7 +18,7 @@ class MainFragment : BaseFragment() {
 
     override fun onMyViewCreated(view: View) {
         Timber.d("onMyViewCreated")
-
+        setupToolbarTitle( getString(R.string.nav_item_dashboard))
         setupBottomNavigationView()
         setupViewPager()
 
@@ -52,7 +52,7 @@ class MainFragment : BaseFragment() {
 
     private fun setupViewPager() {
         Timber.d("setupViewPager")
-        (activity as MainActivity).supportActionBar?.title = getString(R.string.nav_item_overview)
+        (activity as MainActivity).supportActionBar?.title = getString(R.string.nav_item_dashboard)
         val mainViewPagerAdapter = MainViewPagerAdapter(childFragmentManager)
         main_view_pager.adapter = mainViewPagerAdapter
         main_view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -63,19 +63,19 @@ class MainFragment : BaseFragment() {
                 when (position) {
                     MainViewPagerAdapter.OVERVIEW_PAGE ->{
                         bottom_nav_main.menu.findItem(R.id.nav_item_overview).isChecked = true
-                        (activity as MainActivity).supportActionBar?.title = getString(R.string.nav_item_overview)
+                        setupToolbarTitle( getString(R.string.nav_item_dashboard))
                     }
                     MainViewPagerAdapter.COUNTRIES_PAGE ->  {
                         bottom_nav_main.menu.findItem(R.id.nav_item_countries).isChecked = true
-                        (activity as MainActivity).supportActionBar?.title = getString(R.string.nav_item_countries)
+                        setupToolbarTitle(getString(R.string.nav_item_countries))
                     }
                     MainViewPagerAdapter.SCAN_PAGE ->  {
                         bottom_nav_main.menu.findItem(R.id.nav_item_scanner).isChecked = true
-                        (activity as MainActivity).supportActionBar?.title = getString(R.string.nav_item_scanner)
+                        setupToolbarTitle(getString(R.string.nav_item_scanner))
                     }
                     MainViewPagerAdapter.TEAM_PAGE ->  {
                         bottom_nav_main.menu.findItem(R.id.nav_item_team).isChecked = true
-                        (activity as MainActivity).supportActionBar?.title = getString(R.string.nav_item_team)
+                        setupToolbarTitle(getString(R.string.nav_item_team))
                     }
                 }
             }

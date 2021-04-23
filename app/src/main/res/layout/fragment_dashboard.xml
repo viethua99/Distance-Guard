@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:paddingTop="10dp">
 
 
     <TextView
@@ -56,14 +57,14 @@
 
                 <FrameLayout
                     android:id="@+id/img_confirm"
-                    app:layout_constraintBottom_toTopOf="@id/tv_confirm_count"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dp"
+                    android:background="@drawable/circle_background"
                     android:backgroundTint="@color/amber_100"
-                    android:background="@drawable/circle_background">
+                    android:padding="5dp"
+                    app:layout_constraintBottom_toTopOf="@id/tv_confirm_count"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:layout_width="20dp"
@@ -76,10 +77,10 @@
                     android:id="@+id/tv_confirm_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="123,456"
                     android:textColor="#fd9555"
                     android:textSize="26sp"
-                    android:layout_marginTop="10dp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -119,14 +120,15 @@
 
                 <FrameLayout
                     android:id="@+id/img_recover"
-                    app:layout_constraintBottom_toTopOf="@id/tv_recovered_count"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dp"
+                    android:background="@drawable/circle_background"
                     android:backgroundTint="#e6f8f1"
-                    android:background="@drawable/circle_background">
+                    android:padding="5dp"
+                    app:layout_constraintBottom_toTopOf="@id/tv_recovered_count"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
@@ -139,13 +141,13 @@
                     android:id="@+id/tv_recovered_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="123,456"
                     android:textColor="#00b871"
-                    android:layout_marginTop="10dp"
                     android:textSize="26sp"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/img_recover"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/img_recover" />
 
                 <TextView
                     android:id="@+id/tv_recovered_title"
@@ -181,18 +183,19 @@
 
                 <FrameLayout
                     android:id="@+id/img_death"
-                    app:layout_constraintBottom_toTopOf="@id/tv_death_count"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dp"
+                    android:background="@drawable/circle_background"
                     android:backgroundTint="#ffeaeb"
-                    android:background="@drawable/circle_background">
+                    android:padding="5dp"
+                    app:layout_constraintBottom_toTopOf="@id/tv_death_count"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:src="@drawable/ic_death"
                         android:layout_width="20dp"
-                        android:layout_height="20dp" />
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_death" />
                 </FrameLayout>
 
 
@@ -200,14 +203,14 @@
                     android:id="@+id/tv_death_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="123,456"
                     android:textColor="#ff3839"
                     android:textSize="26sp"
-                    android:layout_marginTop="10dp"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/img_death"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/img_death" />
 
                 <TextView
                     android:id="@+id/tv_death_title"
