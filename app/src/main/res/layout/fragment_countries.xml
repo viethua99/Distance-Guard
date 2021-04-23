@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="10dp"
-    android:background="@color/white">
+    android:background="@color/gray_background_color">
 
     <RelativeLayout
         android:id="@+id/rl_search"
@@ -80,7 +80,7 @@
             android:minLines="1"
             android:text="Country"
             android:textAlignment="textStart"
-            android:textColor="@color/black"
+            android:textColor="@color/primary_color"
             android:textSize="14sp"
             app:autoSizeMaxTextSize="20sp"
             app:autoSizeMinTextSize="10sp"
@@ -104,7 +104,7 @@
                 android:minLines="1"
                 android:text="Confirm"
                 android:textAlignment="center"
-                android:textColor="@color/black"
+                android:textColor="@color/primary_color"
                 android:textSize="14sp"
                 app:autoSizeMaxTextSize="20sp"
                 app:autoSizeMinTextSize="10sp"
@@ -122,7 +122,7 @@
                 android:minLines="1"
                 android:text="Recover"
                 android:textAlignment="center"
-                android:textColor="@color/black"
+                android:textColor="@color/primary_color"
                 android:textSize="14sp"
                 app:autoSizeMaxTextSize="20sp"
                 app:autoSizeMinTextSize="10sp"
@@ -140,7 +140,7 @@
                 android:minLines="1"
                 android:textAlignment="center"
                 android:text="Deaths"
-                android:textColor="@color/black"
+                android:textColor="@color/primary_color"
                 android:textSize="14sp"
                 app:autoSizeMaxTextSize="20sp"
                 app:autoSizeMinTextSize="10sp"

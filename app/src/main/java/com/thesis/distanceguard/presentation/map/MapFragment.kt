@@ -13,6 +13,7 @@ import com.google.android.gms.maps.model.Marker
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.main.MainActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MapFragment : BaseFragment(), OnMapReadyCallback {
     private val markers = mutableListOf<Marker>()
@@ -29,10 +30,18 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     override fun onMyViewCreated(view: View) {
-        setupToolbarTitle("Map")
+        val mainActivity = activity as MainActivity
+        mainActivity.appBarLayout.visibility = View.GONE
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map_fr) as SupportMapFragment
         mapFragment.getMapAsync(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        val mainActivity = activity as MainActivity
+        mainActivity.appBarLayout.visibility = View.VISIBLE
+
     }
 
     override fun onMapReady(p0: GoogleMap?) {
