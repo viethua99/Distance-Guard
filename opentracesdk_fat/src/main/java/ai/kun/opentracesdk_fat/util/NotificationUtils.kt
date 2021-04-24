@@ -148,7 +148,7 @@ object NotificationUtils {
         // Set up the pending intent that is delivered when the notification
         // is clicked.
         //TODO: replace hard coded class string with an extra passed to alarm manager
-        val notificationIntent = Intent(context, Class.forName("ai.kun.socialdistancealarm.MainActivity"))
+        val notificationIntent = Intent(context, Class.forName("com.thesis.distanceguard.presentation.main.activity.MainActivity"))
         val notificationPendingIntent = PendingIntent.getActivity(
             context, NOTIFICATION_ID, notificationIntent,
             PendingIntent.FLAG_UPDATE_CURRENT
@@ -174,7 +174,7 @@ object NotificationUtils {
         // Set up the pending intent that is delivered when the notification
         // is clicked.
         //TODO: replace hard coded class string with an extra passed to alarm manager
-        val notificationIntent = Intent(context, Class.forName("ai.kun.socialdistancealarm.MainActivity"))
+        val notificationIntent = Intent(context, Class.forName("com.thesis.distanceguard.presentation.main.activity.MainActivity"))
         val notificationPendingIntent = PendingIntent.getActivity(
             context, NOTIFICATION_ID, notificationIntent,
             PendingIntent.FLAG_UPDATE_CURRENT

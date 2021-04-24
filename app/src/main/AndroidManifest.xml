@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -27,6 +28,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DistanceGuard">
+        <receiver
+            android:enabled="true"
+            android:exported="false"
+            android:name="ai.kun.opentracesdk_fat.alarm.BLEClient" />
+        <receiver
+            android:enabled="true"
+            android:exported="false"
+            android:name="ai.kun.opentracesdk_fat.alarm.BLEServer" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/API_MAPS" />

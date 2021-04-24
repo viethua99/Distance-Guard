@@ -33,6 +33,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_warn_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Too Close"
@@ -53,7 +54,7 @@
                         android:layout_height="wrap_content"/>
 
                     <TextView
-                        android:id="@+id/tv_device_rssi"
+                        android:id="@+id/tv_device_strength"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"

@@ -1,7 +1,13 @@
 package com.thesis.distanceguard.presentation.main.activity
 
 import ai.kun.opentracesdk_fat.BLETrace
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.presentation.base.BaseActivity
@@ -35,8 +41,6 @@ class MainActivity : BaseActivity() {
         AndroidInjection.inject(this)
         mainActivityViewModel =
             ViewModelProvider(this, viewModelFactory).get(MainActivityViewModel::class.java)
-        Timber.d("UUID = ${BLETrace.uuidString}")
-
     }
 
     private fun setupViews(){
