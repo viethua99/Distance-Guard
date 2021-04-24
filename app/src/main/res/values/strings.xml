@@ -23,4 +23,7 @@
     <string name="item_scanner_warning">Caution</string>
     <string name="item_scanner_strong_warning">Warning</string>
     <string name="item_scanner_too_close">High Risk, Danger</string>
+
+    <string name="your_team_has_0_people">Your team has 0 people</string>
+
 </resources>
