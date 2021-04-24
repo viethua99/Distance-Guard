@@ -16,4 +16,7 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="SwitchTextAppearance" parent="@android:style/TextAppearance.Holo.Small">
+        <item name="android:textColor">#FF4B63</item>
+    </style>
 </resources>

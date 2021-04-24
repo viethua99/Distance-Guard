@@ -7,14 +7,14 @@
     android:paddingTop="10dp">
 
     <androidx.cardview.widget.CardView
-        android:layout_marginHorizontal="20dp"
         android:id="@+id/cv_slogan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp"
+        android:layout_marginHorizontal="20dp"
         android:backgroundTint="#FF4B63"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:cardCornerRadius="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -30,10 +30,10 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:layout_marginTop="10dp"
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:text="What To Do\nif You Are Sick ?"
                 android:textColor="@color/white"
                 android:textSize="20sp"
@@ -45,6 +45,7 @@
                 android:id="@+id/btn_learn_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
                 android:backgroundTint="@color/primary_red"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
@@ -52,7 +53,6 @@
                 android:text="Learn more"
                 android:textAllCaps="false"
                 android:textSize="12sp"
-                android:layout_marginEnd="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -60,6 +60,23 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/toggleAlarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textOff="Vietnam"
+        app:switchTextAppearance="@style/SwitchTextAppearance"
+        android:textOn="Worldwide"
+        android:thumb="@drawable/thumb"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cv_slogan"
+        app:showText="true"
+        app:switchMinWidth="300dp"
+        app:textAllCaps="false"
+        app:track="@drawable/track" />
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -69,13 +86,13 @@
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cv_slogan">
+        app:layout_constraintTop_toBottomOf="@id/toggleAlarm">
 
         <TextView
             android:id="@+id/tv_worldwide"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Worldwide"
+            android:text="Active Cases"
             android:textColor="@color/primary_color"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -136,9 +153,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Confirmed"
+                    android:textColor="#007bff"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    android:textColor="#007bff"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -192,8 +209,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Recovered"
-                    android:textSize="12sp"
                     android:textColor="@color/primary_green"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -246,9 +263,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Deaths"
+                    android:textColor="@color/primary_red"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    android:textColor="@color/primary_red"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -277,9 +294,9 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.cardview.widget.CardView
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:cardCornerRadius="10dp"
             app:cardElevation="1dp"
             app:cardUseCompatPadding="true"
