@@ -1,5 +1,6 @@
 package com.thesis.distanceguard.myapp
 
+import ai.kun.opentracesdk_fat.BLETrace
 import android.app.Application
 import com.thesis.distanceguard.di.AppComponent
 import com.thesis.distanceguard.di.DaggerAppComponent
@@ -21,7 +22,14 @@ class MyApplication : Application(), HasAndroidInjector {
         if (MyBuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+
         initDagger()
+
+        //Initialize BlE trace library
+        BLETrace.init(this)
+        BLETrace.uuidString = BLETrace.getNewUniqueId()
+        Timber.d("UUID = ${BLETrace.uuidString}")
+
     }
 
     override fun androidInjector(): AndroidInjector<Any> {

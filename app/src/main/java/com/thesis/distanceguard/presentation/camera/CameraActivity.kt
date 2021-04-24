@@ -2,6 +2,8 @@ package com.thesis.distanceguard.presentation.camera
 
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 
@@ -48,7 +50,10 @@ class CameraActivity : BaseActivity(), View.OnClickListener {
 
         promptChip = findViewById(R.id.bottom_prompt_chip)
         promptChipAnimator =
-            (AnimatorInflater.loadAnimator(this, R.animator.bottom_prompt_chip_enter) as AnimatorSet).apply {
+            (AnimatorInflater.loadAnimator(
+                this,
+                R.animator.bottom_prompt_chip_enter
+            ) as AnimatorSet).apply {
                 setTarget(promptChip)
             }
 
@@ -112,7 +117,7 @@ class CameraActivity : BaseActivity(), View.OnClickListener {
 
     private fun setUpWorkflowModel() {
         AndroidInjection.inject(this)
-        cameraViewModel = ViewModelProvider(this,viewModelFactory).get(CameraViewModel::class.java)
+        cameraViewModel = ViewModelProvider(this, viewModelFactory).get(CameraViewModel::class.java)
 
 
         // Observes the workflow state changes, if happens, update the overlay view indicators and
@@ -150,7 +155,8 @@ class CameraActivity : BaseActivity(), View.OnClickListener {
                 else -> promptChip?.visibility = View.GONE
             }
 
-            val shouldPlayPromptChipEnteringAnimation = wasPromptChipGone && promptChip?.visibility == View.VISIBLE
+            val shouldPlayPromptChipEnteringAnimation =
+                wasPromptChipGone && promptChip?.visibility == View.VISIBLE
             promptChipAnimator?.let {
                 if (shouldPlayPromptChipEnteringAnimation && !it.isRunning) it.start()
             }
@@ -158,7 +164,10 @@ class CameraActivity : BaseActivity(), View.OnClickListener {
 
         cameraViewModel?.detectedBarcode?.observe(this, Observer { barcode ->
             if (barcode != null) {
-               showToastMessage(barcode.displayValue!!)
+                val returnIntent = Intent()
+                returnIntent.putExtra("UUID", barcode.rawValue)
+                setResult(Activity.RESULT_OK, returnIntent)
+                finish()
             }
 
         })

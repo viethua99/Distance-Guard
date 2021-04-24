@@ -12,7 +12,7 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.presentation.base.BaseFragment
-import com.thesis.distanceguard.presentation.main.MainActivity
+import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MapFragment : BaseFragment(), OnMapReadyCallback {

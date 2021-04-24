@@ -9,7 +9,7 @@ import com.thesis.distanceguard.R
 import com.thesis.distanceguard.api.CovidService
 import com.thesis.distanceguard.api.WorldResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
-import com.thesis.distanceguard.presentation.main.MainActivity
+import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import com.thesis.distanceguard.presentation.map.MapFragment
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import retrofit2.Call
