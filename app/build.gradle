@@ -85,5 +85,11 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     //BLE Trace
     implementation project(":opentracesdk_fat")
+    // Charts
+    implementation 'com.diogobernardino:williamchart:3.10.1'
+
+// Tooltips
+    implementation 'com.diogobernardino.williamchart:tooltip-slider:3.10.1'
+    implementation 'com.diogobernardino.williamchart:tooltip-points:3.10.1'
 
 }

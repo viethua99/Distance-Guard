@@ -1,6 +1,6 @@
 package com.thesis.distanceguard.api
 
-data class WorldResponse(
+data class TotalResponse(
     var updated: Long,
     var cases: Long,
     var todayCases: Long,

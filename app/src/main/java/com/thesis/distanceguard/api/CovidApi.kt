@@ -5,5 +5,5 @@ import retrofit2.http.GET
 
 interface CovidApi {
     @GET("/v3/covid-19/all")
-    fun getCovidWorld(): Call<WorldResponse>
+    fun getAll(): Call<TotalResponse>
 }
