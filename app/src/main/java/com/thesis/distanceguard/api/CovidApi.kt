@@ -9,6 +9,6 @@ interface CovidApi {
     @GET("/v3/covid-19/all")
     fun getAll(): Call<TotalResponse>
 
-    @GET("/v3/covid-19/countries")
+    @GET("/v3/covid-19/countries?sort=cases")
     fun getCountries(): Call<ArrayList<CountryResponse>>
 }
