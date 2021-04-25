@@ -107,6 +107,7 @@ class DashboardFragment : BaseFragment() {
     private val totalCasesObserver = Observer<TotalResponse>{
         it?.let {
             hideDialog()
+            tv_update_time.text = "Last update ${AppUtil.convertMillisecondsToDateFormat(it.updated)}"
             tv_total_cases_count.text = AppUtil.toNumberWithCommas(it.cases)
             tv_total_recovered_count.text = AppUtil.toNumberWithCommas(it.recovered)
             tv_total_death_count.text = AppUtil.toNumberWithCommas(it.deaths)

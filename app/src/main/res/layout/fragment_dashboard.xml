@@ -86,7 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toggleAlarm">
 
@@ -105,6 +105,7 @@
             <TextView
                 android:id="@+id/tv_update_time"
                 android:layout_width="0dp"
+                android:textSize="12sp"
                 android:layout_height="wrap_content"
                 android:text="Last update 17 March 2020"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -116,6 +117,7 @@
                 android:id="@+id/cv_confirm_count"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 app:cardCornerRadius="10dp"
                 app:cardPreventCornerOverlap="false"
                 app:cardUseCompatPadding="true"
@@ -126,9 +128,9 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingHorizontal="5dp"
                     android:background="@drawable/background_gradient_cases"
                     android:foreground="@drawable/item_ripple_effect"
+                    android:paddingHorizontal="5dp"
                     android:paddingVertical="20dp">
 
                     <ImageView
@@ -161,18 +163,18 @@
                         android:textColor="#007bff"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_total_cases_count"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_total_cases_count" />
 
 
                     <TextView
                         android:id="@+id/tv_cases_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:text="Cases"
                         android:textColor="#007bff"
                         android:textStyle="bold"
-                        android:layout_marginTop="5dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -183,11 +185,13 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_recovered_count"
+
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 app:cardCornerRadius="10dp"
-                app:cardUseCompatPadding="true"
                 app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="true"
                 app:layout_constraintEnd_toStartOf="@id/cv_death_count"
                 app:layout_constraintStart_toEndOf="@id/cv_confirm_count"
                 app:layout_constraintTop_toBottomOf="@id/tv_update_time">
@@ -195,9 +199,9 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingHorizontal="5dp"
                     android:background="@drawable/background_gradient_recovered"
                     android:foreground="@drawable/item_ripple_effect"
+                    android:paddingHorizontal="5dp"
                     android:paddingVertical="20dp">
 
 
@@ -232,17 +236,17 @@
                         android:textColor="#00b871"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_total_recovered_count"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_total_recovered_count" />
 
                     <TextView
                         android:id="@+id/tv_recovered_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:text="Recovered"
                         android:textColor="@color/primary_green"
                         android:textStyle="bold"
-                        android:layout_marginTop="5dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -253,7 +257,9 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_death_count"
                 android:layout_width="0dp"
+
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 app:cardCornerRadius="10dp"
                 app:cardPreventCornerOverlap="false"
                 app:cardUseCompatPadding="true"
@@ -264,9 +270,9 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingHorizontal="5dp"
                     android:background="@drawable/background_gradient_deaths"
                     android:foreground="@drawable/item_ripple_effect"
+                    android:paddingHorizontal="5dp"
                     android:paddingVertical="20dp">
 
                     <ImageView
@@ -300,18 +306,18 @@
                         android:textColor="#ff3839"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_total_death_count"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_total_death_count" />
 
 
                     <TextView
                         android:id="@+id/tv_death_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:text="Deaths"
                         android:textColor="@color/primary_red"
                         android:textStyle="bold"
-                        android:layout_marginTop="5dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -375,9 +381,9 @@
                     <com.db.williamchart.view.BarChartView
                         android:id="@+id/barChart"
                         android:layout_width="0dp"
-                        android:layout_marginTop="20dp"
                         android:layout_height="150dp"
                         android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
                         android:layout_marginRight="20dp"
                         app:chart_axis="xy"
                         app:chart_barsColor="@color/primary_color"
@@ -392,8 +398,8 @@
                     <com.db.williamchart.view.DonutChartView
                         android:id="@+id/donutChart"
                         android:layout_width="100dp"
-                        android:visibility="gone"
                         android:layout_height="100dp"
+                        android:visibility="gone"
                         app:chart_donutBackgroundColor="#70977F"
                         app:chart_donutRoundCorners="true"
                         app:chart_donutThickness="15dp"
