@@ -11,6 +11,8 @@ import com.bumptech.glide.Glide
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.api.model.CountryResponse
 import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
+import com.thesis.distanceguard.util.AppUtil
+import kotlinx.android.synthetic.main.fragment_dashboard.*
 
 /**
  * Created by Viet Hua on 04/10/2021.
@@ -34,9 +36,10 @@ class CountriesRecyclerViewAdapter(context: Context) :
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         var imgCountryFlag: ImageView = view.findViewById(R.id.img_country_flag)
         var tvCountryName: TextView = view.findViewById(R.id.tv_country_name)
-        var tvConfirmCount: TextView = view.findViewById(R.id.tv_country_confirm_count)
-        var tvRecoveredCount: TextView = view.findViewById(R.id.tv_country_recovered_count)
-        var tvDeathsCount: TextView = view.findViewById(R.id.tv_country_death_count)
+        var tvConfirmCount: TextView = view.findViewById(R.id.tv_total_cases_count)
+        var tvRecoveredCount: TextView = view.findViewById(R.id.tv_total_recovered_count)
+        var tvDeathsCount: TextView = view.findViewById(R.id.tv_total_death_count)
+        var tvUpdateTime: TextView = view.findViewById(R.id.tv_update_time)
 
 
         init {
@@ -51,9 +54,10 @@ class CountriesRecyclerViewAdapter(context: Context) :
 
         fun renderUI(data: CountryResponse) {
             tvCountryName.text = data.country
-            tvConfirmCount.text = data.cases.toString()
-            tvRecoveredCount.text =data.recovered.toString()
-            tvDeathsCount.text = data.deaths.toString()
+            tvConfirmCount.text = AppUtil.toNumberWithCommas(data.cases.toLong())
+            tvRecoveredCount.text = AppUtil.toNumberWithCommas(data.recovered.toLong())
+            tvDeathsCount.text =  AppUtil.toNumberWithCommas(data.deaths.toLong())
+            tvUpdateTime.text = "Last update ${AppUtil.convertMillisecondsToDateFormat(data.updated)}"
             Glide
                 .with(itemView.context)
                 .load(data.countryInfo.flag)

@@ -117,6 +117,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="10dp"
+                app:cardPreventCornerOverlap="false"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintEnd_toStartOf="@id/cv_recovered_count"
                 app:layout_constraintStart_toStartOf="parent"
@@ -125,6 +126,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:paddingHorizontal="5dp"
+                    android:background="@drawable/background_gradient_cases"
                     android:foreground="@drawable/item_ripple_effect"
                     android:paddingVertical="20dp">
 
@@ -184,6 +187,7 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="10dp"
                 app:cardUseCompatPadding="true"
+                app:cardPreventCornerOverlap="false"
                 app:layout_constraintEnd_toStartOf="@id/cv_death_count"
                 app:layout_constraintStart_toEndOf="@id/cv_confirm_count"
                 app:layout_constraintTop_toBottomOf="@id/tv_update_time">
@@ -191,6 +195,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:paddingHorizontal="5dp"
+                    android:background="@drawable/background_gradient_recovered"
                     android:foreground="@drawable/item_ripple_effect"
                     android:paddingVertical="20dp">
 
@@ -249,6 +255,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="10dp"
+                app:cardPreventCornerOverlap="false"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/cv_recovered_count"
@@ -257,6 +264,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:paddingHorizontal="5dp"
+                    android:background="@drawable/background_gradient_deaths"
                     android:foreground="@drawable/item_ripple_effect"
                     android:paddingVertical="20dp">
 

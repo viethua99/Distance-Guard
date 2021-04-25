@@ -58,104 +58,15 @@
             tools:visibility="visible" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="horizontal"
-        android:weightSum="3"
-        app:layout_constraintTop_toBottomOf="@id/rl_search">
-
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="0.7"
-            android:minLines="1"
-            android:text="Country"
-            android:textAlignment="textStart"
-            android:textColor="#1A0628"
-            android:textSize="14sp"
-            app:autoSizeMaxTextSize="20sp"
-            app:autoSizeMinTextSize="10sp"
-            app:autoSizeTextType="uniform" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2.3"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvCases"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="4dp"
-                android:layout_weight="0.8"
-                android:maxLines="1"
-                android:minLines="1"
-                android:text="Confirm"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="14sp"
-                app:autoSizeMaxTextSize="20sp"
-                app:autoSizeMinTextSize="10sp"
-                app:autoSizeTextType="uniform" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvDeathCase"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="0dp"
-                android:layout_weight="0.8"
-                android:maxLines="1"
-                android:minLines="1"
-                android:text="Recover"
-                android:textAlignment="center"
-                android:textColor="@color/primary_green"
-                android:textSize="14sp"
-                app:autoSizeMaxTextSize="20sp"
-                app:autoSizeMinTextSize="10sp"
-                app:autoSizeTextType="uniform" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvRecoverCase"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="0.7"
-                android:maxLines="1"
-                android:minLines="1"
-                android:textAlignment="center"
-                android:text="Deaths"
-                android:textColor="@color/primary_red"
-                android:textSize="14sp"
-                app:autoSizeMaxTextSize="20sp"
-                app:autoSizeMinTextSize="10sp"
-                app:autoSizeTextType="uniform" />
-        </LinearLayout>
-
-    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="5dp"
         android:id="@+id/rv_countries"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ll_title"
+        app:layout_constraintTop_toBottomOf="@id/rl_search"
         tools:listitem="@layout/item_country" />
 </androidx.constraintlayout.widget.ConstraintLayout>
