@@ -3,20 +3,27 @@ package com.thesis.distanceguard.presentation.dashboard
 import android.graphics.Color
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.db.williamchart.slidertooltip.SliderTooltip
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.api.CovidService
-import com.thesis.distanceguard.api.TotalResponse
+import com.thesis.distanceguard.api.model.TotalResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
+import com.thesis.distanceguard.presentation.countries.CountriesViewModel
 import com.thesis.distanceguard.presentation.information.InformationFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
+import com.thesis.distanceguard.util.NumberUtil
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import timber.log.Timber
 
 class DashboardFragment : BaseFragment() {
     companion object {
+        private const val animationDuration = 1000L
         private val lineSet = listOf(
             "label1" to 5f,
             "label2" to 4.5f,
@@ -31,7 +38,6 @@ class DashboardFragment : BaseFragment() {
             "label11" to 3f,
             "label12" to 4f
         )
-        private const val animationDuration = 1000L
         private val barSet = listOf(
             "JAN" to 8F,
             "FEB" to 8F,
@@ -42,24 +48,20 @@ class DashboardFragment : BaseFragment() {
             "JAN" to 8F
 
         )
-
-
-        private val donutSet = listOf(
-            20f,
-            80f,
-            100f
-        )
     }
+
+    private lateinit var dashboardViewModel: DashboardViewModel
+
 
     override fun getResLayoutId(): Int {
         return R.layout.fragment_dashboard
     }
 
     override fun onMyViewCreated(view: View) {
-        getDataCovidFromApi()
+        setupViewModel()
+        fetchTotalCases()
         testLineChart()
         testBarChart()
-     //   testDonutChart()
 
         btn_click_here.setOnClickListener {
             val mainActivity = activity as MainActivity
@@ -69,6 +71,17 @@ class DashboardFragment : BaseFragment() {
                 R.id.container_main
             )
         }
+    }
+
+    private fun setupViewModel() {
+        Timber.d("setupViewModel")
+        AndroidSupportInjection.inject(this)
+        dashboardViewModel = ViewModelProvider(this, viewModelFactory).get(DashboardViewModel::class.java)
+    }
+
+    private fun fetchTotalCases(){
+        showProgressDialog("Fetching data")
+        dashboardViewModel.fetchTotalCases().observe(this,totalCasesObserver)
     }
 
     private fun testLineChart() {
@@ -92,41 +105,22 @@ class DashboardFragment : BaseFragment() {
     }
 
     private fun testBarChart() {
-
         barChart.animation.duration = animationDuration
         barChart.animate(barSet)
     }
 
-    private fun testDonutChart() {
-        donutChart.donutColors = intArrayOf(
-            Color.parseColor("#FFFFFF"),
-            Color.parseColor("#9EFFFFFF"),
-            Color.parseColor("#8DFFFFFF")
-        )
-        donutChart.animation.duration = animationDuration
-        donutChart.animate(donutSet)
 
+    private val totalCasesObserver = Observer<TotalResponse>{
+        it?.let {
+            hideDialog()
+            tv_total_cases_count.text = NumberUtil.toNumberWithCommas(it.cases)
+            tv_total_recovered_count.text = NumberUtil.toNumberWithCommas(it.recovered)
+            tv_total_death_count.text = NumberUtil.toNumberWithCommas(it.deaths)
+            tv_today_cases_count.text =  "(+${NumberUtil.toNumberWithCommas(it.todayCases)})"
+            tv_today_recovered_count.text = "(+${NumberUtil.toNumberWithCommas(it.todayRecovered.toLong())})"
+            tv_today_deaths_count.text = "(+${NumberUtil.toNumberWithCommas(it.todayDeaths)})"
+
+        }
     }
 
-
-    private fun prepareUpdateCovid(comfirmed: Long, recovered: Long, deaths: Long) {
-        tv_confirm_count.text = "" + comfirmed
-        tv_recovered_count.text = "" + recovered
-        tv_death_count.text = "" + deaths
-    }
-
-    private fun getDataCovidFromApi() {
-        CovidService.getApi().getAll().enqueue(object : Callback<TotalResponse> {
-            override fun onResponse(call: Call<TotalResponse>, response: Response<TotalResponse>) {
-                response.let {
-                    val resp = it.body()
-                    Log.d("TAG", "onResponse: " + resp?.cases)
-                    prepareUpdateCovid(resp!!.cases, resp?.recovered, resp?.deaths)
-                }
-            }
-
-            override fun onFailure(call: Call<TotalResponse>, t: Throwable) {
-            }
-        })
-    }
 }

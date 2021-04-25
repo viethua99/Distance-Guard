@@ -1,6 +1,8 @@
 package com.thesis.distanceguard.di
 
 import com.thesis.distanceguard.presentation.camera.CameraActivity
+import com.thesis.distanceguard.presentation.countries.CountriesFragment
+import com.thesis.distanceguard.presentation.dashboard.DashboardFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import com.thesis.distanceguard.presentation.scanner.ScannerFragment
 import dagger.Module
@@ -16,5 +18,11 @@ abstract class AppBindingModule {
 
     @ContributesAndroidInjector
     abstract fun scannerFragment() : ScannerFragment
+
+    @ContributesAndroidInjector
+    abstract fun dashboardFragment() : DashboardFragment
+
+    @ContributesAndroidInjector
+    abstract fun countriesFragment() : CountriesFragment
 
 }

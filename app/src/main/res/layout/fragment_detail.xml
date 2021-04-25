@@ -41,7 +41,7 @@
 
                 <TextView
                     android:layout_marginTop="20dp"
-                    android:id="@+id/tv_confirm_title"
+                    android:id="@+id/tv_cases_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Confirmed"
@@ -51,7 +51,7 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_main_info" />
 
                 <TextView
-                    android:id="@+id/tv_confirm_count"
+                    android:id="@+id/tv_total_cases_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1,34,45,006"
@@ -59,7 +59,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_confirm_title" />
+                    app:layout_constraintTop_toTopOf="@id/tv_cases_title" />
 
                 <TextView
                     android:layout_marginTop="20dp"
@@ -70,7 +70,7 @@
                     android:textColor="@color/primary_green"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_confirm_title" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_cases_title" />
 
                 <TextView
                     android:id="@+id/tv_recover_count"

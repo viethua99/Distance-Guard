@@ -138,11 +138,11 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tv_confirm_count"
+                        android:id="@+id/tv_total_cases_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="999,999,999"
+                        android:text="---"
                         android:textColor="#007bff"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -151,17 +151,29 @@
                         app:layout_constraintTop_toBottomOf="@id/img_confirm" />
 
                     <TextView
-                        android:id="@+id/tv_confirm_title"
+                        android:id="@+id/tv_today_cases_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Confirmed"
+                        android:text="---"
                         android:textColor="#007bff"
-                        android:textSize="12sp"
                         android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_total_cases_count"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+
+                    <TextView
+                        android:id="@+id/tv_cases_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cases"
+                        android:textColor="#007bff"
+                        android:textStyle="bold"
+                        android:layout_marginTop="5dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_confirm_count" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_today_cases_count" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -194,11 +206,11 @@
 
 
                     <TextView
-                        android:id="@+id/tv_recovered_count"
+                        android:id="@+id/tv_total_recovered_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="999,999,999"
+                        android:text="---"
                         android:textColor="#00b871"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -207,17 +219,28 @@
                         app:layout_constraintTop_toBottomOf="@id/img_recover" />
 
                     <TextView
+                        android:id="@+id/tv_today_recovered_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="---"
+                        android:textColor="#00b871"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_total_recovered_count"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
                         android:id="@+id/tv_recovered_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Recovered"
                         android:textColor="@color/primary_green"
-                        android:textSize="12sp"
                         android:textStyle="bold"
+                        android:layout_marginTop="5dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_recovered_count" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_today_recovered_count" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -248,11 +271,11 @@
 
 
                     <TextView
-                        android:id="@+id/tv_death_count"
+                        android:id="@+id/tv_total_death_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="999,999,999"
+                        android:text="---"
                         android:textColor="#ff3839"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -261,17 +284,29 @@
                         app:layout_constraintTop_toBottomOf="@id/img_death" />
 
                     <TextView
+                        android:id="@+id/tv_today_deaths_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="---"
+                        android:textColor="#ff3839"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_total_death_count"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+
+                    <TextView
                         android:id="@+id/tv_death_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Deaths"
                         android:textColor="@color/primary_red"
-                        android:textSize="12sp"
                         android:textStyle="bold"
+                        android:layout_marginTop="5dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_death_count" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_today_deaths_count" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>

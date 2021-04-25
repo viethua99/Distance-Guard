@@ -4,8 +4,12 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.ImageView
+
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.thesis.distanceguard.R
+import com.thesis.distanceguard.api.model.CountryResponse
 import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
 
 /**
@@ -13,7 +17,7 @@ import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
  */
 
 class CountriesRecyclerViewAdapter(context: Context) :
-    BaseRecyclerViewAdapter<String, CountriesRecyclerViewAdapter.ViewHolder>(context) {
+    BaseRecyclerViewAdapter<CountryResponse, CountriesRecyclerViewAdapter.ViewHolder>(context) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,7 +32,11 @@ class CountriesRecyclerViewAdapter(context: Context) :
 
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+        var imgCountryFlag: ImageView = view.findViewById(R.id.img_country_flag)
         var tvCountryName: TextView = view.findViewById(R.id.tv_country_name)
+        var tvConfirmCount: TextView = view.findViewById(R.id.tv_country_confirm_count)
+        var tvRecoveredCount: TextView = view.findViewById(R.id.tv_country_recovered_count)
+        var tvDeathsCount: TextView = view.findViewById(R.id.tv_country_death_count)
 
 
         init {
@@ -41,9 +49,16 @@ class CountriesRecyclerViewAdapter(context: Context) :
         }
 
 
-        fun renderUI(data: String) {
-            tvCountryName.text = data
-
+        fun renderUI(data: CountryResponse) {
+            tvCountryName.text = data.country
+            tvConfirmCount.text = data.cases.toString()
+            tvRecoveredCount.text =data.recovered.toString()
+            tvDeathsCount.text = data.deaths.toString()
+            Glide
+                .with(itemView.context)
+                .load(data.countryInfo.flag)
+                .centerCrop()
+                .into(imgCountryFlag)
 
         }
     }

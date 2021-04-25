@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
 
 class CovidService {
     companion object {
-        const val BASE_URL: String = "https://disease.sh"
+        private const val BASE_URL: String = "https://disease.sh"
         private var api: CovidApi? = null
 
         fun getApi(): CovidApi = api ?: synchronized(this) {
