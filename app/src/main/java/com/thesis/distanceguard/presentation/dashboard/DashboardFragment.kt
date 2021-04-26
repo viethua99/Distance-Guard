@@ -62,9 +62,8 @@ class DashboardFragment : BaseFragment() {
     override fun onMyViewCreated(view: View) {
         setupViewModel()
         fetchTotalCases()
-        setupLineChart()
         fetchHistorical()
-        testBarChart()
+        setupLineChart()
         btn_click_here.setOnClickListener {
             val mainActivity = activity as MainActivity
             mainActivity.addFragment(
@@ -82,20 +81,7 @@ class DashboardFragment : BaseFragment() {
             ViewModelProvider(this, viewModelFactory).get(DashboardViewModel::class.java)
     }
 
-    private fun fetchTotalCases() {
-        showProgressDialog("Fetching data")
-        dashboardViewModel.fetchTotalCases().observe(this, totalCasesObserver)
-    }
-
-    private fun fetchHistorical() {
-        dashboardViewModel.fetchHistory().observe(this, historyObserver)
-    }
-
-    private fun setupLineChart() {
-        /**
-         * Line Chart
-         */
-        // Cases
+    private fun setupLineChart(){
         lineChart.gradientFillColors =
             intArrayOf(
                 Color.parseColor("#e6f2ff"),
@@ -110,40 +96,45 @@ class DashboardFragment : BaseFragment() {
 
         }
 
-        // Deaths
-        lineChartDeaths.gradientFillColors =
-            intArrayOf(
-                Color.parseColor("#ffeff2"),
-                Color.TRANSPARENT
-            )
-        lineChartDeaths.animation.duration = animationDuration
-        lineChartDeaths.tooltip =
-            SliderTooltip().also {
-                it.color = Color.RED
-            }
-        lineChartDeaths.onDataPointTouchListener = { index, _, _ ->
-
-        }
-
-        // Recovered
-        lineChartRecovered.gradientFillColors =
+        lineChart2.gradientFillColors =
             intArrayOf(
                 Color.parseColor("#e9faee"),
                 Color.TRANSPARENT
             )
-        lineChartRecovered.animation.duration = animationDuration
-        lineChartRecovered.tooltip =
+        lineChart2.animation.duration = animationDuration
+        lineChart2.tooltip =
             SliderTooltip().also {
                 it.color = Color.GREEN
             }
-        lineChartRecovered.onDataPointTouchListener = { index, _, _ ->
+        lineChart2.onDataPointTouchListener = { index, _, _ ->
+
+        }
+
+        lineChart3.gradientFillColors =
+            intArrayOf(
+                Color.parseColor("#ffeff2"),
+                Color.TRANSPARENT
+            )
+        lineChart3.animation.duration = animationDuration
+        lineChart3.tooltip =
+            SliderTooltip().also {
+                it.color = Color.RED
+            }
+        lineChart3.onDataPointTouchListener = { index, _, _ ->
 
         }
     }
 
-    private fun testBarChart() {
-        barChart.animation.duration = animationDuration
+    private fun fetchTotalCases() {
+        showProgressDialog("Fetching data")
+        dashboardViewModel.fetchTotalCases().observe(this, totalCasesObserver)
     }
+
+    private fun fetchHistorical() {
+        dashboardViewModel.fetchHistory().observe(this, historyObserver)
+    }
+
+
 
 
     private val totalCasesObserver = Observer<TotalResponse> {
@@ -168,19 +159,14 @@ class DashboardFragment : BaseFragment() {
                     it.cases!!.toList()?.sortedBy { value -> value.second }?.toList()
                 )
             )
-            barChart.animate(  getNewCaseList(
-                it.cases!!.toList()?.sortedBy { value -> value.second }?.toList()
-            ))
-
-
-            lineChartDeaths.animate(
-                getNewCaseList(
-                    it.deaths!!.toList()?.sortedBy { value -> value.second }?.toList()
-                )
-            )
-            lineChartRecovered.animate(
+            lineChart2.animate(
                 getNewCaseList(
                     it.recovered!!.toList()?.sortedBy { value -> value.second }?.toList()
+                )
+            )
+            lineChart3.animate(
+                getNewCaseList(
+                    it.deaths!!.toList()?.sortedBy { value -> value.second }?.toList()
                 )
             )
         }

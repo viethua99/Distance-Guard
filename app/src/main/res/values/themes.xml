@@ -17,7 +17,7 @@
     </style>
 
     <style name="SwitchTextAppearance" parent="@android:style/TextAppearance.Holo.Small">
-        <item name="android:textColor">#FF4B63</item>
+        <item name="android:textColor">@color/primary_red</item>
     </style>
 
     <style name="roundedImageView" parent="">
