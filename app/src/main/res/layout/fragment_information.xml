@@ -225,6 +225,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="136dp"
+                    android:layout_marginEnd="5dp"
                     android:layout_gravity="center_vertical"
                     app:cardCornerRadius="20dp">
 
@@ -263,6 +264,7 @@
                 android:layout_height="156dp">
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
+                    android:layout_marginEnd="5dp"
                     android:layout_height="136dp"
                     android:layout_gravity="center_vertical"
                     app:cardCornerRadius="20dp">
