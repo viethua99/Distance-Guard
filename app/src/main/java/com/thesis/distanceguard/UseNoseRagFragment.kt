@@ -2,11 +2,12 @@ package com.thesis.distanceguard
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.fragment.app.Fragment
+import com.thesis.distanceguard.presentation.main.activity.MainActivity
+import kotlinx.android.synthetic.main.fragment_use_nose_rag.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,7 +39,13 @@ class UseRoseRagFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_use_nose_rag, container, false)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        start_button.setOnClickListener {
+            val intent = Intent(activity,MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     companion object {
