@@ -93,5 +93,6 @@ dependencies {
 // Tooltips
     implementation 'com.diogobernardino.williamchart:tooltip-slider:3.10.1'
     implementation 'com.diogobernardino.williamchart:tooltip-points:3.10.1'
-
+    //Circle indicator
+    implementation 'me.relex:circleindicator:2.1.6'
 }
