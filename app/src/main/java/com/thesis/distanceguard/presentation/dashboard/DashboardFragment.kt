@@ -109,7 +109,7 @@ class DashboardFragment : BaseFragment() {
         lineChart2.onDataPointTouchListener = { index, _, _ ->
 
         }
-
+        
         lineChart3.gradientFillColors =
             intArrayOf(
                 Color.parseColor("#ffeff2"),
