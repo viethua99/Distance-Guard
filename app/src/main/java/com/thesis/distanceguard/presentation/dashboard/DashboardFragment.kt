@@ -62,9 +62,9 @@ class DashboardFragment : BaseFragment() {
     override fun onMyViewCreated(view: View) {
         setupViewModel()
         fetchTotalCases()
-        testLineChart()
+        setupLineChart()
+        fetchHistorical()
         testBarChart()
-        fetch()
         btn_click_here.setOnClickListener {
             val mainActivity = activity as MainActivity
             mainActivity.addFragment(
@@ -87,44 +87,33 @@ class DashboardFragment : BaseFragment() {
         dashboardViewModel.fetchTotalCases().observe(this, totalCasesObserver)
     }
 
-    private fun testLineChart() {
+    private fun fetchHistorical() {
+        dashboardViewModel.fetchHistory().observe(this, historyObserver)
+    }
+
+    private fun setupLineChart() {
         /**
          * Line Chart
          */
-        lineChartT.gradientFillColors =
-            intArrayOf(
-                Color.parseColor("#FF4B63"),
-                Color.TRANSPARENT
-            )
-        lineChartT.animation.duration = animationDuration
-        lineChartT.tooltip =
-            SliderTooltip().also {
-                it.color = Color.RED
-            }
-        lineChartT.onDataPointTouchListener = { index, _, _ ->
-
-        }
-
-        //
+        // Cases
         lineChart.gradientFillColors =
             intArrayOf(
-                Color.parseColor("#FF4B63"),
+                Color.parseColor("#e6f2ff"),
                 Color.TRANSPARENT
             )
         lineChart.animation.duration = animationDuration
         lineChart.tooltip =
             SliderTooltip().also {
-                it.color = Color.RED
+                it.color = Color.BLUE
             }
         lineChart.onDataPointTouchListener = { index, _, _ ->
 
         }
-//        lineChart.animate(lineSet)
 
         // Deaths
         lineChartDeaths.gradientFillColors =
             intArrayOf(
-                Color.parseColor("#FF4B63"),
+                Color.parseColor("#ffeff2"),
                 Color.TRANSPARENT
             )
         lineChartDeaths.animation.duration = animationDuration
@@ -135,24 +124,21 @@ class DashboardFragment : BaseFragment() {
         lineChartDeaths.onDataPointTouchListener = { index, _, _ ->
 
         }
-//        lineChartDeaths.animate(lineSet)
 
-        //Recovered
+        // Recovered
         lineChartRecovered.gradientFillColors =
             intArrayOf(
-                Color.parseColor("#FF4B63"),
+                Color.parseColor("#e9faee"),
                 Color.TRANSPARENT
             )
         lineChartRecovered.animation.duration = animationDuration
         lineChartRecovered.tooltip =
             SliderTooltip().also {
-                it.color = Color.RED
+                it.color = Color.GREEN
             }
         lineChartRecovered.onDataPointTouchListener = { index, _, _ ->
 
         }
-//        lineChartRecovered.animate(lineSet)
-
     }
 
     private fun testBarChart() {
@@ -173,45 +159,36 @@ class DashboardFragment : BaseFragment() {
             tv_today_recovered_count.text =
                 "(+${AppUtil.toNumberWithCommas(it.todayRecovered.toLong())})"
             tv_today_deaths_count.text = "(+${AppUtil.toNumberWithCommas(it.todayDeaths)})"
-
         }
     }
 
-    private fun fetch() {
-        CovidService.getApi().getHistoricalAll().enqueue(object : Callback<HistoricalAllResponse> {
-            override fun onResponse(
-                call: Call<HistoricalAllResponse>,
-                response: Response<HistoricalAllResponse>
-            ) {
+    private val historyObserver = Observer<HistoricalAllResponse> {
+        it.let {
+            lineChart.animate(
+                getNewCaseList(
+                    it.cases!!.toList()?.sortedBy { value -> value.second }?.toList()
+                )
+            )
+            lineChartDeaths.animate(
+                getNewCaseList(
+                    it.deaths!!.toList()?.sortedBy { value -> value.second }?.toList()
+                )
+            )
+            lineChartRecovered.animate(
+                getNewCaseList(
+                    it.recovered!!.toList()?.sortedBy { value -> value.second }?.toList()
+                )
+            )
+        }
+    }
 
-
-                Log.d(
-                    TAG,
-                    "onResponse: " + response.body()?.cases?.toList()
-                        ?.sortedByDescending { it.second })
-                response.body()?.cases?.toList()?.sortedByDescending { it.second }?.toList()?.let {
-                    lineChart.animate(
-                        it
-                    )
-                }
-                response.body()?.deaths?.toList()?.sortedByDescending { it.second }?.toList()
-                    ?.let { lineChartDeaths.animate(it) }
-                response.body()?.recovered?.toList()?.sortedByDescending { it.second }?.toList()
-                    ?.let {
-                        lineChartRecovered.animate(
-                            it
-                        )
-                    }
-
-                lineChart.invalidate()
-                lineChartDeaths.invalidate()
-                lineChartRecovered.invalidate()
-            }
-
-            override fun onFailure(call: Call<HistoricalAllResponse>, t: Throwable) {
-                Log.d(TAG, "onFailure: " + t.message)
-            }
-
-        })
+    private fun getNewCaseList(totalCaseList: List<Pair<String, Float>>): List<Pair<String, Float>> {
+        val newCaseList = ArrayList<Pair<String, Float>>()
+        for (i in 1 until totalCaseList.size) {
+            val difference = totalCaseList[i].second - totalCaseList[i - 1].second
+            val newCase = Pair(totalCaseList[i].first, difference)
+            newCaseList.add(newCase)
+        }
+        return newCaseList
     }
 }

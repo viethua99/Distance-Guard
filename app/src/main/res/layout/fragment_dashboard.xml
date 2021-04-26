@@ -185,7 +185,6 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_recovered_count"
-
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -345,113 +344,114 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/tv_chart"
-    >
-            <androidx.cardview.widget.CardView
+
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="1dp"
-                app:cardUseCompatPadding="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_chart">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="10dp">
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="1dp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_chart">
 
-                    <com.db.williamchart.view.LineChartView
-                        android:id="@+id/lineChart"
-                        android:layout_width="0dp"
-                        android:layout_height="70dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        app:chart_axis="y"
-                        app:chart_gridEffect="dotted"
-                        app:chart_labelsColor="#FF70977F"
-                        app:chart_labelsSize="10sp"
-                        app:chart_lineColor="@color/primary_color"
-                        app:chart_lineThickness="3dp"
-                        app:chart_smoothLine="true"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp">
 
-                    <com.db.williamchart.view.LineChartView
-                        android:id="@+id/lineChartDeaths"
-                        android:layout_width="0dp"
-                        android:layout_height="70dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        app:chart_axis="y"
-                        app:chart_gridEffect="dotted"
-                        app:chart_labelsColor="#FF70977F"
-                        app:chart_labelsSize="10sp"
-                        app:chart_lineColor="@color/red_700"
-                        app:chart_lineThickness="3dp"
-                        app:chart_smoothLine="true"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/lineChart" />
+                        <com.db.williamchart.view.LineChartView
+                            android:id="@+id/lineChart"
+                            android:layout_width="0dp"
+                            android:layout_height="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            app:chart_axis="none"
+                            app:chart_gridEffect="dotted"
+                            app:chart_labelsColor="#FF70977F"
+                            app:chart_labelsSize="10sp"
+                            app:chart_lineColor="@color/primary_color"
+                            app:chart_lineThickness="3dp"
+                            app:chart_smoothLine="true"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.db.williamchart.view.LineChartView
-                        android:id="@+id/lineChartRecovered"
-                        android:layout_width="0dp"
-                        android:layout_height="70dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        app:chart_axis="y"
-                        app:chart_gridEffect="dotted"
-                        app:chart_labelsColor="#FF70977F"
-                        app:chart_labelsSize="10sp"
-                        app:chart_lineColor="@color/amber_700"
-                        app:chart_lineThickness="3dp"
-                        app:chart_smoothLine="true"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/lineChartDeaths" />
+                        <com.db.williamchart.view.LineChartView
+                            android:id="@+id/lineChartRecovered"
+                            android:layout_width="0dp"
+                            android:layout_height="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            app:chart_axis="none"
+                            app:chart_gridEffect="dotted"
+                            app:chart_labelsColor="#FF70977F"
+                            app:chart_labelsSize="10sp"
+                            app:chart_lineColor="@color/green_A700"
+                            app:chart_lineThickness="3dp"
+                            app:chart_smoothLine="true"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/lineChart" />
 
-                    <com.db.williamchart.view.BarChartView
-                        android:id="@+id/barChart"
-                        android:layout_width="0dp"
-                        android:layout_height="150dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginRight="20dp"
-                        app:chart_axis="xy"
-                        app:chart_barsColor="@color/primary_color"
-                        app:chart_barsRadius="4dp"
-                        app:chart_labelsColor="#FF70977F"
-                        app:chart_labelsSize="8sp"
-                        app:chart_spacing="15dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/lineChartRecovered" />
+                        <com.db.williamchart.view.LineChartView
+                            android:id="@+id/lineChartDeaths"
+                            android:layout_width="0dp"
+                            android:layout_height="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            app:chart_axis="none"
+                            app:chart_gridEffect="dotted"
+                            app:chart_labelsColor="#FF70977F"
+                            app:chart_labelsSize="10sp"
+                            app:chart_lineColor="@color/red_700"
+                            app:chart_lineThickness="3dp"
+                            app:chart_smoothLine="true"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/lineChartRecovered" />
 
-                    <com.db.williamchart.view.DonutChartView
-                        android:id="@+id/donutChart"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:visibility="gone"
-                        app:chart_donutBackgroundColor="#70977F"
-                        app:chart_donutRoundCorners="true"
-                        app:chart_donutThickness="15dp"
-                        app:chart_donutTotal="200"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/barChart" />
+                        <com.db.williamchart.view.BarChartView
+                            android:id="@+id/barChart"
+                            android:layout_width="0dp"
+                            android:layout_height="150dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginRight="20dp"
+                            app:chart_axis="xy"
+                            app:chart_barsColor="@color/primary_color"
+                            app:chart_barsRadius="4dp"
+                            app:chart_labelsColor="#FF70977F"
+                            app:chart_labelsSize="8sp"
+                            app:chart_spacing="15dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/lineChartDeaths" />
+
+                        <com.db.williamchart.view.DonutChartView
+                            android:id="@+id/donutChart"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:visibility="gone"
+                            app:chart_donutBackgroundColor="#70977F"
+                            app:chart_donutRoundCorners="true"
+                            app:chart_donutThickness="15dp"
+                            app:chart_donutTotal="200"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/barChart" />
 
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-</ScrollView>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+            </ScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

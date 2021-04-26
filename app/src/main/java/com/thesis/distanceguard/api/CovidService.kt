@@ -25,8 +25,6 @@ class CovidService {
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
 
             val okHttpClient = OkHttpClient.Builder()
-                .readTimeout(10, TimeUnit.SECONDS)
-                .connectTimeout(10, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
                 .build()
 
