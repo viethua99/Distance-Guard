@@ -79,62 +79,219 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
-        <Button
-            android:layout_marginTop="10dp"
-            android:drawableLeft="@drawable/img_character"
-            android:id="@+id/btn_test_4"
+        <TextView
+            android:id="@+id/txv_symptom"
             android:layout_width="match_parent"
-            android:layout_height="110dp"
-            android:backgroundTint="@color/primary_red"
-            android:paddingVertical="5dp"
-            android:text="For student"
-            android:textColor="@color/white"
-            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:text="Symptom"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:layout_marginTop="10dp"
-            android:drawableLeft="@drawable/img_character"
-            android:id="@+id/btn_test_1"
-            android:layout_width="match_parent"
-            android:layout_height="110dp"
-            android:backgroundTint="@color/primary_green"
-            android:paddingVertical="5dp"
-            android:text="At School"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_test_4" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_headache"
+            android:layout_width="108dp"
+            android:layout_height="111dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="7dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txv_symptom">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal">
+                <ImageView
+                    android:layout_width="84.97dp"
+                    android:layout_height="71.95dp"
+                    android:src="@drawable/elip"/>
+                <ImageView
+                    android:layout_width="54dp"
+                    android:layout_height="73dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/headache" />
+            </FrameLayout>
 
-        <Button
-            android:layout_marginTop="10dp"
+            <TextView
+                android:layout_width="49dp"
+                android:layout_height="13dp"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="7dp"
+                android:text="Headache"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+        </androidx.cardview.widget.CardView>
 
-            android:drawableLeft="@drawable/img_character"
-            android:id="@+id/btn_test_2"
-            android:layout_width="match_parent"
-            android:layout_height="110dp"
-            android:backgroundTint="@color/primary_orange"
-            android:paddingVertical="5dp"
-            android:text="At Workplace"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_test_1" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_cough"
+            android:layout_width="108dp"
+            android:layout_height="111dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="11dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:layout_constraintStart_toEndOf="@+id/cv_headache"
+            app:layout_constraintTop_toBottomOf="@+id/txv_symptom">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal">
+                <ImageView
+                    android:layout_width="84.97dp"
+                    android:layout_height="71.95dp"
+                    android:src="@drawable/elip"/>
 
-        <Button
-            android:layout_marginTop="10dp"
-            android:drawableLeft="@drawable/img_character"
-            android:id="@+id/btn_test_3"
+                <ImageView
+                    android:layout_width="54dp"
+                    android:layout_height="73dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/cough" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="49dp"
+                android:layout_height="13dp"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="7dp"
+                android:text="Cough"
+                android:gravity="center_horizontal"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="108dp"
+            android:layout_height="111dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="11dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:layout_constraintStart_toEndOf="@+id/cv_cough"
+            app:layout_constraintTop_toBottomOf="@+id/txv_symptom">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal">
+                <ImageView
+                    android:layout_width="84.97dp"
+                    android:layout_height="71.95dp"
+                    android:src="@drawable/elip"/>
+
+                <ImageView
+                    android:layout_width="54dp"
+                    android:layout_height="73dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/fever" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="49dp"
+                android:layout_height="13dp"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="7dp"
+                android:text="Fever"
+                android:gravity="center_horizontal"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/txv_prevention"
             android:layout_width="match_parent"
-            android:layout_height="110dp"
-            android:backgroundTint="@color/primary_color"
-            android:paddingVertical="5dp"
-            android:text="At Home"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_test_2" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="43dp"
+            android:text="Prevention"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cv_cough" />
+        <FrameLayout
+            android:id="@+id/fl_wear_face_mask"
+            android:layout_width="match_parent"
+            android:layout_height="156dp"
+            android:layout_marginTop="9dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txv_prevention">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="156dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="136dp"
+                    android:layout_gravity="center_vertical"
+                    app:cardCornerRadius="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="138dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Wear face mask"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="199dp"
+                        android:layout_height="52dp"
+                        android:layout_marginStart="138dp"
+                        android:layout_marginTop="39dp"
+                        android:text="Since the start of the coronavirus outbreak some places have fully embraced wearing face masks,and anyone without one risks becoming a social pariah."
+                        android:textSize="10dp" />
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
+
+            <ImageView
+                android:layout_width="138dp"
+                android:layout_height="156dp"
+                android:src="@drawable/ic_group_1" />
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="156dp"
+            android:layout_marginTop="9dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fl_wear_face_mask">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="156dp">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="136dp"
+                    android:layout_gravity="center_vertical"
+                    app:cardCornerRadius="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="138dp"
+                        android:text="Wash your hands"
+                        android:layout_marginTop="10dp"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="199dp"
+                        android:layout_height="52dp"
+                        android:layout_marginStart="138dp"
+                        android:layout_marginTop="39dp"
+                        android:text="These diseases include gastrointestinal infections, such as Salmonella, and respiratory infection, such as influenza."
+                        android:textSize="10dp" />
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
+            <ImageView
+                android:layout_width="138dp"
+                android:layout_height="156dp"
+                android:src="@drawable/ic_group_3" />
+        </FrameLayout>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
