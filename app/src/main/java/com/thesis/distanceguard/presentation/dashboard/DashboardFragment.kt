@@ -21,10 +21,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
 import java.util.*
+import kotlin.collections.ArrayList
 
 class DashboardFragment : BaseFragment() {
     companion object {
-        const val TAG = "DashboardFragment"
         private const val animationDuration = 1000L
         private var lineSet = listOf(
             "label1" to 5f,
@@ -88,22 +88,6 @@ class DashboardFragment : BaseFragment() {
     }
 
     private fun testLineChart() {
-        /**
-         * Line Chart
-         */
-        lineChartT.gradientFillColors =
-            intArrayOf(
-                Color.parseColor("#FF4B63"),
-                Color.TRANSPARENT
-            )
-        lineChartT.animation.duration = animationDuration
-        lineChartT.tooltip =
-            SliderTooltip().also {
-                it.color = Color.RED
-            }
-        lineChartT.onDataPointTouchListener = { index, _, _ ->
-
-        }
 
         //
         lineChart.gradientFillColors =
@@ -177,26 +161,29 @@ class DashboardFragment : BaseFragment() {
         }
     }
 
+    private fun getNewCaseList(totalCaseList: List<Pair<String,Float>>): List<Pair<String,Float>>{
+        val newCaseList =ArrayList<Pair<String,Float>>()
+        for(i in 1 until totalCaseList.size){
+            val difference = totalCaseList[i].second - totalCaseList[i-1].second
+            val newCase = Pair(totalCaseList[i].first,difference)
+            newCaseList.add(newCase)
+        }
+        return newCaseList
+    }
+
     private fun fetch() {
         CovidService.getApi().getHistoricalAll().enqueue(object : Callback<HistoricalAllResponse> {
             override fun onResponse(
                 call: Call<HistoricalAllResponse>,
                 response: Response<HistoricalAllResponse>
             ) {
-
-
-                Log.d(
-                    TAG,
-                    "onResponse: " + response.body()?.cases?.toList()
-                        ?.sortedByDescending { it.second })
-                response.body()?.cases?.toList()?.sortedByDescending { it.second }?.toList()?.let {
-                    lineChart.animate(
-                        it
-                    )
+                response.body()?.cases
+                response.body()?.cases?.toList()?.sortedBy { it.second }?.let {
+                   getNewCaseList(it)
                 }
-                response.body()?.deaths?.toList()?.sortedByDescending { it.second }?.toList()
+                response.body()?.deaths?.toList()?.sortedBy { it.second }?.toList()
                     ?.let { lineChartDeaths.animate(it) }
-                response.body()?.recovered?.toList()?.sortedByDescending { it.second }?.toList()
+                response.body()?.recovered?.toList()?.sortedBy { it.second }?.toList()
                     ?.let {
                         lineChartRecovered.animate(
                             it
@@ -209,7 +196,7 @@ class DashboardFragment : BaseFragment() {
             }
 
             override fun onFailure(call: Call<HistoricalAllResponse>, t: Throwable) {
-                Log.d(TAG, "onFailure: " + t.message)
+                Timber.d( "onFailure: " + t.message)
             }
 
         })
