@@ -143,7 +143,6 @@ class DashboardFragment : BaseFragment() {
 
     private fun testBarChart() {
         barChart.animation.duration = animationDuration
-        barChart.animate(barSet)
     }
 
 
@@ -169,6 +168,11 @@ class DashboardFragment : BaseFragment() {
                     it.cases!!.toList()?.sortedBy { value -> value.second }?.toList()
                 )
             )
+            barChart.animate(  getNewCaseList(
+                it.cases!!.toList()?.sortedBy { value -> value.second }?.toList()
+            ))
+
+
             lineChartDeaths.animate(
                 getNewCaseList(
                     it.deaths!!.toList()?.sortedBy { value -> value.second }?.toList()
