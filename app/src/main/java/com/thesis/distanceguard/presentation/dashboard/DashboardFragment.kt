@@ -9,10 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.db.williamchart.slidertooltip.SliderTooltip
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.api.CovidService
-import com.thesis.distanceguard.api.model.CountryInfoResponse
-import com.thesis.distanceguard.api.model.CountryResponse
-import com.thesis.distanceguard.api.model.HistoricalAllResponse
-import com.thesis.distanceguard.api.model.TotalResponse
+import com.thesis.distanceguard.api.model.*
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.information.InformationFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
@@ -149,7 +146,24 @@ class DashboardFragment : BaseFragment() {
     }
 
     private val historyObserver = Observer<HistoricalAllResponse> {
-        setDataLineChart(it)
+        // setDataLineChart(it)
+        it.let {
+            lineChart.animate(
+                getNewCaseList(
+                    it.cases!!.toList()?.sortedBy { value -> value.second }?.toList()
+                )
+            )
+            lineChart2.animate(
+                getNewCaseList(
+                    it.recovered!!.toList()?.sortedBy { value -> value.second }?.toList()
+                )
+            )
+            lineChart3.animate(
+                getNewCaseList(
+                    it.deaths!!.toList()?.sortedBy { value -> value.second }?.toList()
+                )
+            )
+        }
     }
 
     private val countryVietNamObserver = Observer<CountryResponse> {
@@ -164,8 +178,25 @@ class DashboardFragment : BaseFragment() {
         tv_today_deaths_count.text = "(+${AppUtil.toNumberWithCommas(it.todayDeaths.toLong())})"
     }
 
-    private val historyVietNamObserver = Observer<HistoricalAllResponse> {
-        setDataLineChart(it)
+    private val historyVietNamObserver = Observer<HistoricalVietNamResponse> {
+        // setDataLineChart(it)
+        it.let {
+            lineChart.animate(
+                getNewCaseList(
+                    it.timeline!!.cases!!.toList()?.sortedBy { value -> value.second }?.toList()
+                )
+            )
+            lineChart2.animate(
+                getNewCaseList(
+                    it.timeline!!.recovered!!.toList()?.sortedBy { value -> value.second }?.toList()
+                )
+            )
+            lineChart3.animate(
+                getNewCaseList(
+                    it.timeline!!.deaths!!.toList()?.sortedBy { value -> value.second }?.toList()
+                )
+            )
+        }
     }
 
     private fun getNewCaseList(totalCaseList: List<Pair<String, Float>>): List<Pair<String, Float>> {
@@ -187,26 +218,6 @@ class DashboardFragment : BaseFragment() {
                 fetchCountryVietNam()
                 fetchHistoricalVietNam()
             }
-        }
-    }
-
-    private fun setDataLineChart(it: HistoricalAllResponse) {
-        it.let {
-            lineChart.animate(
-                getNewCaseList(
-                    it.cases!!.toList()?.sortedBy { value -> value.second }?.toList()
-                )
-            )
-            lineChart2.animate(
-                getNewCaseList(
-                    it.recovered!!.toList()?.sortedBy { value -> value.second }?.toList()
-                )
-            )
-            lineChart3.animate(
-                getNewCaseList(
-                    it.deaths!!.toList()?.sortedBy { value -> value.second }?.toList()
-                )
-            )
         }
     }
 }

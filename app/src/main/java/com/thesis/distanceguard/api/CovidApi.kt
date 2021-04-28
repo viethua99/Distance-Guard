@@ -2,6 +2,7 @@ package com.thesis.distanceguard.api
 
 import com.thesis.distanceguard.api.model.CountryResponse
 import com.thesis.distanceguard.api.model.HistoricalAllResponse
+import com.thesis.distanceguard.api.model.HistoricalVietNamResponse
 import com.thesis.distanceguard.api.model.TotalResponse
 import retrofit2.Call
 import retrofit2.http.GET
@@ -21,5 +22,5 @@ interface CovidApi {
     fun getVietNam(): Call<CountryResponse>
 
     @GET("/v3/covid-19/historical/VietNam?lastdays=30")
-    fun getHistoryVietNam(): Call<HistoricalAllResponse>
+    fun getHistoryVietNam(): Call<HistoricalVietNamResponse>
 }
