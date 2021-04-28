@@ -498,7 +498,7 @@
                             android:id="@+id/tv_deaths_1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Recovered"
+                            android:text="Deaths"
                             android:layout_marginBottom="20dp"
                             app:layout_constraintBottom_toBottomOf="@+id/lineChart3"
                             app:layout_constraintEnd_toStartOf="@id/lineChart3"

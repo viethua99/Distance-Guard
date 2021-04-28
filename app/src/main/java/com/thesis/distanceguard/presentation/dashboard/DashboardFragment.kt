@@ -3,11 +3,14 @@ package com.thesis.distanceguard.presentation.dashboard
 import android.graphics.Color
 import android.util.Log
 import android.view.View
+import android.widget.CompoundButton
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.db.williamchart.slidertooltip.SliderTooltip
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.api.CovidService
+import com.thesis.distanceguard.api.model.CountryInfoResponse
+import com.thesis.distanceguard.api.model.CountryResponse
 import com.thesis.distanceguard.api.model.HistoricalAllResponse
 import com.thesis.distanceguard.api.model.TotalResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
@@ -26,20 +29,7 @@ class DashboardFragment : BaseFragment() {
     companion object {
         const val TAG = "DashboardFragment"
         private const val animationDuration = 1000L
-        private var lineSet = listOf(
-            "label1" to 5f,
-            "label2" to 4.5f,
-            "label3" to 4.7f,
-            "label4" to 3.5f,
-            "label5" to 3.6f,
-            "label6" to 7.5f,
-            "label7" to 7.5f,
-            "label8" to 10f,
-            "label9" to 5f,
-            "label10" to 6.5f,
-            "label11" to 3f,
-            "label12" to 4f
-        )
+
         private val barSet = listOf(
             "JAN" to 8F,
             "FEB" to 8F,
@@ -61,9 +51,10 @@ class DashboardFragment : BaseFragment() {
 
     override fun onMyViewCreated(view: View) {
         setupViewModel()
-        fetchTotalCases()
-        fetchHistorical()
+        fetchCountryVietNam()
+        fetchHistoricalVietNam()
         setupLineChart()
+        excuteSwitch()
         btn_click_here.setOnClickListener {
             val mainActivity = activity as MainActivity
             mainActivity.addFragment(
@@ -81,7 +72,7 @@ class DashboardFragment : BaseFragment() {
             ViewModelProvider(this, viewModelFactory).get(DashboardViewModel::class.java)
     }
 
-    private fun setupLineChart(){
+    private fun setupLineChart() {
         lineChart.gradientFillColors =
             intArrayOf(
                 Color.parseColor("#e6f2ff"),
@@ -109,7 +100,7 @@ class DashboardFragment : BaseFragment() {
         lineChart2.onDataPointTouchListener = { index, _, _ ->
 
         }
-        
+
         lineChart3.gradientFillColors =
             intArrayOf(
                 Color.parseColor("#ffeff2"),
@@ -134,8 +125,13 @@ class DashboardFragment : BaseFragment() {
         dashboardViewModel.fetchHistory().observe(this, historyObserver)
     }
 
+    private fun fetchCountryVietNam() {
+        dashboardViewModel.fetchVietNam().observe(this, countryVietNamObserver)
+    }
 
-
+    private fun fetchHistoricalVietNam() {
+        dashboardViewModel.fetchHistoryVietNam().observe(this, historyVietNamObserver)
+    }
 
     private val totalCasesObserver = Observer<TotalResponse> {
         it?.let {
@@ -153,6 +149,48 @@ class DashboardFragment : BaseFragment() {
     }
 
     private val historyObserver = Observer<HistoricalAllResponse> {
+        setDataLineChart(it)
+    }
+
+    private val countryVietNamObserver = Observer<CountryResponse> {
+        tv_update_time.text =
+            "Last update ${AppUtil.convertMillisecondsToDateFormat(it.updated)}"
+        tv_total_cases_count.text = AppUtil.toNumberWithCommas(it.cases.toLong())
+        tv_total_recovered_count.text = AppUtil.toNumberWithCommas(it.recovered.toLong())
+        tv_total_death_count.text = AppUtil.toNumberWithCommas(it.deaths.toLong())
+        tv_today_cases_count.text = "(+${AppUtil.toNumberWithCommas(it.todayCases.toLong())})"
+        tv_today_recovered_count.text =
+            "(+${AppUtil.toNumberWithCommas(it.todayRecovered.toLong())})"
+        tv_today_deaths_count.text = "(+${AppUtil.toNumberWithCommas(it.todayDeaths.toLong())})"
+    }
+
+    private val historyVietNamObserver = Observer<HistoricalAllResponse> {
+        setDataLineChart(it)
+    }
+
+    private fun getNewCaseList(totalCaseList: List<Pair<String, Float>>): List<Pair<String, Float>> {
+        val newCaseList = ArrayList<Pair<String, Float>>()
+        for (i in 1 until totalCaseList.size) {
+            val difference = totalCaseList[i].second - totalCaseList[i - 1].second
+            val newCase = Pair(totalCaseList[i].first, difference)
+            newCaseList.add(newCase)
+        }
+        return newCaseList
+    }
+
+    private fun excuteSwitch() {
+        toggleAlarm.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                fetchTotalCases()
+                fetchHistorical()
+            } else {
+                fetchCountryVietNam()
+                fetchHistoricalVietNam()
+            }
+        }
+    }
+
+    private fun setDataLineChart(it: HistoricalAllResponse) {
         it.let {
             lineChart.animate(
                 getNewCaseList(
@@ -170,15 +208,5 @@ class DashboardFragment : BaseFragment() {
                 )
             )
         }
-    }
-
-    private fun getNewCaseList(totalCaseList: List<Pair<String, Float>>): List<Pair<String, Float>> {
-        val newCaseList = ArrayList<Pair<String, Float>>()
-        for (i in 1 until totalCaseList.size) {
-            val difference = totalCaseList[i].second - totalCaseList[i - 1].second
-            val newCase = Pair(totalCaseList[i].first, difference)
-            newCaseList.add(newCase)
-        }
-        return newCaseList
     }
 }
