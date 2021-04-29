@@ -11,13 +11,12 @@ import androidx.recyclerview.widget.SortedList
 import com.bumptech.glide.Glide
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.api.model.CountryResponse
-import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
 import com.thesis.distanceguard.util.AppUtil
 import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList
 
-class TestRecyclerViewAdapter(private val context:Context): RecyclerView.Adapter<TestRecyclerViewAdapter.ViewHolder>() {
+class CountriesAdapter(private val context:Context): RecyclerView.Adapter<CountriesAdapter.ViewHolder>() {
     lateinit var itemClickListener: ItemClickListener<CountryResponse>
 
     companion object {

@@ -67,7 +67,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/toggleAlarm"
+            android:id="@+id/sw_worldwide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -91,7 +91,7 @@
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toggleAlarm">
+            app:layout_constraintTop_toBottomOf="@id/sw_worldwide">
 
             <TextView
                 android:id="@+id/tv_worldwide"
@@ -373,10 +373,10 @@
                             android:layout_height="wrap_content"
                             android:text="Cases"
                             android:layout_marginBottom="20dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/lineChart"
-                            app:layout_constraintEnd_toStartOf="@id/lineChart"
+                            app:layout_constraintBottom_toBottomOf="@+id/chart_daily_case"
+                            app:layout_constraintEnd_toStartOf="@id/chart_daily_case"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/lineChart"
+                            app:layout_constraintTop_toTopOf="@+id/chart_daily_case"
                             app:layout_constraintWidth_percent="0.2" />
 
                         <TextView
@@ -390,7 +390,7 @@
                             app:layout_constraintTop_toBottomOf="@id/tv_cases_1" />
 
                         <com.db.williamchart.view.LineChartView
-                            android:id="@+id/lineChart"
+                            android:id="@+id/chart_daily_case"
                             android:layout_width="0dp"
                             android:layout_height="100dp"
                             app:chart_axis="none"
@@ -413,9 +413,9 @@
                             android:text="+8.2%"
                             android:layout_marginBottom="20dp"
                             android:textAlignment="textEnd"
-                            app:layout_constraintBottom_toBottomOf="@+id/lineChart"
-                            app:layout_constraintStart_toEndOf="@id/lineChart"
-                            app:layout_constraintTop_toTopOf="@+id/lineChart"
+                            app:layout_constraintBottom_toBottomOf="@+id/chart_daily_case"
+                            app:layout_constraintStart_toEndOf="@id/chart_daily_case"
+                            app:layout_constraintTop_toTopOf="@+id/chart_daily_case"
                             app:layout_constraintWidth_percent="0.2" />
 
                         <TextView
@@ -437,10 +437,10 @@
                             android:layout_height="wrap_content"
                             android:text="Recovered"
                             android:layout_marginBottom="20dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/lineChart2"
-                            app:layout_constraintEnd_toStartOf="@id/lineChart2"
+                            app:layout_constraintBottom_toBottomOf="@+id/chart_daily_recovered"
+                            app:layout_constraintEnd_toStartOf="@id/chart_daily_recovered"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/lineChart2"
+                            app:layout_constraintTop_toTopOf="@+id/chart_daily_recovered"
                             app:layout_constraintWidth_percent="0.2" />
 
                         <TextView
@@ -454,7 +454,7 @@
                             app:layout_constraintTop_toBottomOf="@id/tv_recover_1" />
 
                         <com.db.williamchart.view.LineChartView
-                            android:id="@+id/lineChart2"
+                            android:id="@+id/chart_daily_recovered"
                             android:layout_width="0dp"
                             android:layout_height="100dp"
                             app:chart_axis="none"
@@ -466,7 +466,7 @@
                             app:chart_smoothLine="true"
                             app:layout_constraintEnd_toStartOf="@id/tv_recover_percent"
                             app:layout_constraintStart_toEndOf="@id/tv_recover_1"
-                            app:layout_constraintTop_toBottomOf="@id/lineChart"
+                            app:layout_constraintTop_toBottomOf="@id/chart_daily_case"
                             app:layout_constraintWidth_percent="0.6" />
 
 
@@ -477,9 +477,9 @@
                             android:text="+8.2%"
                             android:layout_marginBottom="20dp"
                             android:textAlignment="textEnd"
-                            app:layout_constraintBottom_toBottomOf="@+id/lineChart2"
-                            app:layout_constraintStart_toEndOf="@id/lineChart2"
-                            app:layout_constraintTop_toTopOf="@+id/lineChart2"
+                            app:layout_constraintBottom_toBottomOf="@+id/chart_daily_recovered"
+                            app:layout_constraintStart_toEndOf="@id/chart_daily_recovered"
+                            app:layout_constraintTop_toTopOf="@+id/chart_daily_recovered"
                             app:layout_constraintWidth_percent="0.2" />
 
                         <TextView
@@ -500,10 +500,10 @@
                             android:layout_height="wrap_content"
                             android:text="Deaths"
                             android:layout_marginBottom="20dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/lineChart3"
-                            app:layout_constraintEnd_toStartOf="@id/lineChart3"
+                            app:layout_constraintBottom_toBottomOf="@+id/chart_daily_deaths"
+                            app:layout_constraintEnd_toStartOf="@id/chart_daily_deaths"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/lineChart3"
+                            app:layout_constraintTop_toTopOf="@+id/chart_daily_deaths"
                             app:layout_constraintWidth_percent="0.2" />
 
                         <TextView
@@ -517,7 +517,7 @@
                             app:layout_constraintTop_toBottomOf="@id/tv_deaths_1" />
 
                         <com.db.williamchart.view.LineChartView
-                            android:id="@+id/lineChart3"
+                            android:id="@+id/chart_daily_deaths"
                             android:layout_width="0dp"
                             android:layout_height="100dp"
                             app:chart_axis="none"
@@ -529,7 +529,7 @@
                             app:chart_smoothLine="true"
                             app:layout_constraintEnd_toStartOf="@id/tv_recover_percent"
                             app:layout_constraintStart_toEndOf="@id/tv_recover_1"
-                            app:layout_constraintTop_toBottomOf="@id/lineChart2"
+                            app:layout_constraintTop_toBottomOf="@id/chart_daily_recovered"
                             app:layout_constraintWidth_percent="0.6" />
 
 
@@ -540,9 +540,9 @@
                             android:text="+8.2%"
                             android:layout_marginBottom="20dp"
                             android:textAlignment="textEnd"
-                            app:layout_constraintBottom_toBottomOf="@+id/lineChart3"
-                            app:layout_constraintStart_toEndOf="@id/lineChart3"
-                            app:layout_constraintTop_toTopOf="@+id/lineChart3"
+                            app:layout_constraintBottom_toBottomOf="@+id/chart_daily_deaths"
+                            app:layout_constraintStart_toEndOf="@id/chart_daily_deaths"
+                            app:layout_constraintTop_toTopOf="@+id/chart_daily_deaths"
                             app:layout_constraintWidth_percent="0.2" />
 
                         <TextView
@@ -560,20 +560,6 @@
                 </androidx.cardview.widget.CardView>
             </ScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_map"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:backgroundTint="@color/primary_color"
-            android:src="@drawable/ic_bottom_navigation_countries"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:maxImageSize="30dp"
-            app:tint="@android:color/white" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

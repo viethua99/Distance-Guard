@@ -1,11 +1,12 @@
 package com.thesis.distanceguard.presentation.detail
 
+import android.view.MenuItem
 import android.view.View
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
 
-class DetailFragment : BaseFragment(){
+class DetailFragment : BaseFragment() {
     companion object {
         const val TAG = "DetailFragment"
     }
@@ -16,9 +17,9 @@ class DetailFragment : BaseFragment(){
     }
 
     override fun onMyViewCreated(view: View) {
+        setHasOptionsMenu(true)
         setupToolbarTitle("France")
-        val mainActivity = activity as MainActivity
-        mainActivity.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onStop() {
@@ -28,4 +29,15 @@ class DetailFragment : BaseFragment(){
         mainActivity.supportActionBar!!.setDisplayHomeAsUpEnabled(false)
 
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                activity!!.onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 }

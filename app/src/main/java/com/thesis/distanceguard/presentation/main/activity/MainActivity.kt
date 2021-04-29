@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.presentation.base.BaseActivity
+import com.thesis.distanceguard.presentation.detail.DetailFragment
 import com.thesis.distanceguard.presentation.main.fragment.MainFragment
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
@@ -28,9 +29,17 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.d("onCreate")
+
+        supportFragmentManager.addOnBackStackChangedListener {
+            val currentFragment = supportFragmentManager.findFragmentById(R.id.container_main)
+            if (currentFragment is DetailFragment) {
+                currentFragment.onResume()
+            }
+        }
         setupViewModel()
         setupViews()
     }
+
 
     fun setToolbarTitle(title:String){
         tv_toolbar_title.text = title

@@ -21,6 +21,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     private var pulseCircle: Circle? = null
 
     companion object {
+        const val TAG = "MapFragment"
         private const val LAT_DEFAULT = 30.360227
         private const val LON_DEFAULT = 114.8260094
     }

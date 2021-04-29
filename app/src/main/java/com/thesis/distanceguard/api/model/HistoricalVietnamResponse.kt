@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class HistoricalVietNamResponse(
+data class HistoricalVietnamResponse(
     @SerializedName("country")
     val country: String,
     @SerializedName("province")
     val province: ArrayList<String>,
     @SerializedName("timeline")
-    val timeline: HistoricalAllResponse
+    val timeline: HistoricalWorldwideResponse
 ) : Parcelable

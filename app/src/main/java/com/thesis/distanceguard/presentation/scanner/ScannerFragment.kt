@@ -11,16 +11,12 @@ import android.os.Build
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.presentation.base.BaseFragment
-import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
-import com.thesis.distanceguard.presentation.countries.CountriesRecyclerViewAdapter
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.fragment_countries.*
 import kotlinx.android.synthetic.main.fragment_scanner.*
 import timber.log.Timber
 
@@ -81,13 +77,16 @@ class ScannerFragment : BaseFragment() {
                 if (it) {
                     btn_scanning.text = getString(R.string.fragment_scanner_stop_scanning)
                     btn_scanning.setBackgroundColor(Color.parseColor("#F44336"))
-                    tv_scanning_message.text = getString(R.string.fragment_scanner_looking_for_nearby_devices)
-
+                    cl_safe_ripple.visibility = View.VISIBLE
+                    looking_for_devices_background.visibility = View.GONE
+                    bg_safe_ripple.startRippleAnimation()
+                    bg_danger_ripple.startRippleAnimation()
                 } else {
                     btn_scanning.text = getString(R.string.fragment_scanner_start_scanning)
                     btn_scanning.setBackgroundColor(Color.parseColor("#0288D1"))
-                    tv_scanning_message.text = getString(R.string.fragment_scanner_press_start_message)
-
+                    cl_safe_ripple.visibility = View.GONE
+                    looking_for_devices_background.visibility = View.VISIBLE
+                    bg_safe_ripple.stopRippleAnimation()
                 }
             }
         })
