@@ -36,7 +36,7 @@ class TeamFragment : BaseFragment() {
     override fun onMyViewCreated(view: View) {
         Timber.d("onMyViewCreated")
         setQRCode()
-        fab_camera.setOnClickListener {
+        btn_scan_qr.setOnClickListener {
             if (requireContext().applicationContext.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA)
             } else {
@@ -116,7 +116,7 @@ class TeamFragment : BaseFragment() {
     private fun setTeamCount() {
         val text = getString(R.string.your_team_has_0_people)
         val count = BLETrace.teamUuids?.let { it.size } ?: 0
-        tv_team_count?.let { it.text = text.replace("0", count.toString(), true) }
+//        tv_team_count?.let { it.text = text.replace("0", count.toString(), true) }
     }
 
 

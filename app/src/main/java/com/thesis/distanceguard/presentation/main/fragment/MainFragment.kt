@@ -79,6 +79,7 @@ class MainFragment : BaseFragment() {
         (activity as MainActivity).supportActionBar?.title = getString(R.string.nav_item_dashboard)
         val mainViewPagerAdapter = MainViewPagerAdapter(childFragmentManager)
         main_view_pager.adapter = mainViewPagerAdapter
+        main_view_pager.offscreenPageLimit = 4
         main_view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {}
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
