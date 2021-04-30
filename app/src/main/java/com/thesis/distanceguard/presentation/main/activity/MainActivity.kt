@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.thesis.distanceguard.R
@@ -29,15 +30,18 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.d("onCreate")
-
-        supportFragmentManager.addOnBackStackChangedListener {
-            val currentFragment = supportFragmentManager.findFragmentById(R.id.container_main)
-            if (currentFragment is DetailFragment) {
-                currentFragment.onResume()
-            }
-        }
         setupViewModel()
         setupViews()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            if (item.itemId == android.R.id.home) {
+                onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 

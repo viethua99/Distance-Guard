@@ -30,6 +30,7 @@ class MainFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
+        Timber.d("onResume")
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
