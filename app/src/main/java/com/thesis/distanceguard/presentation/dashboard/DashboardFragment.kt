@@ -45,7 +45,7 @@ class DashboardFragment : BaseFragment() {
             ViewModelProvider(this, viewModelFactory).get(DashboardViewModel::class.java)
     }
 
-    private fun setupViews(){
+    private fun setupViews() {
         setupRecyclerView()
         setupLineChart()
         toggleWorldwideSwitch()
@@ -60,11 +60,11 @@ class DashboardFragment : BaseFragment() {
         }
     }
 
-    private fun fetchInitData(){
+    private fun fetchInitData() {
         showProgressDialog("Fetching Data")
         fetchTopCountryList()
-        fetchVietnamData()
-        fetchVietnamHistory()
+        fetchWorldwideData()
+        fetchWorldwideHistory()
 
     }
 
@@ -106,7 +106,7 @@ class DashboardFragment : BaseFragment() {
         chart_daily_deaths.animation.duration = animationDuration
     }
 
-    private fun fetchTopCountryList(){
+    private fun fetchTopCountryList() {
         dashboardViewModel.fetchCountryList().observe(this, countryListObserver)
     }
 
@@ -216,11 +216,12 @@ class DashboardFragment : BaseFragment() {
         sw_worldwide.setOnCheckedChangeListener { _, isChecked ->
             showProgressDialog("Fetching Data")
             if (isChecked) {
-                fetchWorldwideData()
-                fetchWorldwideHistory()
-            } else {
                 fetchVietnamData()
                 fetchVietnamHistory()
+            } else {
+                fetchWorldwideData()
+                fetchWorldwideHistory()
+
             }
         }
     }

@@ -69,9 +69,9 @@ class DashboardRecyclerViewAdapter(context: Context) :
                 }
             }
             tvCountryName.text = data.country
-            tvTodayCaseCount.text = AppUtil.toNumberWithCommas(data.todayCases.toLong())
-            tvTodayRecoveredCount.text = AppUtil.toNumberWithCommas(data.todayRecovered.toLong())
-            tvTodayDeathsCount.text =  AppUtil.toNumberWithCommas(data.todayDeaths.toLong())
+            tvTodayCaseCount.text = "+" + AppUtil.toNumberWithCommas(data.todayCases.toLong())
+            tvTodayRecoveredCount.text = "+" + AppUtil.toNumberWithCommas(data.todayRecovered.toLong())
+            tvTodayDeathsCount.text = "+" + AppUtil.toNumberWithCommas(data.todayDeaths.toLong())
             Glide
                 .with(itemView.context)
                 .load(data.countryInfo.flag)
