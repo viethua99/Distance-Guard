@@ -11,7 +11,7 @@ interface CovidApi {
     @GET("/v3/covid-19/all")
     fun getWorldwideData(): Call<WorldwideResponse>
 
-    @GET("/v3/covid-19/countries?sort=cases")
+    @GET("/v3/covid-19/countries?sort=todayCases")
     fun getCountryListData(): Call<ArrayList<CountryResponse>>
 
     @GET("/v3/covid-19/historical/all")

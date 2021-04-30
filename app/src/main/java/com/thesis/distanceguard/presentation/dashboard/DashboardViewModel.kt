@@ -19,6 +19,8 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
     private val historicalWorldwideResponse = MutableLiveData<HistoricalWorldwideResponse>()
     private val vietnamResponse = MutableLiveData<CountryResponse>()
     private val historicalVietnamResponse = MutableLiveData<HistoricalVietnamResponse>()
+    val countryList = MutableLiveData<ArrayList<CountryResponse>>()
+
 
     fun fetchWorldwideData(): LiveData<WorldwideResponse> {
         CovidService.getApi().getWorldwideData().enqueue(object : Callback<WorldwideResponse> {
@@ -100,5 +102,23 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
                 }
             })
         return historicalVietnamResponse
+    }
+
+    fun fetchCountryList(): LiveData<ArrayList<CountryResponse>>{
+        CovidService.getApi().getCountryListData().enqueue(object : Callback<ArrayList<CountryResponse>>{
+            override fun onResponse(
+                call: Call<ArrayList<CountryResponse>>,
+                response: Response<ArrayList<CountryResponse>>
+            ) {
+                if(response.isSuccessful){
+                    countryList.value = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<CountryResponse>>, t: Throwable) {
+                countryList.value = null
+            }
+        })
+        return countryList
     }
 }

@@ -4,14 +4,17 @@ import android.graphics.Color
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.api.model.*
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.information.InformationFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
+import com.thesis.distanceguard.presentation.scanner.ScannerRecyclerViewAdapter
 import com.thesis.distanceguard.util.AppUtil
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_dashboard.*
+import kotlinx.android.synthetic.main.fragment_scanner.*
 import timber.log.Timber
 import java.util.*
 
@@ -21,6 +24,7 @@ class DashboardFragment : BaseFragment() {
     }
 
     private lateinit var dashboardViewModel: DashboardViewModel
+    private lateinit var dashboardRecyclerViewAdapter: DashboardRecyclerViewAdapter
 
 
     override fun getResLayoutId(): Int {
@@ -42,6 +46,7 @@ class DashboardFragment : BaseFragment() {
     }
 
     private fun setupViews(){
+        setupRecyclerView()
         setupLineChart()
         toggleWorldwideSwitch()
 
@@ -57,9 +62,24 @@ class DashboardFragment : BaseFragment() {
 
     private fun fetchInitData(){
         showProgressDialog("Fetching Data")
+        fetchTopCountryList()
         fetchVietnamData()
         fetchVietnamHistory()
+
     }
+
+    private fun setupRecyclerView() {
+        Timber.d("setupRecyclerView")
+        val linearLayoutManager = LinearLayoutManager(view!!.context)
+        linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        dashboardRecyclerViewAdapter = DashboardRecyclerViewAdapter(view!!.context)
+        rv_top_country.apply {
+            layoutManager = linearLayoutManager
+            setHasFixedSize(true)
+            adapter = dashboardRecyclerViewAdapter
+        }
+    }
+
 
     private fun setupLineChart() {
         chart_daily_case.gradientFillColors =
@@ -84,7 +104,10 @@ class DashboardFragment : BaseFragment() {
                 Color.TRANSPARENT
             )
         chart_daily_deaths.animation.duration = animationDuration
+    }
 
+    private fun fetchTopCountryList(){
+        dashboardViewModel.fetchCountryList().observe(this, countryListObserver)
     }
 
     private fun fetchWorldwideData() {
@@ -170,6 +193,12 @@ class DashboardFragment : BaseFragment() {
                     it.timeline.deaths.toList().sortedBy { value -> value.second }
                 )
             )
+        }
+    }
+
+    private val countryListObserver = Observer<ArrayList<CountryResponse>> {
+        it?.let {
+            dashboardRecyclerViewAdapter.setDataList(it)
         }
     }
 
