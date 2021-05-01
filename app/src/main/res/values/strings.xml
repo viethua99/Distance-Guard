@@ -24,6 +24,8 @@
     <string name="item_scanner_strong_warning">Warning</string>
     <string name="item_scanner_too_close">High Risk, Danger</string>
 
-    <string name="your_team_has_0_people">Your team has 0 people</string>
+    <string name="people_around_you">There are 0 people around you</string>
+
+    <string name="your_team_has_0_people">There are 0 people on your team</string>
 
 </resources>

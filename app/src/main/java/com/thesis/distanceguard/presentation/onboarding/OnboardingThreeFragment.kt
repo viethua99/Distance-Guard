@@ -1,5 +1,6 @@
 package com.thesis.distanceguard.presentation.onboarding
 
+import ai.kun.opentracesdk_fat.BLETrace
 import android.content.Context
 import android.content.SharedPreferences
 import android.view.View
@@ -23,6 +24,7 @@ class OnboardingThreeFragment : BaseFragment(){
     }
 
     private fun boardingCompleted(){
+        BLETrace.uuidString = BLETrace.getNewUniqueId() // Create a new UUID for whole app
         context?.let {
             val sharedPrefs = it.applicationContext.getSharedPreferences(
                 Constants.FILE_NAME_PREFERENCE, Context.MODE_PRIVATE

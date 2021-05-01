@@ -27,8 +27,8 @@ class MyApplication : Application(), HasAndroidInjector {
 
         //Initialize BlE trace library
         BLETrace.init(this)
-        BLETrace.uuidString = BLETrace.getNewUniqueId()
-        Timber.d("UUID = ${BLETrace.uuidString}")
+        BLETrace.start(true)
+
 
     }
 

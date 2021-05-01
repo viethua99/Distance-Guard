@@ -1,5 +1,7 @@
 package com.thesis.distanceguard.presentation.scanner
 
+import ai.kun.opentracesdk_fat.BLETrace
+import ai.kun.opentracesdk_fat.DeviceRepository
 import ai.kun.opentracesdk_fat.dao.Device
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
@@ -18,6 +20,10 @@ import com.thesis.distanceguard.R
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_scanner.*
+import kotlinx.android.synthetic.main.fragment_team.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+
 import timber.log.Timber
 
 /**
@@ -74,28 +80,37 @@ class ScannerFragment : BaseFragment() {
 
         scannerViewModel.isBLEStarted.observe(viewLifecycleOwner, Observer { isStarted ->
             isStarted?.let {
-                if (it) {
-                    btn_scanning.text = getString(R.string.fragment_scanner_stop_scanning)
-                    btn_scanning.setBackgroundColor(Color.parseColor("#F44336"))
-                    cl_safe_ripple.visibility = View.VISIBLE
-                    looking_for_devices_background.visibility = View.GONE
-                    bg_safe_ripple.startRippleAnimation()
-                    bg_danger_ripple.startRippleAnimation()
-                } else {
-                    btn_scanning.text = getString(R.string.fragment_scanner_start_scanning)
-                    btn_scanning.setBackgroundColor(Color.parseColor("#0288D1"))
-                    cl_safe_ripple.visibility = View.GONE
-                    looking_for_devices_background.visibility = View.VISIBLE
-                    bg_safe_ripple.stopRippleAnimation()
-                }
+                setupVisibilities(it)
             }
         })
 
         scannerViewModel.scannedDevice.observe(this, scannedDeviceObserver)
+    }
 
+    private fun setupVisibilities(isStarted:Boolean){
+        if (isStarted) {
+            // Update the devices
+            GlobalScope.launch { DeviceRepository.updateCurrentDevices()}
+            btn_scanning.text = getString(R.string.fragment_scanner_stop_scanning)
+            btn_scanning.setBackgroundColor(Color.parseColor("#F44336"))
+            ll_press_start_to_scan.visibility = View.GONE
+            cl_safe_ripple.visibility = View.VISIBLE
+            bg_safe_ripple.startRippleAnimation()
+        } else {
+            btn_scanning.text = getString(R.string.fragment_scanner_start_scanning)
+            btn_scanning.setBackgroundColor(Color.parseColor("#0288D1"))
+            ll_press_start_to_scan.visibility = View.VISIBLE
+            cl_scanning_list.visibility = View.GONE
+            cl_safe_ripple.visibility = View.GONE
+            bg_safe_ripple.stopRippleAnimation()
+
+        }
     }
 
     private fun setupViews() {
+        BLETrace.isStarted.value?.let {
+            setupVisibilities(it)
+        }
         btn_scanning.setOnClickListener(onScanButtonClickListener)
         setupRecyclerView()
     }
@@ -163,17 +178,25 @@ class ScannerFragment : BaseFragment() {
     private val scannedDeviceObserver = Observer<List<Device>> {devices ->
         devices?.let {
             if (devices.isEmpty()) {
-                looking_for_devices_background.visibility = View.VISIBLE
-                rv_scanner.visibility = View.GONE
+                cl_safe_ripple.visibility = View.VISIBLE
+                bg_safe_ripple.startRippleAnimation()
+                cl_scanning_list.visibility = View.GONE
+                bg_danger_ripple.stopRippleAnimation()
+
             } else {
-                looking_for_devices_background.visibility = View.GONE
-                rv_scanner.visibility = View.VISIBLE
+                cl_safe_ripple.visibility = View.GONE
+                bg_safe_ripple.stopRippleAnimation()
+                cl_scanning_list.visibility = View.VISIBLE
+                bg_danger_ripple.startRippleAnimation()
+                val text = getString(R.string.people_around_you)
+                val count = devices.size
+                tv_waring_message?.let { it.text = text.replace("0", count.toString(), true) }
                 scannerRecyclerViewAdapter.setDataList(it)
 
             }
         } ?: kotlin.run {
-            looking_for_devices_background.visibility = View.VISIBLE
-            rv_scanner.visibility = View.GONE
+            cl_safe_ripple.visibility = View.VISIBLE
+            bg_safe_ripple.startRippleAnimation()
         }
     }
 

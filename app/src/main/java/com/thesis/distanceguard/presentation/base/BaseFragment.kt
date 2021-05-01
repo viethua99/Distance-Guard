@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.thesis.distanceguard.factory.ViewModelFactory
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import com.thesis.distanceguard.util.AndroidDialogUtil
@@ -33,7 +34,7 @@ abstract class BaseFragment : Fragment() {
         onMyViewCreated(view)
     }
 
-     fun setupToolbarTitle(title:String){
+    fun setupToolbarTitle(title: String) {
         val mainActivity = activity as MainActivity
         mainActivity.setToolbarTitle(title)
     }
@@ -49,6 +50,11 @@ abstract class BaseFragment : Fragment() {
 
     fun showProgressDialog(message: String) {
         AndroidDialogUtil.getInstance().showLoadingDialog(activity, message)
+    }
+
+    fun showWarningDialogWithConfirm(message: String, confirmListener: SweetAlertDialog.OnSweetClickListener
+    ) {
+        AndroidDialogUtil.getInstance().showWarningDialogWithConfirm(activity, message,confirmListener)
     }
 
     fun showWarningDialog(message: String) {

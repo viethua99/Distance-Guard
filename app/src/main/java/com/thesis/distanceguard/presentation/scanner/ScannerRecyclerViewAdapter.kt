@@ -8,6 +8,7 @@ import android.content.res.ColorStateList
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.distanceguard.R
@@ -51,7 +52,11 @@ class ScannerRecyclerViewAdapter(context: Context) :
                     tvWarnMessage.text = context.resources.getString(R.string.item_scanner_too_close)
                 }
             }
-            tvStrength
+            if (data.isTeamMember) {
+                tvWarnMessage.setTextColor(ContextCompat.getColor(context, R.color.primary_green))
+                tvWarnMessage.text = context.resources.getString(R.string.item_scanner_safer)
+
+            }
         }
     }
 }

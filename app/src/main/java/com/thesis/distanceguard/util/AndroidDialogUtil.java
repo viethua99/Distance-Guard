@@ -35,13 +35,18 @@ public class AndroidDialogUtil {
                 .show();
     }
 
-    public void setOnConfirmClickedListener(SweetAlertDialog.OnSweetClickListener listener) {
-        if (sweetAlertDialog != null) {
-            sweetAlertDialog.setConfirmClickListener(listener);
-        }
+
+    public void showWarningDialogWithConfirm(Context context, String message, SweetAlertDialog.OnSweetClickListener confirmListener) {
+        hideDialog();
+        sweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
+        sweetAlertDialog
+                .setTitleText(message)
+                .setConfirmText("Leave")
+                .setConfirmClickListener(confirmListener)
+                .show();
     }
 
-    public void showWarningDialog(Context context,String message) {
+    public void showWarningDialog(Context context, String message) {
         hideDialog();
         sweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
         sweetAlertDialog
@@ -50,7 +55,7 @@ public class AndroidDialogUtil {
                 .show();
     }
 
-    public void showFailureDialog(Context context,String message) {
+    public void showFailureDialog(Context context, String message) {
         hideDialog();
         sweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE);
         sweetAlertDialog
@@ -59,7 +64,7 @@ public class AndroidDialogUtil {
                 .show();
     }
 
-    public void showLoadingDialog(Context context,String message) {
+    public void showLoadingDialog(Context context, String message) {
         hideDialog();
         sweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
         sweetAlertDialog

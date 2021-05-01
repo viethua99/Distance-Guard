@@ -209,7 +209,7 @@ class BLEClient : BroadcastReceiver() {
 
         var noCurrentDevices = true
 
-        if (!BtleScanCallback.mScanResults.isEmpty()) {
+        if (BtleScanCallback.mScanResults.isNotEmpty()) {
             for (deviceAddress in BtleScanCallback.mScanResults.keys) {
                 val result: Device? = BtleScanCallback.mScanResults.get(deviceAddress)
                 result?.let { device ->

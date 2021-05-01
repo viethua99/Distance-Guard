@@ -1,5 +1,6 @@
 package com.thesis.distanceguard.presentation.main.fragment
 
+import ai.kun.opentracesdk_fat.BLETrace
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -26,6 +27,7 @@ class MainFragment : BaseFragment() {
         setupToolbarTitle( getString(R.string.nav_item_dashboard))
         setupBottomNavigationView()
         setupViewPager()
+
     }
 
     override fun onResume() {
