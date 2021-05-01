@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -65,6 +67,15 @@
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent="0.75"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_content"
@@ -74,10 +85,7 @@
         android:paddingStart="30dp"
         android:paddingTop="30dp"
         android:paddingEnd="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.75"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        >
 
         <TextView
             android:id="@+id/txv_symptom"
@@ -254,6 +262,7 @@
                 android:src="@drawable/ic_group_1" />
         </FrameLayout>
         <FrameLayout
+            android:id="@+id/fl_wash_your_hands"
             android:layout_width="match_parent"
             android:layout_height="156dp"
             android:layout_marginTop="9dp"
@@ -292,10 +301,90 @@
                 android:layout_height="156dp"
                 android:src="@drawable/ic_group_3" />
         </FrameLayout>
+        <FrameLayout
+            android:id="@+id/fl_use_nose_rag"
+            android:layout_width="match_parent"
+            android:layout_height="156dp"
+            android:layout_marginTop="9dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fl_wash_your_hands">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="156dp">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_marginEnd="5dp"
+                    android:layout_height="136dp"
+                    android:layout_gravity="center_vertical"
+                    app:cardCornerRadius="20dp">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="138dp"
+                        android:text="Use Nose Rag or Tissue"
+                        android:layout_marginTop="10dp"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
 
+                    <TextView
+                        android:layout_width="199dp"
+                        android:layout_height="52dp"
+                        android:layout_marginStart="138dp"
+                        android:layout_marginTop="39dp"
+                        android:text="These diseases include gastrointestinal infections, such as Salmonella, and respiratory infection, such as influenza."
+                        android:textSize="10dp" />
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
+            <ImageView
+                android:layout_width="138dp"
+                android:layout_height="156dp"
+                android:src="@drawable/ic_group_4" />
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="156dp"
+            android:layout_marginTop="9dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fl_use_nose_rag">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="156dp">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_marginEnd="5dp"
+                    android:layout_height="136dp"
+                    android:layout_gravity="center_vertical"
+                    app:cardCornerRadius="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="138dp"
+                        android:text="Avoid Contact"
+                        android:layout_marginTop="10dp"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="199dp"
+                        android:layout_height="52dp"
+                        android:layout_marginStart="138dp"
+                        android:layout_marginTop="39dp"
+                        android:text="These diseases include gastrointestinal infections, such as Salmonella, and respiratory infection, such as influenza."
+                        android:textSize="10dp" />
+
+                    <ImageView
+                        android:layout_width="138dp"
+                        android:layout_height="156dp"
+                        android:src="@drawable/ic_group_2" />
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
+
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
