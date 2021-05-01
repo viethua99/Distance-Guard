@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".UseRoseRagFragment">
+    android:layout_height="match_parent">
 
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/img_nose_rag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_use_nose_rag"
@@ -19,46 +17,47 @@
         app:layout_constraintVertical_bias="0.319" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/tv_nose_rag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Use Nose Rag"
         android:textAlignment="center"
-        android:textColor="#0F0C08"
-        android:textSize="25dp"
+        android:textColor="#FF4B63"
+        android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/img_nose_rag"
         app:layout_constraintVertical_bias="0.102" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/tv_nose_rag_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:text="Cover your nose and mouth with your\nbent elbow or a tissue when you cough."
         android:textAlignment="center"
         android:textColor="#0F0C08"
-        android:textSize="16dp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nose_rag"
         app:layout_constraintVertical_bias="0.017" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/start_button"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:backgroundTint="#FF4B63"
+        android:paddingHorizontal="40dp"
         android:text="Start Now"
+        android:background="@drawable/red_rounded_corner_button"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_nose_rag_message" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

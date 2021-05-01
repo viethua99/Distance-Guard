@@ -41,7 +41,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/API_MAPS" />
-        <activity android:screenOrientation="portrait"  android:name=".OnBoardingActivity">
+        <activity android:screenOrientation="portrait"  android:name=".presentation.splash.SplashActivity" android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

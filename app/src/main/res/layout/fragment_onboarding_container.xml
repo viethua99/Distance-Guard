@@ -21,22 +21,17 @@
             android:id="@+id/tv_skip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="21dp"
+            android:layout_centerVertical="true"
             android:layout_marginEnd="40dp"
-            android:layout_marginBottom="28dp"
             android:clickable="true"
             android:focusable="true"
             android:text="SKIP"
-            android:textAlignment="center"
             android:textColor="#1D1C1C"
-            android:textSize="14dp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_app_name"
+            android:id="@+id/tv_wash_your_hand_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -45,7 +40,7 @@
             android:layout_marginBottom="46dp"
             android:text="Distance Guard"
             android:textColor="#707070"
-            android:textSize="11dp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tv_tips"
@@ -58,7 +53,7 @@
             android:text="Prevention Tips"
             android:textAlignment="center"
             android:textColor="#FF4B63"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
 
@@ -87,7 +82,7 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent">
 
-        <com.google.android.material.button.MaterialButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_next_step"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -95,11 +90,11 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="77dp"
+            android:background="@drawable/red_rounded_corner_button"
+            android:layout_marginStart="100dp"
             android:layout_marginTop="0dp"
-            android:layout_marginEnd="77dp"
-            android:layout_marginBottom="100dp"
-            android:backgroundTint="#FF4B63"
+            android:layout_marginEnd="100dp"
+            android:layout_marginBottom="110dp"
             android:text="Next Step"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"

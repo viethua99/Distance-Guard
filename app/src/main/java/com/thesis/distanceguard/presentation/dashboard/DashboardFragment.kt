@@ -10,17 +10,15 @@ import com.thesis.distanceguard.api.model.*
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.information.InformationFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
-import com.thesis.distanceguard.presentation.scanner.ScannerRecyclerViewAdapter
 import com.thesis.distanceguard.util.AppUtil
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_dashboard.*
-import kotlinx.android.synthetic.main.fragment_scanner.*
 import timber.log.Timber
 import java.util.*
 
 class DashboardFragment : BaseFragment() {
     companion object {
-        private const val animationDuration = 1000L
+        private const val ANIMATION_DURATION = 1000L
     }
 
     private lateinit var dashboardViewModel: DashboardViewModel
@@ -87,7 +85,7 @@ class DashboardFragment : BaseFragment() {
                 Color.parseColor("#e6f2ff"),
                 Color.TRANSPARENT
             )
-        chart_daily_case.animation.duration = animationDuration
+        chart_daily_case.animation.duration = ANIMATION_DURATION
 
 
         chart_daily_recovered.gradientFillColors =
@@ -95,7 +93,7 @@ class DashboardFragment : BaseFragment() {
                 Color.parseColor("#e9faee"),
                 Color.TRANSPARENT
             )
-        chart_daily_recovered.animation.duration = animationDuration
+        chart_daily_recovered.animation.duration = ANIMATION_DURATION
 
 
         chart_daily_deaths.gradientFillColors =
@@ -103,7 +101,7 @@ class DashboardFragment : BaseFragment() {
                 Color.parseColor("#ffeff2"),
                 Color.TRANSPARENT
             )
-        chart_daily_deaths.animation.duration = animationDuration
+        chart_daily_deaths.animation.duration = ANIMATION_DURATION
     }
 
     private fun fetchTopCountryList() {

@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tv_wash_your_hand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -23,12 +23,12 @@
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/imageView2"
+            app:layout_constraintEnd_toStartOf="@+id/img_nose_rag"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView2" />
+            app:layout_constraintTop_toTopOf="@+id/img_nose_rag" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/img_nose_rag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
@@ -47,8 +47,8 @@
             android:text="Call here"
             android:textColor="#FF4B63"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintStart_toStartOf="@+id/tv_wash_your_hand"
+            app:layout_constraintTop_toBottomOf="@+id/tv_wash_your_hand" />
 
         <Button
             android:id="@+id/btn_sms"
@@ -60,9 +60,9 @@
             android:text="Send SMS"
             android:textColor="#007bff"
             android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@+id/imageView2"
+            app:layout_constraintEnd_toStartOf="@+id/img_nose_rag"
             app:layout_constraintStart_toEndOf="@+id/btn_call"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_wash_your_hand" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

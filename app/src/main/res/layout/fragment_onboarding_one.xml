@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="16dp"
-    tools:context=".WearMaskFragment">
+    android:padding="16dp">
 
-
-
-/
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/img_wash_your_hand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_wear_mask"
+        android:src="@drawable/ic_wash_your_hand"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,31 +20,31 @@
         app:layout_constraintVertical_bias="0.319" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_wash_your_hand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Wear Mask"
+        android:text="Wash Your Hands"
         android:textAlignment="center"
-        android:textColor="#0F0C08"
-        android:textSize="25dp"
+        android:textColor="#FF4B63"
+        android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.083" />
+        app:layout_constraintTop_toBottomOf="@+id/img_wash_your_hand"
+        app:layout_constraintVertical_bias="0.138" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/tv_wash_your_hand_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
-        android:text="Cover mouth and nose with mask &amp; no\ngaps between your face and the mask."
+        android:text="Clean your hands often. Use soap and\nwater, or an alcohol-based hand rub."
         android:textAlignment="center"
-        android:textSize="16dp"
         android:textColor="#0F0C08"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_wash_your_hand" />
 </androidx.constraintlayout.widget.ConstraintLayout>

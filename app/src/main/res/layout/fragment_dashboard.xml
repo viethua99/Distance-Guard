@@ -27,7 +27,7 @@
                 android:foreground="@drawable/item_ripple_effect">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/img_wear_mask"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/img_character"
@@ -35,7 +35,7 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/tv_wash_your_hand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -43,7 +43,7 @@
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintStart_toEndOf="@+id/img_wear_mask"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
@@ -60,7 +60,7 @@
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_wash_your_hand" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

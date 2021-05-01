@@ -1,23 +1,20 @@
 package com.thesis.distanceguard.presentation.main.activity
 
 import ai.kun.opentracesdk_fat.BLETrace
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import androidx.lifecycle.Observer
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.thesis.distanceguard.R
+import com.thesis.distanceguard.myapp.Constants
 import com.thesis.distanceguard.presentation.base.BaseActivity
-import com.thesis.distanceguard.presentation.detail.DetailFragment
 import com.thesis.distanceguard.presentation.main.fragment.MainFragment
+import com.thesis.distanceguard.presentation.onboarding.OnboardingContainerFragment
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
-import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
     private lateinit var mainActivityViewModel: MainActivityViewModel
@@ -60,6 +57,22 @@ class MainActivity : BaseActivity() {
         Timber.d("setupViews")
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
-        replaceFragmentWithoutAddToBackStack(MainFragment(), MainFragment.TAG, R.id.container_main)
+        moveToDashboard()
+
+
+    }
+
+    private fun moveToDashboard() {
+        val sharedPrefs = applicationContext?.getSharedPreferences(
+            Constants.FILE_NAME_PREFERENCE, Context.MODE_PRIVATE
+        )
+
+        if (sharedPrefs == null || !sharedPrefs.getBoolean(Constants.IS_ONBOARD_COMPLETED_KEY, false)) {
+            appBarLayout.visibility = View.GONE
+            replaceFragmentWithoutAddToBackStack(OnboardingContainerFragment(), OnboardingContainerFragment.TAG, R.id.container_main)
+        } else {
+            appBarLayout.visibility = View.VISIBLE
+            replaceFragmentWithoutAddToBackStack(MainFragment(), MainFragment.TAG, R.id.container_main)
+        }
     }
 }
