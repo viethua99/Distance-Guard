@@ -23,7 +23,6 @@ class DetailFragment() : BaseFragment() {
 
     companion object {
         const val TAG = "DetailFragment"
-        private lateinit var detailViewModel: DetailViewModel
         lateinit var itemCountry: CountryResponse
 
     }
