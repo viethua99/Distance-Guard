@@ -17,21 +17,18 @@ import timber.log.Timber
 import java.util.ArrayList
 
 class DetailFragment() : BaseFragment() {
-    constructor(countryID: Int) : this() {
-        this.countryID = countryID
+    constructor(itemCountry: CountryResponse) : this() {
+        this.itemCountry = itemCountry
     }
 
     companion object {
         const val TAG = "DetailFragment"
         private const val animationDuration = 1000L
-
-
     }
 
-    private var countryID: Int = 0
+    private lateinit var itemCountry: CountryResponse
     private lateinit var detailViewModel: DetailViewModel
-
-
+    
     override fun getResLayoutId(): Int {
         return R.layout.fragment_detail
     }
@@ -39,8 +36,6 @@ class DetailFragment() : BaseFragment() {
     override fun onMyViewCreated(view: View) {
         setHasOptionsMenu(true)
         setupViewModel()
-        updateMainInformation()
-        updateOtherInformation()
         setupLineChart()
         fetchCountry()
     }
@@ -53,7 +48,7 @@ class DetailFragment() : BaseFragment() {
     override fun onResume() {
         super.onResume()
         Timber.d("onResume")
-        setupToolbarTitle("")
+        setupToolbarTitle(itemCountry.country)
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
@@ -90,37 +85,41 @@ class DetailFragment() : BaseFragment() {
     }
 
     private fun fetchCountry() {
-        detailViewModel.fetchCountry(countryID.toString()).observe(this, countryObserver)
+        showProgressDialog("Fetching data")
+        detailViewModel.fetchCountry(itemCountry.countryInfo.id.toString())
+            .observe(this, countryObserver)
     }
 
     private val countryObserver = Observer<HistoricalVietnamResponse> {
-        Timber.d("CK frg " + it.country)
-
+        hideDialog()
         chart_comfirmed.animate(
-            convertPairLongToPairFloat(
+            AppUtil.convertPairLongToPairFloat(
                 it.timeline.cases.toList().sortedBy { value -> value.second })
         )
 
         chart_recovered.animate(
-            convertPairLongToPairFloat(
+            AppUtil.convertPairLongToPairFloat(
                 it.timeline.recovered.toList().sortedBy { value -> value.second })
         )
 
         chart_death.animate(
-            convertPairLongToPairFloat(
+            AppUtil.convertPairLongToPairFloat(
                 it.timeline.deaths.toList().sortedBy { value -> value.second })
         )
-    }
 
+        //update text view
+        val length = it.timeline.cases.toList().size - 1
+        tv_comfirmed_count.text = AppUtil.toNumberWithCommas(
+            it.timeline.cases.toList().sortedBy { value -> value.second }[length].second
+        )
+        tv_recovered_count.text = AppUtil.toNumberWithCommas(
+            it.timeline.recovered.toList().sortedBy { value -> value.second }[length].second
+        )
+        tv_death_count.text = AppUtil.toNumberWithCommas(
+            it.timeline.deaths.toList().sortedBy { value -> value.second }[length].second
+        )
 
-    private fun convertPairLongToPairFloat(current: List<Pair<String, Long>>): List<Pair<String, Float>> {
-        val newList = ArrayList<Pair<String, Float>>()
-        for (i in 1 until current.size) {
-            val keySecond = current[i].second.toFloat()
-            val newPair = Pair(current[i].first, keySecond)
-            newList.add(newPair)
-        }
-        return newList
+        updateOtherInformation()
     }
 
     private fun updateMainInformation() {
@@ -128,27 +127,24 @@ class DetailFragment() : BaseFragment() {
 //        tv_recover_count.text = AppUtil.toNumberWithCommas(itemCountry.recovered.toLong())
 //        tv_active_count.text = AppUtil.toNumberWithCommas(itemCountry.active.toLong())
 //        tv_deaths_count.text = AppUtil.toNumberWithCommas(itemCountry.deaths.toLong())
-
     }
 
     private fun updateOtherInformation() {
-//        tv_test_count.text = AppUtil.toNumberWithCommas(itemCountry.tests.toLong())
-//        tv_population_count.text = AppUtil.toNumberWithCommas(itemCountry.population.toLong())
-//        tv_one_case_per_people_count.text =
-//            AppUtil.toNumberWithCommas(itemCountry.oneCasePerPeople.toLong())
-//        tv_one_test_per_people_count.text =
-//            AppUtil.toNumberWithCommas(itemCountry.oneTestPerPeople.toLong())
-//        tv_one_death_per_people_count.text =
-//            AppUtil.toNumberWithCommas(itemCountry.oneDeathPerPeople.toLong())
-//        tv_case_per_one_million_count.text =
-//            AppUtil.toNumberWithCommas(itemCountry.casesPerOneMillion.toLong())
-//        tv_death_per_one_million_count.text =
-//            AppUtil.toNumberWithCommas(itemCountry.deathsPerOneMillion.toLong())
-//        tv_test_per_one_million_count.text =
-//            AppUtil.toNumberWithCommas(itemCountry.testsPerOneMillion.toLong())
-//        tv_active_per_one_million_count.text =
-//            AppUtil.toNumberWithCommas(itemCountry.activePerOneMillion.toLong())
+        tv_test_count.text = AppUtil.toNumberWithCommas(itemCountry.tests.toLong())
+        tv_population_count.text = AppUtil.toNumberWithCommas(itemCountry.population.toLong())
+        tv_one_case_per_people_count.text =
+            AppUtil.toNumberWithCommas(itemCountry.oneCasePerPeople.toLong())
+        tv_one_test_per_people_count.text =
+            AppUtil.toNumberWithCommas(itemCountry.oneTestPerPeople.toLong())
+        tv_one_death_per_people_count.text =
+            AppUtil.toNumberWithCommas(itemCountry.oneDeathPerPeople.toLong())
+        tv_case_per_one_million_count.text =
+            AppUtil.toNumberWithCommas(itemCountry.casesPerOneMillion.toLong())
+        tv_death_per_one_million_count.text =
+            AppUtil.toNumberWithCommas(itemCountry.deathsPerOneMillion.toLong())
+        tv_test_per_one_million_count.text =
+            AppUtil.toNumberWithCommas(itemCountry.testsPerOneMillion.toLong())
+        tv_active_per_one_million_count.text =
+            AppUtil.toNumberWithCommas(itemCountry.activePerOneMillion.toLong())
     }
-
-
 }
