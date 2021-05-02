@@ -29,7 +29,5 @@ abstract class AppBindingModule {
     @ContributesAndroidInjector
     abstract fun detailFragment(): DetailFragment
 
-    @ContributesAndroidInjector
-    abstract fun detailFragment(): DetailFragment
 
 }

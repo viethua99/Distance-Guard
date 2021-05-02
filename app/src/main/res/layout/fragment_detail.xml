@@ -8,22 +8,37 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="10dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_comfirmed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
+            android:padding="10dp"
             app:cardCornerRadius="10dp"
             app:cardUseCompatPadding="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_comfirmed_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="150.560"
+                    android:textSize="18dp"
+                    android:textColor="@color/primary_color"
+                    android:textStyle="bold" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Comfirmed" />
                 <com.db.williamchart.view.LineChartView
                     android:id="@+id/chart_comfirmed"
                     android:layout_width="match_parent"
@@ -35,45 +50,36 @@
                     app:chart_lineColor="@color/primary_color"
                     app:chart_lineThickness="2dp"
                     app:chart_smoothLine="true" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_comfirmed_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="150.560"
-                        android:textColor="@color/primary_color"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Comfirmed" />
                 </LinearLayout>
-            </FrameLayout>
-
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_recovered"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
+            android:padding="5dp"
             app:cardCornerRadius="10dp"
             app:cardUseCompatPadding="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cv_comfirmed"
             app:layout_constraintWidth_percent="0.5">
-
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_recovered_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="150.560"
+                    android:textSize="18dp"
+                    android:textColor="@color/green_500"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Recovered" />
                 <com.db.williamchart.view.LineChartView
                     android:id="@+id/chart_recovered"
                     android:layout_width="match_parent"
@@ -85,59 +91,22 @@
                     app:chart_lineColor="@color/green_500"
                     app:chart_lineThickness="2dp"
                     app:chart_smoothLine="true" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_recovered_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="150.560"
-                        android:textColor="@color/green_500"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Recovered" />
                 </LinearLayout>
-            </FrameLayout>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_deaths"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
             app:cardCornerRadius="10dp"
+            android:padding="5dp"
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/cv_recovered"
             app:layout_constraintTop_toBottomOf="@id/cv_comfirmed"
             app:layout_constraintWidth_percent="0.5">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.db.williamchart.view.LineChartView
-                    android:id="@+id/chart_death"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    app:chart_axis="none"
-                    app:chart_gridEffect="dotted"
-                    app:chart_labelsColor="#FF70977F"
-                    app:chart_labelsSize="10sp"
-                    app:chart_lineColor="@color/red_500"
-                    app:chart_lineThickness="2dp"
-                    app:chart_smoothLine="true" />
-
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:orientation="vertical">
@@ -147,6 +116,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="150.560"
+                        android:textSize="18dp"
                         android:textColor="@color/red_500"
                         android:textStyle="bold" />
 
@@ -154,8 +124,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Deaths" />
+                    <com.db.williamchart.view.LineChartView
+                        android:id="@+id/chart_death"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        app:chart_axis="none"
+                        app:chart_gridEffect="dotted"
+                        app:chart_labelsColor="#FF70977F"
+                        app:chart_labelsSize="10sp"
+                        app:chart_lineColor="@color/red_500"
+                        app:chart_lineThickness="2dp"
+                        app:chart_smoothLine="true" />
                 </LinearLayout>
-            </FrameLayout>
 
         </androidx.cardview.widget.CardView>
 
@@ -163,7 +143,6 @@
             android:id="@+id/cv_other_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             app:cardCornerRadius="10dp"
             app:cardUseCompatPadding="true"
             app:layout_constraintStart_toStartOf="parent"
@@ -171,25 +150,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.db.williamchart.view.LineChartView
-                    android:id="@+id/chart_comfirmed"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    app:chart_axis="none"
-                    app:chart_gridEffect="dotted"
-                    app:chart_labelsColor="#FF70977F"
-                    app:chart_labelsSize="10sp"
-                    app:chart_lineColor="@color/primary_color"
-                    app:chart_lineThickness="2dp"
-                    app:chart_smoothLine="true" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/tv_other_info"
