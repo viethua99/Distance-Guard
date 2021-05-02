@@ -40,15 +40,19 @@ class ScannerRecyclerViewAdapter(context: Context) :
             tvStrength.text = signal.toString()
             when {
                 signal <= Constants.SIGNAL_DISTANCE_OK -> {
+                    tvWarnMessage.setTextColor(ContextCompat.getColor(context, R.color.primary_green))
                     tvWarnMessage.text = context.resources.getString(R.string.item_scanner_safer)
                 }
                 signal <= Constants.SIGNAL_DISTANCE_LIGHT_WARN -> {
+                    tvWarnMessage.setTextColor(ContextCompat.getColor(context, R.color.primary_orange))
                     tvWarnMessage.text = context.resources.getString(R.string.item_scanner_warning)
                 }
                 signal <= Constants.SIGNAL_DISTANCE_STRONG_WARN -> {
+                    tvWarnMessage.setTextColor(ContextCompat.getColor(context, R.color.primary_orange))
                     tvWarnMessage.text = context.resources.getString(R.string.item_scanner_strong_warning)
                 }
                 else -> {
+                    tvWarnMessage.setTextColor(ContextCompat.getColor(context, R.color.primary_red))
                     tvWarnMessage.text = context.resources.getString(R.string.item_scanner_too_close)
                 }
             }

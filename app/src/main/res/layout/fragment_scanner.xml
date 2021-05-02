@@ -49,7 +49,6 @@
         android:id="@+id/cl_scanning_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/btn_scanning"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,6 +60,22 @@
             android:layout_height="0dp"
             app:layout_constraintHeight_percent="0.25"
             app:layout_constraintTop_toTopOf="parent">
+            <com.skyfishjy.library.RippleBackground
+                android:id="@+id/bg_safe2_ripple"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:rb_color="@color/primary_green"
+                app:rb_duration="3000"
+                app:rb_radius="32dp"
+                app:rb_rippleAmount="4"
+                app:rb_scale="3">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_img_shield_safe" />
+            </com.skyfishjy.library.RippleBackground>
 
             <com.skyfishjy.library.RippleBackground
                 android:id="@+id/bg_danger_ripple"
@@ -83,10 +98,9 @@
                 android:id="@+id/bg_warning_ripple"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
                 app:layout_constraintHeight_percent="0.25"
                 app:layout_constraintTop_toTopOf="parent"
-                app:rb_color="@color/primary_orange"
+                app:rb_color="@color/yellow_500"
                 app:rb_duration="2000"
                 app:rb_radius="32dp"
                 app:rb_rippleAmount="4"

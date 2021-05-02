@@ -3,6 +3,8 @@ package com.thesis.distanceguard.presentation.scanner
 import ai.kun.opentracesdk_fat.BLETrace
 import ai.kun.opentracesdk_fat.DeviceRepository
 import ai.kun.opentracesdk_fat.dao.Device
+import ai.kun.opentracesdk_fat.util.BluetoothUtils
+import ai.kun.opentracesdk_fat.util.Constants
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
@@ -76,7 +78,8 @@ class ScannerFragment : BaseFragment() {
     private fun setupViewModel() {
         Timber.d("setupViewModel")
         AndroidSupportInjection.inject(this)
-        scannerViewModel = ViewModelProvider(this, viewModelFactory).get(ScannerViewModel::class.java)
+        scannerViewModel =
+            ViewModelProvider(this, viewModelFactory).get(ScannerViewModel::class.java)
 
         scannerViewModel.isBLEStarted.observe(viewLifecycleOwner, Observer { isStarted ->
             isStarted?.let {
@@ -87,10 +90,10 @@ class ScannerFragment : BaseFragment() {
         scannerViewModel.scannedDevice.observe(this, scannedDeviceObserver)
     }
 
-    private fun setupVisibilities(isStarted:Boolean){
+    private fun setupVisibilities(isStarted: Boolean) {
         if (isStarted) {
             // Update the devices
-            GlobalScope.launch { DeviceRepository.updateCurrentDevices()}
+            GlobalScope.launch { DeviceRepository.updateCurrentDevices() }
             btn_scanning.text = getString(R.string.fragment_scanner_stop_scanning)
             btn_scanning.setBackgroundColor(Color.parseColor("#F44336"))
             ll_press_start_to_scan.visibility = View.GONE
@@ -170,30 +173,130 @@ class ScannerFragment : BaseFragment() {
         } ?: false
     }
 
+    private fun showVisibilities(devices: List<Device>) {
+        if (devices.isEmpty()) {
+            cl_safe_ripple.visibility = View.VISIBLE
+            bg_safe_ripple.startRippleAnimation()
+            cl_scanning_list.visibility = View.GONE
+            bg_danger_ripple.stopRippleAnimation()
+
+        } else {
+            val signalStrengthList = mutableListOf<Int>()
+            val memberList = mutableListOf<Device>()
+            for (device in devices) {
+                val signal = BluetoothUtils.calculateSignal(
+                    device.rssi,
+                    device.txPower,
+                    device.isAndroid
+                )
+                signalStrengthList.add(signal)
+
+                if (device.isTeamMember) {
+                    memberList.add(device)
+                }
+            }
+
+            if (memberList.size == devices.size) {
+                tv_warning_title.text = "You are safe"
+                tv_warning_title.setTextColor(
+                    ContextCompat.getColor(
+                        context!!,
+                        R.color.primary_green
+                    )
+                )
+
+                bg_warning_ripple.visibility = View.GONE
+                bg_warning_ripple.stopRippleAnimation()
+
+                bg_danger_ripple.visibility = View.GONE
+                bg_danger_ripple.stopRippleAnimation()
+
+                bg_safe2_ripple.visibility = View.VISIBLE
+                bg_safe2_ripple.startRippleAnimation()
+            } else {
+                when {
+                    signalStrengthList.max()!! <= Constants.SIGNAL_DISTANCE_OK -> {
+                        tv_warning_title.text = "You are safe"
+                        tv_warning_title.setTextColor(
+                            ContextCompat.getColor(
+                                context!!,
+                                R.color.primary_green
+                            )
+                        )
+
+                        bg_warning_ripple.visibility = View.GONE
+                        bg_warning_ripple.stopRippleAnimation()
+
+                        bg_danger_ripple.visibility = View.GONE
+                        bg_danger_ripple.stopRippleAnimation()
+
+                        bg_safe2_ripple.visibility = View.VISIBLE
+                        bg_safe2_ripple.startRippleAnimation()
+
+                    }
+
+                    signalStrengthList.max()!! <= Constants.SIGNAL_DISTANCE_STRONG_WARN -> {
+                        tv_warning_title.text = "Warning"
+                        tv_warning_title.setTextColor(
+                            ContextCompat.getColor(
+                                context!!,
+                                R.color.primary_orange
+                            )
+                        )
+
+                        bg_safe2_ripple.visibility = View.GONE
+                        bg_safe2_ripple.stopRippleAnimation()
+
+
+                        bg_danger_ripple.visibility = View.GONE
+                        bg_danger_ripple.stopRippleAnimation()
+
+                        bg_warning_ripple.visibility = View.VISIBLE
+                        bg_warning_ripple.startRippleAnimation()
+                    }
+                    else -> {
+                        tv_warning_title.text = "Danger!!!"
+                        tv_warning_title.setTextColor(
+                            ContextCompat.getColor(
+                                context!!,
+                                R.color.primary_red
+                            )
+                        )
+
+                        bg_safe2_ripple.visibility = View.GONE
+                        bg_safe2_ripple.stopRippleAnimation()
+
+                        bg_warning_ripple.visibility = View.GONE
+                        bg_warning_ripple.stopRippleAnimation()
+
+                        bg_danger_ripple.visibility = View.VISIBLE
+                        bg_danger_ripple.startRippleAnimation()
+                    }
+
+                }
+            }
+
+            cl_safe_ripple.visibility = View.GONE
+            bg_safe_ripple.stopRippleAnimation()
+            cl_scanning_list.visibility = View.VISIBLE
+
+            val text = getString(R.string.people_around_you)
+            val count = devices.size
+            tv_waring_message?.let { it.text = text.replace("0", count.toString(), true) }
+
+        }
+    }
+
     private val onScanButtonClickListener = View.OnClickListener {
         Timber.d("onScanButtonClickListener: clicked")
         checkPermissions()
     }
 
-    private val scannedDeviceObserver = Observer<List<Device>> {devices ->
-        devices?.let {
-            if (devices.isEmpty()) {
-                cl_safe_ripple.visibility = View.VISIBLE
-                bg_safe_ripple.startRippleAnimation()
-                cl_scanning_list.visibility = View.GONE
-                bg_danger_ripple.stopRippleAnimation()
+    private val scannedDeviceObserver = Observer<List<Device>> { devices ->
+        devices?.let { deviceList ->
+            showVisibilities(deviceList)
+            scannerRecyclerViewAdapter.setDataList(deviceList)
 
-            } else {
-                cl_safe_ripple.visibility = View.GONE
-                bg_safe_ripple.stopRippleAnimation()
-                cl_scanning_list.visibility = View.VISIBLE
-                bg_danger_ripple.startRippleAnimation()
-                val text = getString(R.string.people_around_you)
-                val count = devices.size
-                tv_waring_message?.let { it.text = text.replace("0", count.toString(), true) }
-                scannerRecyclerViewAdapter.setDataList(it)
-
-            }
         } ?: kotlin.run {
             cl_safe_ripple.visibility = View.VISIBLE
             bg_safe_ripple.startRippleAnimation()

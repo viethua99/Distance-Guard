@@ -18,7 +18,7 @@
     <string name="fragment_scanner_start_scanning">Start Scanning</string>
     <string name="fragment_scanner_stop_scanning">Stop Scanning</string>
 
-    <string name="item_scanner_safer">Safer</string>
+    <string name="item_scanner_safer">Your team member</string>
     <string name="item_scanner_ok">Ok</string>
     <string name="item_scanner_warning">Caution</string>
     <string name="item_scanner_strong_warning">Warning</string>
