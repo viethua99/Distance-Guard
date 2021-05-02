@@ -400,35 +400,9 @@
                             app:chart_lineColor="@color/primary_color"
                             app:chart_lineThickness="2dp"
                             app:chart_smoothLine="true"
-                            app:layout_constraintEnd_toStartOf="@id/tv_cases_percent"
                             app:layout_constraintStart_toEndOf="@id/tv_cases_1"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintWidth_percent="0.6" />
-
-
-                        <TextView
-                            android:id="@+id/tv_cases_percent"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="+8.2%"
-                            android:layout_marginBottom="20dp"
-                            android:textAlignment="textEnd"
-                            app:layout_constraintBottom_toBottomOf="@+id/lineChart"
-                            app:layout_constraintStart_toEndOf="@id/lineChart"
-                            app:layout_constraintTop_toTopOf="@+id/lineChart"
-                            app:layout_constraintWidth_percent="0.2" />
-
-                        <TextView
-                            android:id="@+id/tv_cases_percent_count"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="565,900"
-                            android:textColor="@color/primary_color"
-                            android:textStyle="bold"
-                            android:textAlignment="textEnd"
-                            app:layout_constraintStart_toStartOf="@id/tv_cases_percent"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_cases_percent"
-                            app:layout_constraintWidth_percent="0.2" />
 
 
                         <TextView
@@ -464,36 +438,13 @@
                             app:chart_lineColor="@color/primary_green"
                             app:chart_lineThickness="2dp"
                             app:chart_smoothLine="true"
-                            app:layout_constraintEnd_toStartOf="@id/tv_recover_percent"
                             app:layout_constraintStart_toEndOf="@id/tv_recover_1"
                             app:layout_constraintTop_toBottomOf="@id/lineChart"
                             app:layout_constraintWidth_percent="0.6" />
 
 
-                        <TextView
-                            android:id="@+id/tv_recover_percent"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="+8.2%"
-                            android:layout_marginBottom="20dp"
-                            android:textAlignment="textEnd"
-                            app:layout_constraintBottom_toBottomOf="@+id/lineChart2"
-                            app:layout_constraintStart_toEndOf="@id/lineChart2"
-                            app:layout_constraintTop_toTopOf="@+id/lineChart2"
-                            app:layout_constraintWidth_percent="0.2" />
-
-                        <TextView
-                            android:id="@+id/tv_recover_percent_count"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="565,900"
-                            android:textColor="@color/primary_green"
-                            android:textStyle="bold"
-                            android:textAlignment="textEnd"
-                            app:layout_constraintStart_toStartOf="@id/tv_recover_percent"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_recover_percent"
-                            app:layout_constraintWidth_percent="0.2" />
                         /////////////////
+
                         <TextView
                             android:id="@+id/tv_deaths_1"
                             android:layout_width="0dp"
@@ -527,35 +478,11 @@
                             app:chart_lineColor="@color/primary_red"
                             app:chart_lineThickness="2dp"
                             app:chart_smoothLine="true"
-                            app:layout_constraintEnd_toStartOf="@id/tv_recover_percent"
                             app:layout_constraintStart_toEndOf="@id/tv_recover_1"
                             app:layout_constraintTop_toBottomOf="@id/lineChart2"
                             app:layout_constraintWidth_percent="0.6" />
 
 
-                        <TextView
-                            android:id="@+id/tv_deaths_percent"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="+8.2%"
-                            android:layout_marginBottom="20dp"
-                            android:textAlignment="textEnd"
-                            app:layout_constraintBottom_toBottomOf="@+id/lineChart3"
-                            app:layout_constraintStart_toEndOf="@id/lineChart3"
-                            app:layout_constraintTop_toTopOf="@+id/lineChart3"
-                            app:layout_constraintWidth_percent="0.2" />
-
-                        <TextView
-                            android:id="@+id/tv_deaths_percent_count"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="565,900"
-                            android:textColor="@color/primary_red"
-                            android:textStyle="bold"
-                            android:textAlignment="textEnd"
-                            app:layout_constraintStart_toStartOf="@id/tv_deaths_percent"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_deaths_percent"
-                            app:layout_constraintWidth_percent="0.2" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
             </ScrollView>
