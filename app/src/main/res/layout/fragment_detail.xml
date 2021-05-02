@@ -171,10 +171,25 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="5dp"
-                android:padding="10dp">
+                android:layout_height="match_parent">
+
+                <com.db.williamchart.view.LineChartView
+                    android:id="@+id/chart_comfirmed"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:chart_axis="none"
+                    app:chart_gridEffect="dotted"
+                    app:chart_labelsColor="#FF70977F"
+                    app:chart_labelsSize="10sp"
+                    app:chart_lineColor="@color/primary_color"
+                    app:chart_lineThickness="2dp"
+                    app:chart_smoothLine="true" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_other_info"
