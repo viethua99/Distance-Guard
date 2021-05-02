@@ -81,7 +81,7 @@ class CountriesFragment : BaseFragment() {
                     Runnable {
                         val mainActivity = activity as MainActivity
                         mainActivity.addFragment(
-                            DetailFragment(item),
+                            DetailFragment(item.countryInfo.id),
                             DetailFragment.TAG,
                             R.id.container_main
                         )
