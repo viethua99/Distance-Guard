@@ -106,7 +106,7 @@ class DashboardFragment : BaseFragment() {
     }
     private val topCountryListObserver = Observer<ArrayList<CountryResponse>> {
         it?.let {
-            dashboardRecyclerViewAdapter.add(it)
+            dashboardRecyclerViewAdapter.setDataList(it)
         }
     }
 

@@ -42,50 +42,8 @@ class DashboardRecyclerViewAdapter(context: Context) :
             dataList.size
         }
     }
-    fun add(models: List<CountryResponse>) {
-        sortedList.addAll(models)
-    }
-    private val callback : SortedList.Callback<CountryResponse> = object : SortedList.Callback<CountryResponse>(){
-        override fun areItemsTheSame(item1: CountryResponse, item2: CountryResponse): Boolean {
-            return item1.country == item2.country
 
-        }
 
-        override fun onMoved(fromPosition: Int, toPosition: Int) {
-            notifyItemMoved(fromPosition, toPosition)
-
-        }
-
-        override fun onChanged(position: Int, count: Int) {
-            notifyItemRangeChanged(position, count)
-
-        }
-
-        override fun onInserted(position: Int, count: Int) {
-            notifyItemRangeInserted(position,count)
-        }
-
-        override fun onRemoved(position: Int, count: Int) {
-            notifyItemRangeRemoved(position, count)
-
-        }
-
-        override fun compare(o1: CountryResponse?, o2: CountryResponse?): Int {
-            val comparator = Comparator<CountryResponse>{ a,b ->
-                a.country.compareTo(b.country)
-            }
-            return comparator.compare(o1,o2)
-        }
-
-        override fun areContentsTheSame(
-            oldItem: CountryResponse,
-            newItem: CountryResponse?
-        ): Boolean {
-            return oldItem == newItem
-        }
-    }
-
-    val sortedList = SortedList<CountryResponse>(CountryResponse::class.java,callback)
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) , View.OnClickListener{
         var imgCountryFlag: ImageView = view.findViewById(R.id.img_country_flag)
         var tvCountryName: TextView = view.findViewById(R.id.tv_country_name)
@@ -98,7 +56,7 @@ class DashboardRecyclerViewAdapter(context: Context) :
             view.setOnClickListener(this)
         }
         override fun onClick(p0: View?) {
-            itemClickListener.onClick(adapterPosition, sortedList[adapterPosition])
+            itemClickListener.onClick(adapterPosition, dataList[adapterPosition])
 
         }
         fun renderUI(data: CountryResponse,position: Int) {
