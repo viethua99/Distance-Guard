@@ -57,6 +57,8 @@ dependencies {
     //Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'com.github.ajalt:timberkt:1.5.1'
+
+
     //Live data
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     //Chart
@@ -69,6 +71,8 @@ dependencies {
     //google maps
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     //Camera detect
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0'
     implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
     implementation 'com.google.firebase:firebase-ml-vision-object-detection-model:19.0.5'
     implementation 'com.google.firebase:firebase-ml-vision-barcode-model:16.1.1'
@@ -89,9 +93,13 @@ dependencies {
     implementation project(":opentracesdk_fat")
     // Charts
     implementation 'com.diogobernardino:williamchart:3.10.1'
+    //Dialog and ripple
+    implementation 'com.github.f0ris.sweetalert:library:1.6.2'
+    implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
 
 // Tooltips
     implementation 'com.diogobernardino.williamchart:tooltip-slider:3.10.1'
     implementation 'com.diogobernardino.williamchart:tooltip-points:3.10.1'
-
+    //Circle indicator
+    implementation 'me.relex:circleindicator:2.1.6'
 }

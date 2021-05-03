@@ -11,10 +11,10 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class CountriesViewModel @Inject constructor(): ViewModel(){
-    private val countryList = MutableLiveData<ArrayList<CountryResponse>>()
+     val countryList = MutableLiveData<ArrayList<CountryResponse>>()
 
     fun fetchCountryList(): LiveData<ArrayList<CountryResponse>>{
-        CovidService.getApi().getCountries().enqueue(object : Callback<ArrayList<CountryResponse>>{
+        CovidService.getApi().getCountryListData().enqueue(object : Callback<ArrayList<CountryResponse>>{
             override fun onResponse(
                 call: Call<ArrayList<CountryResponse>>,
                 response: Response<ArrayList<CountryResponse>>

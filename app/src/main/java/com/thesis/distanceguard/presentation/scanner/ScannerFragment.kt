@@ -1,6 +1,10 @@
 package com.thesis.distanceguard.presentation.scanner
 
+import ai.kun.opentracesdk_fat.BLETrace
+import ai.kun.opentracesdk_fat.DeviceRepository
 import ai.kun.opentracesdk_fat.dao.Device
+import ai.kun.opentracesdk_fat.util.BluetoothUtils
+import ai.kun.opentracesdk_fat.util.Constants
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
@@ -11,17 +15,17 @@ import android.os.Build
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.presentation.base.BaseFragment
-import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
-import com.thesis.distanceguard.presentation.countries.CountriesRecyclerViewAdapter
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.fragment_countries.*
 import kotlinx.android.synthetic.main.fragment_scanner.*
+import kotlinx.android.synthetic.main.fragment_team.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+
 import timber.log.Timber
 
 /**
@@ -74,29 +78,42 @@ class ScannerFragment : BaseFragment() {
     private fun setupViewModel() {
         Timber.d("setupViewModel")
         AndroidSupportInjection.inject(this)
-        scannerViewModel = ViewModelProvider(this, viewModelFactory).get(ScannerViewModel::class.java)
+        scannerViewModel =
+            ViewModelProvider(this, viewModelFactory).get(ScannerViewModel::class.java)
 
         scannerViewModel.isBLEStarted.observe(viewLifecycleOwner, Observer { isStarted ->
             isStarted?.let {
-                if (it) {
-                    btn_scanning.text = getString(R.string.fragment_scanner_stop_scanning)
-                    btn_scanning.setBackgroundColor(Color.parseColor("#F44336"))
-                    tv_scanning_message.text = getString(R.string.fragment_scanner_looking_for_nearby_devices)
-
-                } else {
-                    btn_scanning.text = getString(R.string.fragment_scanner_start_scanning)
-                    btn_scanning.setBackgroundColor(Color.parseColor("#0288D1"))
-                    tv_scanning_message.text = getString(R.string.fragment_scanner_press_start_message)
-
-                }
+                setupVisibilities(it)
             }
         })
 
         scannerViewModel.scannedDevice.observe(this, scannedDeviceObserver)
+    }
 
+    private fun setupVisibilities(isStarted: Boolean) {
+        if (isStarted) {
+            // Update the devices
+            GlobalScope.launch { DeviceRepository.updateCurrentDevices() }
+            btn_scanning.text = getString(R.string.fragment_scanner_stop_scanning)
+            btn_scanning.setBackgroundColor(Color.parseColor("#F44336"))
+            ll_press_start_to_scan.visibility = View.GONE
+            cl_safe_ripple.visibility = View.VISIBLE
+            bg_safe_ripple.startRippleAnimation()
+        } else {
+            btn_scanning.text = getString(R.string.fragment_scanner_start_scanning)
+            btn_scanning.setBackgroundColor(Color.parseColor("#0288D1"))
+            ll_press_start_to_scan.visibility = View.VISIBLE
+            cl_scanning_list.visibility = View.GONE
+            cl_safe_ripple.visibility = View.GONE
+            bg_safe_ripple.stopRippleAnimation()
+
+        }
     }
 
     private fun setupViews() {
+        BLETrace.isStarted.value?.let {
+            setupVisibilities(it)
+        }
         btn_scanning.setOnClickListener(onScanButtonClickListener)
         setupRecyclerView()
     }
@@ -156,25 +173,133 @@ class ScannerFragment : BaseFragment() {
         } ?: false
     }
 
+    private fun showVisibilities(devices: List<Device>) {
+        if (devices.isEmpty()) {
+            cl_safe_ripple.visibility = View.VISIBLE
+            bg_safe_ripple.startRippleAnimation()
+            cl_scanning_list.visibility = View.GONE
+            bg_danger_ripple.stopRippleAnimation()
+
+        } else {
+            val signalStrengthList = mutableListOf<Int>()
+            val memberList = mutableListOf<Device>()
+            for (device in devices) {
+                val signal = BluetoothUtils.calculateSignal(
+                    device.rssi,
+                    device.txPower,
+                    device.isAndroid
+                )
+                signalStrengthList.add(signal)
+
+                if (device.isTeamMember) {
+                    memberList.add(device)
+                }
+            }
+
+            if (memberList.size == devices.size) {
+                tv_warning_title.text = "You are safe"
+                tv_warning_title.setTextColor(
+                    ContextCompat.getColor(
+                        context!!,
+                        R.color.primary_green
+                    )
+                )
+
+                bg_warning_ripple.visibility = View.GONE
+                bg_warning_ripple.stopRippleAnimation()
+
+                bg_danger_ripple.visibility = View.GONE
+                bg_danger_ripple.stopRippleAnimation()
+
+                bg_safe2_ripple.visibility = View.VISIBLE
+                bg_safe2_ripple.startRippleAnimation()
+            } else {
+                when {
+                    signalStrengthList.max()!! <= Constants.SIGNAL_DISTANCE_OK -> {
+                        tv_warning_title.text = "You are safe"
+                        tv_warning_title.setTextColor(
+                            ContextCompat.getColor(
+                                context!!,
+                                R.color.primary_green
+                            )
+                        )
+
+                        bg_warning_ripple.visibility = View.GONE
+                        bg_warning_ripple.stopRippleAnimation()
+
+                        bg_danger_ripple.visibility = View.GONE
+                        bg_danger_ripple.stopRippleAnimation()
+
+                        bg_safe2_ripple.visibility = View.VISIBLE
+                        bg_safe2_ripple.startRippleAnimation()
+
+                    }
+
+                    signalStrengthList.max()!! <= Constants.SIGNAL_DISTANCE_STRONG_WARN -> {
+                        tv_warning_title.text = "Warning"
+                        tv_warning_title.setTextColor(
+                            ContextCompat.getColor(
+                                context!!,
+                                R.color.primary_orange
+                            )
+                        )
+
+                        bg_safe2_ripple.visibility = View.GONE
+                        bg_safe2_ripple.stopRippleAnimation()
+
+
+                        bg_danger_ripple.visibility = View.GONE
+                        bg_danger_ripple.stopRippleAnimation()
+
+                        bg_warning_ripple.visibility = View.VISIBLE
+                        bg_warning_ripple.startRippleAnimation()
+                    }
+                    else -> {
+                        tv_warning_title.text = "Danger!!!"
+                        tv_warning_title.setTextColor(
+                            ContextCompat.getColor(
+                                context!!,
+                                R.color.primary_red
+                            )
+                        )
+
+                        bg_safe2_ripple.visibility = View.GONE
+                        bg_safe2_ripple.stopRippleAnimation()
+
+                        bg_warning_ripple.visibility = View.GONE
+                        bg_warning_ripple.stopRippleAnimation()
+
+                        bg_danger_ripple.visibility = View.VISIBLE
+                        bg_danger_ripple.startRippleAnimation()
+                    }
+
+                }
+            }
+
+            cl_safe_ripple.visibility = View.GONE
+            bg_safe_ripple.stopRippleAnimation()
+            cl_scanning_list.visibility = View.VISIBLE
+
+            val text = getString(R.string.people_around_you)
+            val count = devices.size
+            tv_waring_message?.let { it.text = text.replace("0", count.toString(), true) }
+
+        }
+    }
+
     private val onScanButtonClickListener = View.OnClickListener {
         Timber.d("onScanButtonClickListener: clicked")
         checkPermissions()
     }
 
-    private val scannedDeviceObserver = Observer<List<Device>> {devices ->
-        devices?.let {
-            if (devices.isEmpty()) {
-                looking_for_devices_background.visibility = View.VISIBLE
-                rv_scanner.visibility = View.GONE
-            } else {
-                looking_for_devices_background.visibility = View.GONE
-                rv_scanner.visibility = View.VISIBLE
-                scannerRecyclerViewAdapter.setDataList(it)
+    private val scannedDeviceObserver = Observer<List<Device>> { devices ->
+        devices?.let { deviceList ->
+            showVisibilities(deviceList)
+            scannerRecyclerViewAdapter.setDataList(deviceList)
 
-            }
         } ?: kotlin.run {
-            looking_for_devices_background.visibility = View.VISIBLE
-            rv_scanner.visibility = View.GONE
+            cl_safe_ripple.visibility = View.VISIBLE
+            bg_safe_ripple.startRippleAnimation()
         }
     }
 

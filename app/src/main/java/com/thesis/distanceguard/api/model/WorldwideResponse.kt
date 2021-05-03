@@ -2,7 +2,7 @@ package com.thesis.distanceguard.api.model
 
 import com.google.gson.annotations.SerializedName
 
-data class TotalResponse(
+data class WorldwideResponse(
     @SerializedName("updated")
     val updated: Long,
     @SerializedName("cases")

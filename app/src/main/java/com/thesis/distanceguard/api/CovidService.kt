@@ -21,7 +21,7 @@ class CovidService {
         }
 
         private fun createInstance(): CovidApi {
-            val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor();
+            val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor()
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
 
             val okHttpClient = OkHttpClient.Builder()
@@ -29,7 +29,6 @@ class CovidService {
                 .build()
 
             val retrofit: Retrofit = Retrofit.Builder()
-//                .baseUrl(DashboardFragment.BASE_URL)
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)

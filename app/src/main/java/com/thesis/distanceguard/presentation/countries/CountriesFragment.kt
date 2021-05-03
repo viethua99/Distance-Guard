@@ -1,5 +1,7 @@
 package com.thesis.distanceguard.presentation.countries
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
@@ -8,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.api.model.CountryResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
-import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
 import com.thesis.distanceguard.presentation.detail.DetailFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import dagger.android.support.AndroidSupportInjection
@@ -21,9 +22,8 @@ import timber.log.Timber
 
 class CountriesFragment : BaseFragment() {
 
-    private lateinit var countriesRecyclerViewAdapter: CountriesRecyclerViewAdapter
     private lateinit var countriesViewModel: CountriesViewModel
-
+    private lateinit var countriesAdapter: CountriesAdapter
     override fun getResLayoutId(): Int {
         return R.layout.fragment_countries
     }
@@ -32,29 +32,60 @@ class CountriesFragment : BaseFragment() {
         Timber.d("onMyViewCreated")
         setupViewModel()
         setupRecyclerView()
+
+        edt_search.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                val filteredList = CountriesAdapter.filter(
+                    countriesViewModel.countryList.value!!,
+                    p0.toString()
+                )
+                countriesAdapter.replaceAll(filteredList!!)
+                rv_countries.scrollToPosition(0)
+            }
+        })
+
     }
 
     private fun setupViewModel() {
         Timber.d("setupViewModel")
         AndroidSupportInjection.inject(this)
-        countriesViewModel = ViewModelProvider(this, viewModelFactory).get(CountriesViewModel::class.java)
+        countriesViewModel =
+            ViewModelProvider(this, viewModelFactory).get(CountriesViewModel::class.java)
 
-        countriesViewModel.fetchCountryList().observe(this,countryListObserver)
+        countriesViewModel.fetchCountryList().observe(this, countryListObserver)
     }
 
     private fun setupRecyclerView() {
         Timber.d("setupRecyclerView")
-        val linearLayoutManager = LinearLayoutManager(view!!.context)
-        countriesRecyclerViewAdapter = CountriesRecyclerViewAdapter(view!!.context)
+        val linearLayoutManager = LinearLayoutManager(context)
+        countriesAdapter = CountriesAdapter(context!!)
+        rv_countries.apply {
+            layoutManager = linearLayoutManager
+            adapter = countriesAdapter
+        }
 
-        countriesRecyclerViewAdapter.itemClickListener = object :
-            BaseRecyclerViewAdapter.ItemClickListener<CountryResponse> {
+        countriesAdapter.itemClickListener = object :
+            CountriesAdapter.ItemClickListener<CountryResponse> {
             override fun onClick(position: Int, item: CountryResponse) {
                 Timber.d("onClick: $item")
+
                 ViewCompat.postOnAnimationDelayed(view!!, // Delay to show ripple effect
                     Runnable {
                         val mainActivity = activity as MainActivity
-                        mainActivity.addFragment(DetailFragment(), DetailFragment.TAG,R.id.container_main)
+                        mainActivity.addFragment(
+                            DetailFragment(item),
+                            DetailFragment.TAG,
+                            R.id.container_main
+                        )
+
                     }
                     , 50)
 
@@ -62,17 +93,11 @@ class CountriesFragment : BaseFragment() {
 
             override fun onLongClick(position: Int, item: CountryResponse) {}
         }
-
-        rv_countries.apply {
-            layoutManager = linearLayoutManager
-            setHasFixedSize(true)
-            adapter = countriesRecyclerViewAdapter
-        }
     }
 
     private val countryListObserver = Observer<ArrayList<CountryResponse>> {
         it?.let {
-            countriesRecyclerViewAdapter.setDataList(it)
+            countriesAdapter.add(it)
         }
     }
 }

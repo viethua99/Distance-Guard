@@ -16,4 +16,15 @@ object AppUtil {
         calendar.timeInMillis = milliSeconds
         return formatter.format(calendar.time)
     }
+
+    // Pair<String,Long> -> Pair<String,Float>
+    fun convertPairLongToPairFloat(currentList: List<Pair<String, Long>>): List<Pair<String, Float>> {
+        val newList = ArrayList<Pair<String, Float>>()
+        for (i in 1 until currentList.size) {
+            val keySecond = currentList[i].second.toFloat()
+            val newPair = Pair(currentList[i].first, keySecond)
+            newList.add(newPair)
+        }
+        return newList
+    }
 }

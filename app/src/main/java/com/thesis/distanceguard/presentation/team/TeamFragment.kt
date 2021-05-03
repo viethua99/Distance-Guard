@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
@@ -36,7 +37,7 @@ class TeamFragment : BaseFragment() {
     override fun onMyViewCreated(view: View) {
         Timber.d("onMyViewCreated")
         setQRCode()
-        fab_camera.setOnClickListener {
+        btn_scan_qr.setOnClickListener {
             if (requireContext().applicationContext.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA)
             } else {
@@ -45,10 +46,15 @@ class TeamFragment : BaseFragment() {
         }
 
         btn_exit_team.setOnClickListener {
-            BLETrace.leaveTeam()
-            setQRCode()
-            setTeamCount()
-
+            showWarningDialogWithConfirm("Exiting your team will remove teammates you scanned",
+                SweetAlertDialog.OnSweetClickListener {
+                    //Confirm Listener
+                    BLETrace.leaveTeam()
+                    setQRCode()
+                    setTeamCount()
+                    hideDialog()
+                }
+            )
         }
     }
 
@@ -65,17 +71,17 @@ class TeamFragment : BaseFragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             REQUEST_CAMERA -> {
-                if (!grantResults.isEmpty()) {
+                if (grantResults.isNotEmpty()) {
                     if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                         Timber.d("...Request for camera access denied.")
                     } else {
-                        Timber.d( "...Request for camera access granted.")
+                        Timber.d("...Request for camera access granted.")
                         scanBarcode()
                     }
                 } else {
                     // for some lame reason Android gives you a result with nothing in it before
                     // there is a real result?
-                    Timber.d( "Prompting for camera response...")
+                    Timber.d("Prompting for camera response...")
                 }
             }
             else -> {
@@ -97,7 +103,6 @@ class TeamFragment : BaseFragment() {
                 }
                 uuidString?.let {
                     try {
-                        val uuid = UUID.fromString(uuidString)
                         var newSet = BLETrace.teamUuids!!.toMutableSet()
                         newSet.add(uuidString)
                         BLETrace.teamUuids = newSet
@@ -130,7 +135,7 @@ class TeamFragment : BaseFragment() {
         val multiFormatWriter = MultiFormatWriter()
         try {
             val bitMatrix: BitMatrix =
-                multiFormatWriter.encode("Just a test barcode", BarcodeFormat.QR_CODE, 200, 200)
+                multiFormatWriter.encode(BLETrace.uuidString, BarcodeFormat.QR_CODE, 200, 200)
             val barcodeEncoder = BarcodeEncoder()
             val bitmap: Bitmap = barcodeEncoder.createBitmap(bitMatrix)
             barCodeImageView?.setImageBitmap(bitmap)

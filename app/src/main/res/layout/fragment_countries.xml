@@ -29,7 +29,7 @@
             app:srcCompat="@drawable/ic_search" />
 
         <EditText
-            android:id="@+id/txt_search"
+            android:id="@+id/edt_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
