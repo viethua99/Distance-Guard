@@ -11,15 +11,19 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SortedList
 import com.bumptech.glide.Glide
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.api.model.CountryResponse
 import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
+import com.thesis.distanceguard.presentation.countries.CountriesAdapter
 import com.thesis.distanceguard.util.AppUtil
+import java.util.*
+import kotlin.Comparator
+import kotlin.collections.ArrayList
 
 class DashboardRecyclerViewAdapter(context: Context) :
     BaseRecyclerViewAdapter<CountryResponse, DashboardRecyclerViewAdapter.ViewHolder>(context) {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = layoutInflater.inflate(R.layout.item_top_country, parent, false)
@@ -38,9 +42,51 @@ class DashboardRecyclerViewAdapter(context: Context) :
             dataList.size
         }
     }
+    fun add(models: List<CountryResponse>) {
+        sortedList.addAll(models)
+    }
+    private val callback : SortedList.Callback<CountryResponse> = object : SortedList.Callback<CountryResponse>(){
+        override fun areItemsTheSame(item1: CountryResponse, item2: CountryResponse): Boolean {
+            return item1.country == item2.country
 
+        }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        override fun onMoved(fromPosition: Int, toPosition: Int) {
+            notifyItemMoved(fromPosition, toPosition)
+
+        }
+
+        override fun onChanged(position: Int, count: Int) {
+            notifyItemRangeChanged(position, count)
+
+        }
+
+        override fun onInserted(position: Int, count: Int) {
+            notifyItemRangeInserted(position,count)
+        }
+
+        override fun onRemoved(position: Int, count: Int) {
+            notifyItemRangeRemoved(position, count)
+
+        }
+
+        override fun compare(o1: CountryResponse?, o2: CountryResponse?): Int {
+            val comparator = Comparator<CountryResponse>{ a,b ->
+                a.country.compareTo(b.country)
+            }
+            return comparator.compare(o1,o2)
+        }
+
+        override fun areContentsTheSame(
+            oldItem: CountryResponse,
+            newItem: CountryResponse?
+        ): Boolean {
+            return oldItem == newItem
+        }
+    }
+
+    val sortedList = SortedList<CountryResponse>(CountryResponse::class.java,callback)
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) , View.OnClickListener{
         var imgCountryFlag: ImageView = view.findViewById(R.id.img_country_flag)
         var tvCountryName: TextView = view.findViewById(R.id.tv_country_name)
         var tvTodayCaseCount: TextView = view.findViewById(R.id.tv_today_cases_count)
@@ -48,8 +94,13 @@ class DashboardRecyclerViewAdapter(context: Context) :
         var tvTodayDeathsCount: TextView = view.findViewById(R.id.tv_today_deaths_count)
         var clTopCountryBackground: ConstraintLayout = view.findViewById(R.id.cl_top_background)
 
+        init {
+            view.setOnClickListener(this)
+        }
+        override fun onClick(p0: View?) {
+            itemClickListener.onClick(adapterPosition, sortedList[adapterPosition])
 
-
+        }
         fun renderUI(data: CountryResponse,position: Int) {
             when(position){
                 0 -> {
@@ -79,5 +130,6 @@ class DashboardRecyclerViewAdapter(context: Context) :
                 .into(imgCountryFlag)
 
         }
+
     }
 }

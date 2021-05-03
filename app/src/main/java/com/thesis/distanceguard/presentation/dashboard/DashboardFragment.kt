@@ -2,12 +2,16 @@ package com.thesis.distanceguard.presentation.dashboard
 
 import android.graphics.Color
 import android.view.View
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.api.model.*
 import com.thesis.distanceguard.presentation.base.BaseFragment
+import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
+import com.thesis.distanceguard.presentation.countries.CountriesAdapter
+import com.thesis.distanceguard.presentation.detail.DetailFragment
 import com.thesis.distanceguard.presentation.information.InformationFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import com.thesis.distanceguard.util.AppUtil
@@ -41,6 +45,7 @@ class DashboardFragment : BaseFragment() {
         AndroidSupportInjection.inject(this)
         dashboardViewModel =
             ViewModelProvider(this, viewModelFactory).get(DashboardViewModel::class.java)
+        dashboardViewModel.fetchCountryList().observe(this, topCountryListObserver)
     }
 
     private fun setupViews() {
@@ -75,6 +80,33 @@ class DashboardFragment : BaseFragment() {
             layoutManager = linearLayoutManager
             setHasFixedSize(true)
             adapter = dashboardRecyclerViewAdapter
+        }
+        dashboardRecyclerViewAdapter.itemClickListener = object :
+            BaseRecyclerViewAdapter.ItemClickListener<CountryResponse> {
+            override fun onClick(position: Int, item: CountryResponse) {
+                Timber.d("onClick: $item")
+
+                ViewCompat.postOnAnimationDelayed(view!!, // Delay to show ripple effect
+                    Runnable {
+                        val mainActivity = activity as MainActivity
+                        mainActivity.addFragment(
+                            DetailFragment(item),
+                            DetailFragment.TAG,
+                            R.id.container_main
+                        )
+
+                    }
+                    , 50)
+
+            }
+
+            override fun onLongClick(position: Int, item: CountryResponse) {}
+        }
+
+    }
+    private val topCountryListObserver = Observer<ArrayList<CountryResponse>> {
+        it?.let {
+            dashboardRecyclerViewAdapter.add(it)
         }
     }
 
