@@ -134,9 +134,12 @@ class DashboardFragment : BaseFragment() {
             tv_total_recovered_count.text = AppUtil.toNumberWithCommas(it.recovered)
             tv_total_death_count.text = AppUtil.toNumberWithCommas(it.deaths)
             tv_today_cases_count.text = "(+${AppUtil.toNumberWithCommas(it.todayCases)})"
-            tv_today_recovered_count.text =
-                "(+${AppUtil.toNumberWithCommas(it.todayRecovered.toLong())})"
+            tv_today_recovered_count.text = "(+${AppUtil.toNumberWithCommas(it.todayRecovered.toLong())})"
             tv_today_deaths_count.text = "(+${AppUtil.toNumberWithCommas(it.todayDeaths)})"
+
+            tv_cases_1_count.text = "+${AppUtil.toNumberWithCommas(it.todayCases)}"
+            tv_recover_1_count.text = "+${AppUtil.toNumberWithCommas(it.todayRecovered.toLong())}"
+            tv_deaths_1_count.text = "+${AppUtil.toNumberWithCommas(it.todayDeaths)}"
         }
     }
 
@@ -168,9 +171,13 @@ class DashboardFragment : BaseFragment() {
         tv_total_recovered_count.text = AppUtil.toNumberWithCommas(it.recovered.toLong())
         tv_total_death_count.text = AppUtil.toNumberWithCommas(it.deaths.toLong())
         tv_today_cases_count.text = "(+${AppUtil.toNumberWithCommas(it.todayCases.toLong())})"
-        tv_today_recovered_count.text =
-            "(+${AppUtil.toNumberWithCommas(it.todayRecovered.toLong())})"
+        tv_today_recovered_count.text = "(+${AppUtil.toNumberWithCommas(it.todayRecovered.toLong())})"
         tv_today_deaths_count.text = "(+${AppUtil.toNumberWithCommas(it.todayDeaths.toLong())})"
+
+        tv_cases_1_count.text = "+${AppUtil.toNumberWithCommas(it.todayCases.toLong())}"
+        tv_recover_1_count.text = "+${AppUtil.toNumberWithCommas(it.todayRecovered.toLong())}"
+        tv_deaths_1_count.text = "+${AppUtil.toNumberWithCommas(it.todayDeaths.toLong())}"
+
     }
 
     private val vietnamHistoryObserver = Observer<HistoricalVietnamResponse> {

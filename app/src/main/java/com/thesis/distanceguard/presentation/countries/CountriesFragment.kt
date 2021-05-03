@@ -76,14 +76,16 @@ class CountriesFragment : BaseFragment() {
             CountriesAdapter.ItemClickListener<CountryResponse> {
             override fun onClick(position: Int, item: CountryResponse) {
                 Timber.d("onClick: $item")
+
                 ViewCompat.postOnAnimationDelayed(view!!, // Delay to show ripple effect
                     Runnable {
                         val mainActivity = activity as MainActivity
                         mainActivity.addFragment(
-                            DetailFragment(),
+                            DetailFragment(item),
                             DetailFragment.TAG,
                             R.id.container_main
                         )
+
                     }
                     , 50)
 

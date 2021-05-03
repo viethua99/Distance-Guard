@@ -6,6 +6,7 @@ import com.thesis.distanceguard.api.model.HistoricalVietnamResponse
 import com.thesis.distanceguard.api.model.WorldwideResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface CovidApi {
     @GET("/v3/covid-19/all")
@@ -22,4 +23,7 @@ interface CovidApi {
 
     @GET("/v3/covid-19/historical/VietNam?lastdays=30")
     fun getVietnamHistory(): Call<HistoricalVietnamResponse>
+
+    @GET("/v3/covid-19/historical/{country}")
+    fun getCountryHistory(@Path("country") country: String): Call<HistoricalVietnamResponse>
 }
