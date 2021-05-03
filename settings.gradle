@@ -1,2 +1,3 @@
+include ':opentracesdk_fat'
 include ':app'
 rootProject.name = "Distance Guard"

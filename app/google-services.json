@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "483125006448",
+    "project_id": "distance-guard",
+    "storage_bucket": "distance-guard.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:483125006448:android:348af01c98aed8cf75a4b5",
+        "android_client_info": {
+          "package_name": "com.thesis.distanceguard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "483125006448-bk9ff0jotm2t14sf3t8cte5i432k16vf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thesis.distanceguard",
+            "certificate_hash": "69b0657fa478e28688fe8c35a64269c2c36ee4e9"
+          }
+        },
+        {
+          "client_id": "483125006448-fhg9rlkf7e70ak5e4km5phr7n66rt7fj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGxgGWHv2ZOlR7QQmTOAfChVfNfTGjWbo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "483125006448-fhg9rlkf7e70ak5e4km5phr7n66rt7fj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">Distance Guard</string>
+    <string name="API_MAPS">AIzaSyBmAI8AzEHb9BW7P3A_Zbr-jHBzShLoFHI</string>
+    <string name="nav_item_dashboard">Dashboard</string>
+    <string name="nav_item_countries">Countries</string>
+    <string name="nav_item_scanner">Scanner</string>
+    <string name="nav_item_team">Team</string>
+    <string name="nav_item_map">Map</string>
+
+
+    <string name="prompt_point_at_a_barcode">Point at team member\'s QRCode</string>
+    <string name="prompt_move_camera_closer">Move camera closer</string>
+    <string name="prompt_searching">Decoding...</string>
+
+
+    <string name="fragment_scanner_press_start_message">Press start to scan nearby people</string>
+    <string name="fragment_scanner_looking_for_nearby_devices">There is nobody around you...</string>
+    <string name="fragment_scanner_start_scanning">Start Scanning</string>
+    <string name="fragment_scanner_stop_scanning">Stop Scanning</string>
+
+    <string name="item_scanner_safer">Your team member</string>
+    <string name="item_scanner_ok">Ok</string>
+    <string name="item_scanner_warning">Caution</string>
+    <string name="item_scanner_strong_warning">Warning</string>
+    <string name="item_scanner_too_close">High Risk, Danger</string>
+
+    <string name="people_around_you">There are 0 people around you</string>
+
+    <string name="your_team_has_0_people">There are 0 people on your team</string>
+
 </resources>
