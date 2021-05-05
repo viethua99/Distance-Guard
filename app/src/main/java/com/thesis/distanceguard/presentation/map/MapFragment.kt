@@ -6,8 +6,11 @@ import android.animation.ValueAnimator
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,10 +22,16 @@ import com.google.android.gms.maps.model.*
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.api.model.CountryResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
+import com.thesis.distanceguard.presentation.countries.CountriesAdapter
+import com.thesis.distanceguard.presentation.countries.MapAdapter
+import com.thesis.distanceguard.presentation.detail.DetailFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_countries.*
 import kotlinx.android.synthetic.main.layout_bottom_sheet.*
+import kotlinx.android.synthetic.main.layout_bottom_sheet.edt_search
+import timber.log.Timber
 import kotlin.math.pow
 
 class MapFragment : BaseFragment(), OnMapReadyCallback {
@@ -35,7 +44,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private lateinit var mapViewModel: MapViewModel
-    private lateinit var mapRecyclerViewAdapter: MapRecyclerViewAdapter
+    private lateinit var mapAdapter: MapAdapter
 
     companion object {
         const val TAG = "MapFragment"
@@ -66,6 +75,24 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map_fr) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        edt_search.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                val filteredList = CountriesAdapter.filter(
+                    mapViewModel.countryList.value!!,
+                    p0.toString()
+                )
+                mapAdapter.replaceAll(filteredList!!)
+                rv_countries.scrollToPosition(0)
+            }
+        })
         fetchCountry()
         setupRecyclerView()
     }
@@ -84,10 +111,20 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
 
     private fun setupRecyclerView() {
         val linearLayoutManager = LinearLayoutManager(context)
-        mapRecyclerViewAdapter = MapRecyclerViewAdapter(context!!)
+        mapAdapter = MapAdapter(context!!)
         recycler_view.apply {
             layoutManager = linearLayoutManager
-            adapter = mapRecyclerViewAdapter
+            adapter = mapAdapter
+        }
+        mapAdapter.itemClickListener = object :
+            MapAdapter.ItemClickListener<CountryResponse> {
+            override fun onClick(position: Int, item: CountryResponse) {
+                Timber.d("onClick: $item")
+                selectItem(item);
+
+            }
+
+            override fun onLongClick(position: Int, item: CountryResponse) {}
         }
     }
 
@@ -105,13 +142,13 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     private fun moveCamera(latLng: LatLng) {
         googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 4f))
     }
-//    private fun selectItem(data: LocationItem) {
-//        googleMap?.let {
-//            moveCamera(LatLng(data.lat, data.long))
-//            startPulseAnimation(LatLng(data.lat, data.long))
-//        }
-//    }
-//
+    private fun selectItem(data: CountryResponse) {
+        googleMap?.let {
+            moveCamera(LatLng(data.countryInfo.lat, data.countryInfo.long))
+            startPulseAnimation(LatLng(data.countryInfo.lat, data.countryInfo.long))
+        }
+    }
+
 //    private val valueAnimator by lazy {
 //        ValueAnimator.ofFloat(
 //            0f,
@@ -130,9 +167,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     private val countryListObserver = Observer<ArrayList<CountryResponse>> {
         it?.let {
             updateMarkers(it)
-            for(i in it.indices){
-                mapRecyclerViewAdapter.addData(it[i])
-            }
+            mapAdapter.add(it)
         }
     }
 

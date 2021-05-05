@@ -11,7 +11,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class MapViewModel @Inject constructor() : ViewModel() {
-    private val countryList = MutableLiveData<ArrayList<CountryResponse>>()
+    public val countryList = MutableLiveData<ArrayList<CountryResponse>>()
 
     fun fetchCountryList(): LiveData<ArrayList<CountryResponse>> {
         CovidService.getApi().getCountryListData().enqueue(object :
