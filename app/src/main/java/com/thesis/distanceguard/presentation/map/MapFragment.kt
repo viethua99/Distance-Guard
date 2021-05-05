@@ -90,7 +90,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
                     p0.toString()
                 )
                 mapAdapter.replaceAll(filteredList!!)
-                rv_countries.scrollToPosition(0)
+                recycler_view.scrollToPosition(0)
             }
         })
         fetchCountry()
@@ -120,8 +120,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
             MapAdapter.ItemClickListener<CountryResponse> {
             override fun onClick(position: Int, item: CountryResponse) {
                 Timber.d("onClick: $item")
-                selectItem(item);
-
+                selectItem(item)
             }
 
             override fun onLongClick(position: Int, item: CountryResponse) {}
@@ -142,23 +141,13 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     private fun moveCamera(latLng: LatLng) {
         googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 4f))
     }
+
     private fun selectItem(data: CountryResponse) {
         googleMap?.let {
             moveCamera(LatLng(data.countryInfo.lat, data.countryInfo.long))
             startPulseAnimation(LatLng(data.countryInfo.lat, data.countryInfo.long))
         }
     }
-
-//    private val valueAnimator by lazy {
-//        ValueAnimator.ofFloat(
-//            0f,
-//            calculatePulseRadius(googleMap?.cameraPosition?.zoom ?: 4f).apply { }
-//        ).apply {
-//            startDelay = 100
-//            duration = 800
-//            interpolator = AccelerateDecelerateInterpolator()
-//        }
-//    }
 
     private fun fetchCountry() {
         mapViewModel.fetchCountryList().observe(this, countryListObserver)
