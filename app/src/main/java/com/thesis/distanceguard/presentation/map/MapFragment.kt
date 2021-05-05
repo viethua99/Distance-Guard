@@ -10,6 +10,7 @@ import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -21,6 +22,7 @@ import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.layout_bottom_sheet.*
 import kotlin.math.pow
 
 class MapFragment : BaseFragment(), OnMapReadyCallback {
@@ -33,6 +35,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private lateinit var mapViewModel: MapViewModel
+    private lateinit var mapRecyclerViewAdapter: MapRecyclerViewAdapter
 
     companion object {
         const val TAG = "MapFragment"
@@ -64,6 +67,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         fetchCountry()
+        setupRecyclerView()
     }
 
     override fun onStop() {
@@ -76,6 +80,15 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     private fun setupViewModel() {
         AndroidSupportInjection.inject(this)
         mapViewModel = ViewModelProvider(this, viewModelFactory).get(MapViewModel::class.java)
+    }
+
+    private fun setupRecyclerView() {
+        val linearLayoutManager = LinearLayoutManager(context)
+        mapRecyclerViewAdapter = MapRecyclerViewAdapter(context!!)
+        recycler_view.apply {
+            layoutManager = linearLayoutManager
+            adapter = mapRecyclerViewAdapter
+        }
     }
 
     override fun onMapReady(p0: GoogleMap?) {
@@ -116,8 +129,10 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
 
     private val countryListObserver = Observer<ArrayList<CountryResponse>> {
         it?.let {
-//            MapAdapter.add(it)
             updateMarkers(it)
+            for(i in it.indices){
+                mapRecyclerViewAdapter.addData(it[i])
+            }
         }
     }
 
