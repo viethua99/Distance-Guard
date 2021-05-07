@@ -91,9 +91,10 @@
                 android:id="@+id/txv_symptom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Symptom"
+                android:text="Symptoms"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:textColor="@color/header_red"
                 android:layout_marginStart="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -127,12 +128,13 @@
                 </FrameLayout>
 
                 <TextView
-                    android:layout_width="49dp"
-                    android:layout_height="13dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
                     android:layout_marginBottom="7dp"
                     android:text="Headache"
-                    android:textSize="10sp"
+                    android:textColor="@color/header_red"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
             </androidx.cardview.widget.CardView>
 
@@ -165,13 +167,14 @@
                 </FrameLayout>
 
                 <TextView
-                    android:layout_width="49dp"
-                    android:layout_height="13dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
                     android:layout_marginBottom="7dp"
                     android:text="Cough"
                     android:gravity="center_horizontal"
-                    android:textSize="10sp"
+                    android:textColor="@color/header_red"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
             </androidx.cardview.widget.CardView>
 
@@ -205,13 +208,14 @@
                 </FrameLayout>
 
                 <TextView
-                    android:layout_width="49dp"
-                    android:layout_height="13dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
                     android:layout_marginBottom="7dp"
                     android:text="Fever"
+                    android:textColor="@color/header_red"
                     android:gravity="center_horizontal"
-                    android:textSize="10sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
             </androidx.cardview.widget.CardView>
 
@@ -220,9 +224,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Prevention"
+                android:text="Preventions"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:textColor="@color/header_red"
                 android:layout_marginStart="20dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cv_cough" />
@@ -252,7 +257,8 @@
                             android:layout_marginStart="138dp"
                             android:layout_marginTop="10dp"
                             android:text="Wear face mask"
-                            android:textSize="14dp"
+                            android:textColor="@color/header_red"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -261,8 +267,7 @@
                             android:layout_marginStart="138dp"
                             android:layout_marginTop="39dp"
                             android:layout_marginEnd="15dp"
-                            android:text="Since the start of the coronavirus outbreak some places have fully embraced wearing face masks,and anyone without one risks becoming a social pariah."
-                            android:textSize="10dp" />
+                            android:text="Embraced wearing face masks,and anyone without one risks becoming a social pariah." />
                     </androidx.cardview.widget.CardView>
                 </FrameLayout>
 
@@ -296,7 +301,8 @@
                             android:layout_marginStart="138dp"
                             android:text="Wash your hands"
                             android:layout_marginTop="10dp"
-                            android:textSize="14dp"
+                            android:textSize="16sp"
+                            android:textColor="@color/header_red"
                             android:textStyle="bold" />
 
                         <TextView
@@ -305,8 +311,7 @@
                             android:layout_marginEnd="15dp"
                             android:layout_marginStart="138dp"
                             android:layout_marginTop="39dp"
-                            android:text="These diseases include gastrointestinal infections, such as Salmonella, and respiratory infection, such as influenza."
-                            android:textSize="10dp" />
+                            android:text="These diseases include gastrointestinal infections, such as Salmonella, and respiratory infection, such as influenza." />
                     </androidx.cardview.widget.CardView>
                 </FrameLayout>
                 <ImageView
@@ -339,7 +344,8 @@
                             android:layout_marginStart="138dp"
                             android:text="Use Nose Rag or Tissue"
                             android:layout_marginTop="10dp"
-                            android:textSize="14dp"
+                            android:textColor="@color/header_red"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -348,8 +354,7 @@
                             android:layout_marginEnd="15dp"
                             android:layout_marginStart="138dp"
                             android:layout_marginTop="39dp"
-                            android:text="These diseases include gastrointestinal infections, such as Salmonella, and respiratory infection, such as influenza."
-                            android:textSize="10dp" />
+                            android:text="These diseases include gastrointestinal infections, such as Salmonella, and respiratory infection, such as influenza." />
                     </androidx.cardview.widget.CardView>
                 </FrameLayout>
                 <ImageView
@@ -381,7 +386,8 @@
                             android:layout_marginStart="138dp"
                             android:text="Avoid Contact"
                             android:layout_marginTop="10dp"
-                            android:textSize="14dp"
+                            android:textColor="@color/header_red"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -390,8 +396,7 @@
                             android:layout_marginEnd="15dp"
                             android:layout_marginStart="138dp"
                             android:layout_marginTop="39dp"
-                            android:text="These diseases include gastrointestinal infections, such as Salmonella, and respiratory infection, such as influenza."
-                            android:textSize="10dp" />
+                            android:text="These diseases include gastrointestinal infections, such as Salmonella, and respiratory infection, such as influenza." />
                     </androidx.cardview.widget.CardView>
                 </FrameLayout>
                 <ImageView

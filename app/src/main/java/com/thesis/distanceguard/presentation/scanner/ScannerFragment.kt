@@ -95,13 +95,13 @@ class ScannerFragment : BaseFragment() {
             // Update the devices
             GlobalScope.launch { DeviceRepository.updateCurrentDevices() }
             btn_scanning.text = getString(R.string.fragment_scanner_stop_scanning)
-            btn_scanning.setBackgroundColor(Color.parseColor("#F44336"))
+            btn_scanning.setBackgroundColor(Color.parseColor("#ff5050"))
             ll_press_start_to_scan.visibility = View.GONE
             cl_safe_ripple.visibility = View.VISIBLE
             bg_safe_ripple.startRippleAnimation()
         } else {
             btn_scanning.text = getString(R.string.fragment_scanner_start_scanning)
-            btn_scanning.setBackgroundColor(Color.parseColor("#0288D1"))
+            btn_scanning.setBackgroundColor(Color.parseColor("#007bff"))
             ll_press_start_to_scan.visibility = View.VISIBLE
             cl_scanning_list.visibility = View.GONE
             cl_safe_ripple.visibility = View.GONE

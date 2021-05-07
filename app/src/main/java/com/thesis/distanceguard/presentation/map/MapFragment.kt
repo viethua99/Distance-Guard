@@ -3,13 +3,16 @@ package com.thesis.distanceguard.presentation.map
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.app.Activity
 import android.content.res.Resources
 import android.graphics.Color
+import android.widget.EditText
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.inputmethod.InputMethodManager
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -104,6 +107,11 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
 
     }
 
+    fun EditText.hideKeyboard(): Boolean {
+        return (context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager)
+            .hideSoftInputFromWindow(windowToken, 0)
+    }
+
     private fun setupViewModel() {
         AndroidSupportInjection.inject(this)
         mapViewModel = ViewModelProvider(this, viewModelFactory).get(MapViewModel::class.java)
@@ -120,6 +128,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
             MapAdapter.ItemClickListener<CountryResponse> {
             override fun onClick(position: Int, item: CountryResponse) {
                 Timber.d("onClick: $item")
+                edt_search.hideKeyboard()
                 selectItem(item)
             }
 
