@@ -79,11 +79,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Recovered" />
+                    android:text="Recovered"
+                    android:textSize="13sp"/>
                 <com.db.williamchart.view.LineChartView
                     android:id="@+id/chart_recovered"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="70dp"
                     app:chart_axis="none"
                     app:chart_gridEffect="dotted"
                     app:chart_labelsColor="#FF70977F"
@@ -123,11 +124,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Deaths" />
+                        android:text="Deaths"
+                        android:textSize="13sp"/>
                     <com.db.williamchart.view.LineChartView
                         android:id="@+id/chart_death"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="70dp"
                         app:chart_axis="none"
                         app:chart_gridEffect="dotted"
                         app:chart_labelsColor="#FF70977F"

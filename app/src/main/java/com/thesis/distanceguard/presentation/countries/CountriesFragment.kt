@@ -51,6 +51,9 @@ class CountriesFragment : BaseFragment() {
                 rv_countries.scrollToPosition(0)
             }
         })
+        img_clear.setOnClickListener {
+            edt_search.text.clear()
+        }
 
     }
 
