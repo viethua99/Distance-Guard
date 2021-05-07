@@ -9,6 +9,7 @@ import com.thesis.distanceguard.presentation.countries.CountriesViewModel
 import com.thesis.distanceguard.presentation.dashboard.DashboardViewModel
 import com.thesis.distanceguard.presentation.detail.DetailViewModel
 import com.thesis.distanceguard.presentation.main.activity.MainActivityViewModel
+import com.thesis.distanceguard.presentation.map.MapViewModel
 import com.thesis.distanceguard.presentation.scanner.ScannerViewModel
 import dagger.Binds
 import dagger.Module
@@ -49,4 +50,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(DetailViewModel::class)
     abstract fun bindDetailViewModel(detailViewModel: DetailViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MapViewModel::class)
+    abstract fun bindMapViewModel(mapViewModel: MapViewModel): ViewModel
 }
