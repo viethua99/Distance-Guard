@@ -4,6 +4,7 @@
 
     <com.thesis.distanceguard.camera_module.GraphicOverlay
         android:id="@+id/camera_preview_graphic_overlay"
+        android:background="#40ffffff"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
@@ -28,7 +29,7 @@
             android:textSize="14sp"
             android:visibility="gone"
             app:chipCornerRadius="8dp"
-            app:chipSurfaceColor="#9A000000"
+            app:chipSurfaceColor="@color/primary_color"
             app:closeIconVisible="false"/>
     </FrameLayout>
 

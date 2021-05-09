@@ -221,6 +221,7 @@ class CameraSource(private val graphicOverlay: GraphicOverlay) {
     private fun setPreviewAndPictureSize(camera: Camera, parameters: Parameters) {
 
         // Gives priority to the preview size specified by the user if exists.
+        val testSize = CameraSizePair(Size(1920 ,1080), Size(5760,3240))
         val sizePair: CameraSizePair = BarcodePreferenceUtils.getUserSpecifiedPreviewSize(context) ?: run {
             // Camera preview size is based on the landscape mode, so we need to also use the aspect
             // ration of display in the same mode for comparison.
@@ -233,12 +234,12 @@ class CameraSource(private val graphicOverlay: GraphicOverlay) {
             selectSizePair(camera, displayAspectRatioInLandscape)
         } ?: throw IOException("Could not find suitable preview size.")
 
-        previewSize = sizePair.preview.also {
+        previewSize = testSize.preview.also {
             Log.v(TAG, "Camera preview size: $it")
             parameters.setPreviewSize(it.width, it.height)
         }
 
-        sizePair.picture?.let { pictureSize ->
+        testSize.picture?.let { pictureSize ->
             Log.v(TAG, "Camera picture size: $pictureSize")
             parameters.setPictureSize(pictureSize.width, pictureSize.height)
         }
@@ -456,6 +457,7 @@ class CameraSource(private val graphicOverlay: GraphicOverlay) {
             var minAspectRatioDiff = Float.MAX_VALUE
 
             for (sizePair in validPreviewSizes) {
+                Log.d(TAG,"validSize= ${sizePair.preview}")
                 val previewSize = sizePair.preview
                 if (previewSize.width < MIN_CAMERA_PREVIEW_WIDTH || previewSize.width > MAX_CAMERA_PREVIEW_WIDTH) {
                     continue

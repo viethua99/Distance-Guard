@@ -12,7 +12,7 @@
         android:padding="10dp">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cv_comfirmed"
+            android:id="@+id/cv_cases"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
@@ -30,7 +30,7 @@
                     android:id="@+id/tv_comfirmed_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="150.560"
+                    android:text="---"
                     android:textSize="18dp"
                     android:textColor="@color/primary_color"
                     android:textStyle="bold" />
@@ -38,9 +38,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Comfirmed" />
+                    android:text="Cases" />
                 <com.db.williamchart.view.LineChartView
-                    android:id="@+id/chart_comfirmed"
+                    android:id="@+id/chart_cases"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     app:chart_axis="none"
@@ -61,7 +61,7 @@
             app:cardCornerRadius="10dp"
             app:cardUseCompatPadding="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cv_comfirmed"
+            app:layout_constraintTop_toBottomOf="@id/cv_cases"
             app:layout_constraintWidth_percent="0.5">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -72,18 +72,19 @@
                     android:id="@+id/tv_recovered_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="150.560"
+                    android:text="---"
                     android:textSize="18dp"
                     android:textColor="@color/green_500"
                     android:textStyle="bold" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Recovered" />
+                    android:text="Recovered"
+                    android:textSize="13sp"/>
                 <com.db.williamchart.view.LineChartView
                     android:id="@+id/chart_recovered"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="70dp"
                     app:chart_axis="none"
                     app:chart_gridEffect="dotted"
                     app:chart_labelsColor="#FF70977F"
@@ -103,7 +104,7 @@
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/cv_recovered"
-            app:layout_constraintTop_toBottomOf="@id/cv_comfirmed"
+            app:layout_constraintTop_toBottomOf="@id/cv_cases"
             app:layout_constraintWidth_percent="0.5">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -115,7 +116,7 @@
                         android:id="@+id/tv_death_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="150.560"
+                        android:text="---"
                         android:textSize="18dp"
                         android:textColor="@color/red_500"
                         android:textStyle="bold" />
@@ -123,11 +124,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Deaths" />
+                        android:text="Deaths"
+                        android:textSize="13sp"/>
                     <com.db.williamchart.view.LineChartView
                         android:id="@+id/chart_death"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="70dp"
                         app:chart_axis="none"
                         app:chart_gridEffect="dotted"
                         app:chart_labelsColor="#FF70977F"
@@ -173,7 +175,7 @@
                     android:layout_marginTop="20dp"
                     android:text="Tests"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_other_info" />
 
@@ -181,9 +183,9 @@
                     android:id="@+id/tv_test_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2,86,00,000"
+                    android:text="---"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_test_title" />
@@ -195,7 +197,7 @@
                     android:layout_marginTop="20dp"
                     android:text="Population"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_test_title" />
 
@@ -203,9 +205,9 @@
                     android:id="@+id/tv_population_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="21,37,28,826"
+                    android:text="---"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_population_title" />
@@ -217,7 +219,7 @@
                     android:layout_marginTop="20dp"
                     android:text="One Case Per People"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_population_title" />
 
@@ -225,9 +227,9 @@
                     android:id="@+id/tv_one_case_per_people_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="16"
+                    android:text="---"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_one_case_per_people_title" />
@@ -239,7 +241,7 @@
                     android:layout_marginTop="20dp"
                     android:text="One Test Per People"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_one_case_per_people_title" />
 
@@ -247,9 +249,9 @@
                     android:id="@+id/tv_one_test_per_people_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="7"
+                    android:text="---"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_one_test_per_people_title" />
@@ -261,7 +263,7 @@
                     android:layout_marginTop="20dp"
                     android:text="One Test Per People"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_one_test_per_people_title" />
 
@@ -269,9 +271,9 @@
                     android:id="@+id/tv_one_death_per_people_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="608"
+                    android:text="---"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_one_death_per_people_title" />
@@ -283,7 +285,7 @@
                     android:layout_marginTop="20dp"
                     android:text="Cases Per One Million"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_one_death_per_people_title" />
 
@@ -291,9 +293,9 @@
                     android:id="@+id/tv_case_per_one_million_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="62,907"
+                    android:text="---"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_case_per_one_million_title" />
@@ -305,7 +307,7 @@
                     android:layout_marginTop="20dp"
                     android:text="Deaths Per One Million"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_case_per_one_million_title" />
 
@@ -313,9 +315,9 @@
                     android:id="@+id/tv_death_per_one_million_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1,644"
+                    android:text="---"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_death_per_one_million_title" />
@@ -327,7 +329,7 @@
                     android:layout_marginTop="20dp"
                     android:text="Tests Per One Million"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_death_per_one_million_title" />
 
@@ -335,9 +337,9 @@
                     android:id="@+id/tv_test_per_one_million_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1,33,814"
+                    android:text="---"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_test_per_one_million_title" />
@@ -349,7 +351,7 @@
                     android:layout_marginTop="20dp"
                     android:text="Active Per One Million"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_test_per_one_million_title" />
 
@@ -357,9 +359,9 @@
                     android:id="@+id/tv_active_per_one_million_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5,871.8"
+                    android:text="---"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_active_per_one_million_title" />

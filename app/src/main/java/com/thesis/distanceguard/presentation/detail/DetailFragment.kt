@@ -7,14 +7,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.api.model.CountryResponse
-import com.thesis.distanceguard.api.model.HistoricalVietnamResponse
+import com.thesis.distanceguard.api.model.HistoricalCountryResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import com.thesis.distanceguard.util.AppUtil
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_detail.*
 import timber.log.Timber
-import java.util.ArrayList
 
 class DetailFragment() : BaseFragment() {
     constructor(itemCountry: CountryResponse) : this() {
@@ -60,12 +59,12 @@ class DetailFragment() : BaseFragment() {
     }
 
     private fun setupLineChart() {
-        chart_comfirmed.gradientFillColors =
+        chart_cases.gradientFillColors =
             intArrayOf(
                 Color.parseColor("#e6f2ff"),
                 Color.TRANSPARENT
             )
-        chart_comfirmed.animation.duration = animationDuration
+        chart_cases.animation.duration = animationDuration
 
 
         chart_recovered.gradientFillColors =
@@ -90,9 +89,9 @@ class DetailFragment() : BaseFragment() {
             .observe(this, countryObserver)
     }
 
-    private val countryObserver = Observer<HistoricalVietnamResponse> {
+    private val countryObserver = Observer<HistoricalCountryResponse> {
         hideDialog()
-        chart_comfirmed.animate(
+        chart_cases.animate(
             AppUtil.convertPairLongToPairFloat(
                 it.timeline.cases.toList().sortedBy { value -> value.second })
         )

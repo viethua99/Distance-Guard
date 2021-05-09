@@ -5,6 +5,7 @@ import com.thesis.distanceguard.presentation.countries.CountriesFragment
 import com.thesis.distanceguard.presentation.dashboard.DashboardFragment
 import com.thesis.distanceguard.presentation.detail.DetailFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
+import com.thesis.distanceguard.presentation.map.MapFragment
 import com.thesis.distanceguard.presentation.scanner.ScannerFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -29,5 +30,7 @@ abstract class AppBindingModule {
     @ContributesAndroidInjector
     abstract fun detailFragment(): DetailFragment
 
+    @ContributesAndroidInjector
+    abstract fun mapFragment(): MapFragment
 
 }
