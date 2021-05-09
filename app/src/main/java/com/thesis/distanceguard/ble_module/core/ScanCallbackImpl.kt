@@ -1,21 +1,19 @@
-package ai.kun.opentracesdk_fat.alarm
+package com.thesis.distanceguard.ble_module.core
 
-import ai.kun.opentracesdk_fat.BLETrace
-import ai.kun.opentracesdk_fat.dao.Device
-import ai.kun.opentracesdk_fat.util.Constants
-import android.bluetooth.BluetoothDevice
 import android.bluetooth.le.ScanCallback
-import android.bluetooth.le.ScanRecord
 import android.bluetooth.le.ScanResult
 import android.os.Build
 import android.os.Handler
 import android.os.ParcelUuid
 import android.util.Log
+import com.thesis.distanceguard.ble_module.BLEController
+import com.thesis.distanceguard.ble_module.dao.Device
+import com.thesis.distanceguard.ble_module.util.Constants
 
 /**
  * Record the results of the scans
  */
-object BtleScanCallback: ScanCallback() {
+object ScanCallbackImpl: ScanCallback() {
     private val TAG = "BtleScanCallback"
     val mScanResults = HashMap<String, Device>()
     val handler = Handler()
@@ -85,7 +83,7 @@ object BtleScanCallback: ScanCallback() {
                     timeStampNanos,
                     timeStamp,
                     sessionId,
-                    BLETrace.isTeamMember(uuid.toString()),
+                    BLEController.isTeamMember(uuid.toString()),
                     isAndroid
                 )
 

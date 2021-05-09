@@ -1,16 +1,16 @@
-package ai.kun.opentracesdk_fat
+package com.thesis.distanceguard.ble_module.repository
 
 
-import ai.kun.opentracesdk_fat.dao.Device
-import ai.kun.opentracesdk_fat.dao.DeviceDao
-import ai.kun.opentracesdk_fat.dao.DeviceRoomDatabase
-import ai.kun.opentracesdk_fat.util.BluetoothUtils
-import ai.kun.opentracesdk_fat.util.Constants
-import ai.kun.opentracesdk_fat.util.NotificationUtils
 import android.content.Context
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.thesis.distanceguard.ble_module.dao.Device
+import com.thesis.distanceguard.ble_module.dao.DeviceDao
+import com.thesis.distanceguard.ble_module.dao.DeviceRoomDatabase
+import com.thesis.distanceguard.ble_module.util.BluetoothUtils
+import com.thesis.distanceguard.ble_module.util.Constants
+import com.thesis.distanceguard.ble_module.util.NotificationUtils
 import kotlinx.coroutines.GlobalScope
 
 object DeviceRepository {
@@ -54,7 +54,6 @@ object DeviceRepository {
                 }
             }
         }
-        //TODO: delete anything that's too old
     }
 
     // thread, blocking the UI.

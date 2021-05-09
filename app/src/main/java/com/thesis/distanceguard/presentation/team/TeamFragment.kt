@@ -1,20 +1,18 @@
 package com.thesis.distanceguard.presentation.team
 
-import ai.kun.opentracesdk_fat.BLETrace
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.thesis.distanceguard.R
+import com.thesis.distanceguard.ble_module.BLEController
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.camera.CameraActivity
 import com.thesis.distanceguard.util.BarcodeEncoder
@@ -49,7 +47,7 @@ class TeamFragment : BaseFragment() {
             showWarningDialogWithConfirm("Exiting your team will remove teammates you scanned",
                 SweetAlertDialog.OnSweetClickListener {
                     //Confirm Listener
-                    BLETrace.leaveTeam()
+                    BLEController.leaveTeam()
                     setQRCode()
                     setTeamCount()
                     hideDialog()
@@ -103,9 +101,9 @@ class TeamFragment : BaseFragment() {
                 }
                 uuidString?.let {
                     try {
-                        var newSet = BLETrace.teamUuids!!.toMutableSet()
+                        var newSet = BLEController.teamUuids!!.toMutableSet()
                         newSet.add(uuidString)
-                        BLETrace.teamUuids = newSet
+                        BLEController.teamUuids = newSet
                     } catch (e: IllegalArgumentException) {
                         Timber.d("Data returned was not a UUID.")
                     }
@@ -120,7 +118,7 @@ class TeamFragment : BaseFragment() {
 
     private fun setTeamCount() {
         val text = getString(R.string.your_team_has_0_people)
-        val count = BLETrace.teamUuids?.let { it.size } ?: 0
+        val count = BLEController.teamUuids?.let { it.size } ?: 0
         tv_team_count?.let { it.text = text.replace("0", count.toString(), true) }
     }
 
@@ -135,7 +133,7 @@ class TeamFragment : BaseFragment() {
         val multiFormatWriter = MultiFormatWriter()
         try {
             val bitMatrix: BitMatrix =
-                multiFormatWriter.encode(BLETrace.uuidString, BarcodeFormat.QR_CODE, 200, 200)
+                multiFormatWriter.encode(BLEController.uuidString, BarcodeFormat.QR_CODE, 200, 200)
             val barcodeEncoder = BarcodeEncoder()
             val bitmap: Bitmap = barcodeEncoder.createBitmap(bitMatrix)
             barCodeImageView?.setImageBitmap(bitmap)

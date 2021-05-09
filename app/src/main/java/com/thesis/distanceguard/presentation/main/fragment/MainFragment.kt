@@ -1,6 +1,5 @@
 package com.thesis.distanceguard.presentation.main.fragment
 
-import ai.kun.opentracesdk_fat.BLETrace
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem

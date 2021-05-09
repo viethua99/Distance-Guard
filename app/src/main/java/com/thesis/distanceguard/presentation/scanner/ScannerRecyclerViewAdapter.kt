@@ -1,17 +1,15 @@
 package com.thesis.distanceguard.presentation.scanner
 
-import ai.kun.opentracesdk_fat.dao.Device
-import ai.kun.opentracesdk_fat.util.BluetoothUtils
-import ai.kun.opentracesdk_fat.util.Constants
 import android.content.Context
-import android.content.res.ColorStateList
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.distanceguard.R
+import com.thesis.distanceguard.ble_module.dao.Device
+import com.thesis.distanceguard.ble_module.util.BluetoothUtils
+import com.thesis.distanceguard.ble_module.util.Constants
 import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
 
 class ScannerRecyclerViewAdapter(context: Context) :

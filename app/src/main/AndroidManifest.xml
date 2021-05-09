@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.thesis.distanceguard">
 
+    <!--BLUETOOTH PERMISSIONS -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
@@ -10,13 +11,17 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
-
+    <!--NETWORK PERMISSIONS -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- LOCATION PERMISSIONS -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <!--CAMERA PERMISSIONS -->
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-feature android:name="android.hardware.camera"/>
 
@@ -33,11 +38,11 @@
         <receiver
             android:enabled="true"
             android:exported="false"
-            android:name="ai.kun.opentracesdk_fat.alarm.BLEClient" />
+            android:name=".ble_module.core.BLEScanner" />
         <receiver
             android:enabled="true"
             android:exported="false"
-            android:name="ai.kun.opentracesdk_fat.alarm.BLEServer" />
+            android:name=".ble_module.core.BLEAdvertiser" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/API_MAPS" />

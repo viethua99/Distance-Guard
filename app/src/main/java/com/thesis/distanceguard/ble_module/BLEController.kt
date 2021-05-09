@@ -1,16 +1,9 @@
-package ai.kun.opentracesdk_fat
+package com.thesis.distanceguard.ble_module
 
-import ai.kun.opentracesdk_fat.alarm.BLEClient
-import ai.kun.opentracesdk_fat.alarm.BLEServer
-import ai.kun.opentracesdk_fat.alarm.GattServerCallback
-import ai.kun.opentracesdk_fat.util.Constants
-import ai.kun.opentracesdk_fat.util.Constants.PREF_FILE_NAME
-import ai.kun.opentracesdk_fat.util.Constants.PREF_IS_PAUSED
-import ai.kun.opentracesdk_fat.util.Constants.PREF_TEAM_IDS
-import ai.kun.opentracesdk_fat.util.Constants.PREF_UNIQUE_ID
-import ai.kun.opentracesdk_fat.util.NotificationUtils
+
 import android.app.AlarmManager
 import android.bluetooth.BluetoothGattServer
+import android.bluetooth.BluetoothGattServerCallback
 import android.bluetooth.BluetoothManager
 import android.bluetooth.le.BluetoothLeAdvertiser
 import android.bluetooth.le.BluetoothLeScanner
@@ -20,6 +13,15 @@ import android.location.LocationManager
 import android.util.Log
 import androidx.core.location.LocationManagerCompat
 import androidx.lifecycle.MutableLiveData
+import com.thesis.distanceguard.ble_module.core.BLEAdvertiser
+import com.thesis.distanceguard.ble_module.core.BLEScanner
+import com.thesis.distanceguard.ble_module.repository.DeviceRepository
+import com.thesis.distanceguard.ble_module.util.Constants
+import com.thesis.distanceguard.ble_module.util.Constants.PREF_FILE_NAME
+import com.thesis.distanceguard.ble_module.util.Constants.PREF_IS_PAUSED
+import com.thesis.distanceguard.ble_module.util.Constants.PREF_TEAM_IDS
+import com.thesis.distanceguard.ble_module.util.Constants.PREF_UNIQUE_ID
+import com.thesis.distanceguard.ble_module.util.NotificationUtils
 import java.util.*
 import kotlin.collections.HashSet
 
@@ -33,11 +35,11 @@ import kotlin.collections.HashSet
  *
  * Thread safety is implemented by synchronizing on this object.
  */
-object BLETrace {
-    private val mBleServer : BLEServer =
-        BLEServer()
-    private val mBleClient : BLEClient =
-        BLEClient()
+object BLEController {
+    private val mBLEAdvertiser : BLEAdvertiser =
+        BLEAdvertiser()
+    private val mBLEScanner : BLEScanner =
+        BLEScanner()
     private val TAG = "BLETrace"
 
     private var isInit = false
@@ -229,10 +231,10 @@ object BLETrace {
             Log.i(TAG, "startBackground")
             isBackground = true
             isStarted.postValue(true)
-            mBleServer.enable(Constants.REBROADCAST_PERIOD,
+            mBLEAdvertiser.enable(Constants.REBROADCAST_PERIOD,
                 context
             )
-            mBleClient.enable(Constants.BACKGROUND_TRACE_INTERVAL,
+            mBLEScanner.enable(Constants.BACKGROUND_TRACE_INTERVAL,
                 context
             )
         } else {
@@ -250,10 +252,10 @@ object BLETrace {
             Log.i(TAG, "startForeground")
             isBackground = false
             isStarted.postValue(true)
-            mBleServer.enable(Constants.REBROADCAST_PERIOD,
+            mBLEAdvertiser.enable(Constants.REBROADCAST_PERIOD,
                 context
             )
-            mBleClient.enable(Constants.FOREGROUND_TRACE_INTERVAL,
+            mBLEScanner.enable(Constants.FOREGROUND_TRACE_INTERVAL,
                 context
             )
         } else {
@@ -267,10 +269,10 @@ object BLETrace {
      */
     private fun stopBackground() {
         if (isEnabled()) {
-            mBleServer.disable(Constants.REBROADCAST_PERIOD,
+            mBLEAdvertiser.disable(Constants.REBROADCAST_PERIOD,
                 context
             )
-            mBleClient.disable(Constants.BACKGROUND_TRACE_INTERVAL,
+            mBLEScanner.disable(Constants.BACKGROUND_TRACE_INTERVAL,
                 context
             )
         }
@@ -283,10 +285,10 @@ object BLETrace {
      */
     private fun stopForeground() {
         if (isEnabled()) {
-            mBleServer.disable(Constants.REBROADCAST_PERIOD,
+            mBLEAdvertiser.disable(Constants.REBROADCAST_PERIOD,
                 context
             )
-            mBleClient.disable(Constants.FOREGROUND_TRACE_INTERVAL,
+            mBLEScanner.disable(Constants.FOREGROUND_TRACE_INTERVAL,
                 context
             )
         }
@@ -341,7 +343,7 @@ object BLETrace {
                     bluetoothGattServer =
                         it.openGattServer(
                             context,
-                            GattServerCallback
+                            object : BluetoothGattServerCallback(){}
                         )
                     bluetoothLeAdvertiser = it.adapter.bluetoothLeAdvertiser
                 }

@@ -1,13 +1,13 @@
-package ai.kun.opentracesdk_fat.util
+package com.thesis.distanceguard.ble_module.util
 
-import ai.kun.opentracesdk_fat.util.Constants.ANDROID_SERVICE_STRING
-import ai.kun.opentracesdk_fat.util.Constants.CHARACTERISTIC_DEVICE_STRING
-import ai.kun.opentracesdk_fat.util.Constants.CHARACTERISTIC_USER_STRING
-import ai.kun.opentracesdk_fat.util.Constants.CLIENT_CONFIGURATION_DESCRIPTOR_SHORT_ID
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
 import android.bluetooth.BluetoothGattDescriptor
 import android.bluetooth.BluetoothGattService
+import com.thesis.distanceguard.ble_module.util.Constants.ANDROID_SERVICE_STRING
+import com.thesis.distanceguard.ble_module.util.Constants.CHARACTERISTIC_DEVICE_STRING
+import com.thesis.distanceguard.ble_module.util.Constants.CHARACTERISTIC_USER_STRING
+import com.thesis.distanceguard.ble_module.util.Constants.CLIENT_CONFIGURATION_DESCRIPTOR_SHORT_ID
 
 /**
  * Some utilities to help us with various Bluetooth things.

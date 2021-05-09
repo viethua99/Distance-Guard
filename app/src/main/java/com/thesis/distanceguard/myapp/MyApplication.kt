@@ -1,7 +1,7 @@
 package com.thesis.distanceguard.myapp
 
-import ai.kun.opentracesdk_fat.BLETrace
 import android.app.Application
+import com.thesis.distanceguard.ble_module.BLEController
 import com.thesis.distanceguard.di.AppComponent
 import com.thesis.distanceguard.di.DaggerAppComponent
 import dagger.android.AndroidInjector
@@ -26,8 +26,8 @@ class MyApplication : Application(), HasAndroidInjector {
         initDagger()
 
         //Initialize BlE trace library
-        BLETrace.init(this)
-        BLETrace.start(true)
+        BLEController.init(this)
+        BLEController.start(true)
 
 
     }

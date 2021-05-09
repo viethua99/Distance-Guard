@@ -1,6 +1,5 @@
 package com.thesis.distanceguard.presentation.main.activity
 
-import ai.kun.opentracesdk_fat.BLETrace
 import android.content.Context
 import android.os.Bundle
 import android.util.Log

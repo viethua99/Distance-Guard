@@ -1,4 +1,4 @@
-package ai.kun.opentracesdk_fat.dao
+package com.thesis.distanceguard.ble_module.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
