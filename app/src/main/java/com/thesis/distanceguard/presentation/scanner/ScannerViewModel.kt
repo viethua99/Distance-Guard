@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.thesis.distanceguard.ble_module.BLEController
 import com.thesis.distanceguard.ble_module.dao.Device
 import com.thesis.distanceguard.ble_module.repository.DeviceRepository
+import timber.log.Timber
 import javax.inject.Inject
 
 class ScannerViewModel @Inject constructor() : ViewModel(){
@@ -13,6 +14,7 @@ class ScannerViewModel @Inject constructor() : ViewModel(){
 
    fun triggerBLEScan(){
        isBLEStarted.value?.let { isStarted ->
+           Timber.d("triggerBLEScan: $isStarted")
            BLEController.isPaused = isStarted
        }
    }

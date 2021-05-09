@@ -27,8 +27,6 @@ class MyApplication : Application(), HasAndroidInjector {
 
         //Initialize BlE trace library
         BLEController.init(this)
-        BLEController.start(true)
-
 
     }
 

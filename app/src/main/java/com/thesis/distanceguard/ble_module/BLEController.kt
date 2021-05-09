@@ -22,6 +22,7 @@ import com.thesis.distanceguard.ble_module.util.Constants.PREF_IS_PAUSED
 import com.thesis.distanceguard.ble_module.util.Constants.PREF_TEAM_IDS
 import com.thesis.distanceguard.ble_module.util.Constants.PREF_UNIQUE_ID
 import com.thesis.distanceguard.ble_module.util.NotificationUtils
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.HashSet
 
@@ -40,10 +41,9 @@ object BLEController {
         BLEAdvertiser()
     private val mBLEScanner : BLEScanner =
         BLEScanner()
-    private val TAG = "BLETrace"
+    private val TAG = "BLEController"
 
     private var isInit = false
-    var isReactNative = false
     private lateinit var context : Context
     var bluetoothGattServer : BluetoothGattServer? = null
     var bluetoothManager : BluetoothManager? = null
@@ -62,7 +62,7 @@ object BLEController {
                 val sharedPrefs = context.getSharedPreferences(
                     PREF_FILE_NAME, Context.MODE_PRIVATE
                 )
-                return sharedPrefs.getBoolean(PREF_IS_PAUSED, false)
+                return sharedPrefs.getBoolean(PREF_IS_PAUSED, true)
             }
         }
         set(value) {
@@ -100,7 +100,7 @@ object BLEController {
                 if (value != null) {
                     editor.putString(PREF_UNIQUE_ID, value)
                     editor.commit()
-                    init(context, this.isReactNative)
+                    init(context)
                     deviceNameServiceUuid = UUID.fromString(value)
                 } else {
                     editor.remove(PREF_UNIQUE_ID)
@@ -169,15 +169,6 @@ object BLEController {
         }
     }
 
-    /**
-     * Can be used to check if a UUID came from an iOS device
-     *
-     * @param scannedUuid The UUID that was scanned
-     * @return True if the scannedUuid param starts with the iOS service string
-     */
-    fun isIosUuid(scannedUuid: String) : Boolean {
-        return scannedUuid.substring(0..3) == Constants.IOS_SERVICE_STRING.substring(0..3)
-    }
 
     /**
      * create a new UUID
@@ -187,7 +178,7 @@ object BLEController {
     fun getNewUniqueId() : String {
         val stringChars = (('0'..'9') + ('a'..'f')).toList().toTypedArray()
         val id = "0${((1..11).map { stringChars.random() }.joinToString(""))}"
-        return Constants.ANDROID_SERVICE_STRING.replaceAfterLast('-', id)
+        return Constants.SERVICE_STRING.replaceAfterLast('-', id)
     }
 
     lateinit var deviceNameServiceUuid: UUID
@@ -199,6 +190,7 @@ object BLEController {
      * make any difference.
      */
     fun start(startingBackground: Boolean) {
+        Timber.d("start")
         synchronized(this) {
             if (isStarted.value!!) stop()
             if (startingBackground) startBackground() else startForeground()
@@ -306,10 +298,7 @@ object BLEController {
             if (uuidString == null || it.adapter == null || !it.adapter.isEnabled()) return false
         }
 
-        if (!isInit) init(
-            context,
-            this.isReactNative
-        ) // If bluetooth was off we need to complete the init
+        if (!isInit) init(context) // If bluetooth was off we need to complete the init
 
         return isInit  // && isLocationEnabled() Location doesn't need to be on
     }
@@ -318,18 +307,12 @@ object BLEController {
      * Initialize BLE Trace.  This needs to be called as early as possible in the application.
      *
      * @param applicationContext The application context to use for init
-     * @param isReactNative Should be set to true if you want to manage your own notifications and store
-     *                      your own data, etc.
+
      */
-    fun init(applicationContext: Context, isReactNative: Boolean = false) {
+    fun init(applicationContext: Context) {
         synchronized(this) {
             context = applicationContext
-            this.isReactNative = isReactNative
-            if (!isReactNative) {
-                DeviceRepository.init(applicationContext)
-            }
-
-
+            DeviceRepository.init(applicationContext)
             if (!isInit && uuidString != null) {
                 deviceNameServiceUuid = UUID.fromString(
                     uuidString
@@ -356,9 +339,8 @@ object BLEController {
             }
         }
 
-        if (!isReactNative) {
+
             NotificationUtils.init(applicationContext)
-        }
 
     }
 

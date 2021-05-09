@@ -17,8 +17,8 @@ import android.util.Log
 import androidx.core.app.AlarmManagerCompat
 import com.thesis.distanceguard.ble_module.*
 import com.thesis.distanceguard.ble_module.BLEController.getAlarmManager
-import com.thesis.distanceguard.ble_module.util.Constants.ANDROID_MANUFACTURE_ID
-import com.thesis.distanceguard.ble_module.util.Constants.ANDROID_MANUFACTURE_SUBSTRING
+import com.thesis.distanceguard.ble_module.util.Constants.MANUFACTURER_ID
+import com.thesis.distanceguard.ble_module.util.Constants.MANUFACTURER_SUBSTRING
 import com.thesis.distanceguard.ble_module.util.Constants.BACKGROUND_TRACE_INTERVAL
 import timber.log.Timber
 import java.nio.charset.StandardCharsets
@@ -32,10 +32,9 @@ import java.util.*
  * into problems.
  */
 class BLEAdvertiser : BroadcastReceiver()  {
-    private val TAG = "BLEServer"
+    private val TAG = "BLEAdvertiser"
     private val WAKELOCK_TAG = "com:thesis:distanceguard:ble_module:core:BLEAdvertiser"
     private val INTERVAL_KEY = "interval"
-    private val ISREACTNATIVE_KEY = "isReactNative"
     private val SERVER_REQUEST_CODE = 10
     private val START_DELAY = 10
 
@@ -50,14 +49,13 @@ class BLEAdvertiser : BroadcastReceiver()  {
     override fun onReceive(context: Context, intent: Intent) {
         Log.i(TAG, "onReceive")
         val interval = intent.getIntExtra(INTERVAL_KEY, BACKGROUND_TRACE_INTERVAL)
-        val isReactNative = intent.getBooleanExtra(ISREACTNATIVE_KEY, false)
         val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
         val wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKELOCK_TAG)
         wl.acquire(interval.toLong())
         synchronized(BLEController) {
             // Chain the next alarm...
             appContext = context.applicationContext
-            BLEController.init(appContext, isReactNative)
+            BLEController.init(appContext)
             next(interval)
             if (BLEController.isEnabled()) {
                 setupServer()
@@ -123,7 +121,6 @@ class BLEAdvertiser : BroadcastReceiver()  {
     private fun getPendingIntent(interval: Int, context: Context) : PendingIntent {
         val intent = Intent(context, BLEAdvertiser::class.java)
         intent.putExtra(INTERVAL_KEY, interval)
-        intent.putExtra(ISREACTNATIVE_KEY, BLEController.isReactNative)
         return PendingIntent.getBroadcast(context, SERVER_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
@@ -168,7 +165,7 @@ class BLEAdvertiser : BroadcastReceiver()  {
         try {
             val settings = AdvertiseSettings.Builder()
                 .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
-                .setConnectable(true)
+                .setConnectable(false)
                 .setTimeout(0)
                 .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
                 .build()
@@ -177,8 +174,8 @@ class BLEAdvertiser : BroadcastReceiver()  {
                 .setIncludeDeviceName(false)
                 .setIncludeTxPowerLevel(true)
                 .addManufacturerData(
-                    ANDROID_MANUFACTURE_ID,
-                    ANDROID_MANUFACTURE_SUBSTRING.toByteArray(StandardCharsets.UTF_8)
+                    MANUFACTURER_ID,
+                    MANUFACTURER_SUBSTRING.toByteArray(StandardCharsets.UTF_8)
                 )
                 .addServiceUuid(ParcelUuid(uuid))
                 .build()

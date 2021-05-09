@@ -82,6 +82,7 @@ class ScannerFragment : BaseFragment() {
             ViewModelProvider(this, viewModelFactory).get(ScannerViewModel::class.java)
 
         scannerViewModel.isBLEStarted.observe(viewLifecycleOwner, Observer { isStarted ->
+            Timber.d("isStarted = $isStarted")
             isStarted?.let {
                 setupVisibilities(it)
             }
@@ -184,11 +185,7 @@ class ScannerFragment : BaseFragment() {
             val signalStrengthList = mutableListOf<Int>()
             val memberList = mutableListOf<Device>()
             for (device in devices) {
-                val signal = BluetoothUtils.calculateSignal(
-                    device.rssi,
-                    device.txPower,
-                    device.isAndroid
-                )
+                val signal = BluetoothUtils.calculateSignal(device.rssi, device.txPower)
                 signalStrengthList.add(signal)
 
                 if (device.isTeamMember) {

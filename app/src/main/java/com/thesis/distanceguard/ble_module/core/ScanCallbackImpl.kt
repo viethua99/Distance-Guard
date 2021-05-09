@@ -61,10 +61,10 @@ object ScanCallbackImpl: ScanCallback() {
         synchronized(this) {
             val deviceAddress = result.device.address
             var uuid: ParcelUuid? = result.scanRecord?.serviceUuids?.get(0)
-            var isAndroid = (uuid.toString().startsWith(Constants.ANDROID_PREFIX))
+
 
             // Only record devices where the UUID is one from our app...
-            if (isAndroid || uuid.toString().startsWith(Constants.IOS_PREFIX)) {
+            if ((uuid.toString().startsWith(Constants.SERVICE_PREFIX))) {
                 var rssi: Int = result.rssi
                 var txPower: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     result.txPower
@@ -83,8 +83,7 @@ object ScanCallbackImpl: ScanCallback() {
                     timeStampNanos,
                     timeStamp,
                     sessionId,
-                    BLEController.isTeamMember(uuid.toString()),
-                    isAndroid
+                    BLEController.isTeamMember(uuid.toString())
                 )
 
                 // Use a rolling average...

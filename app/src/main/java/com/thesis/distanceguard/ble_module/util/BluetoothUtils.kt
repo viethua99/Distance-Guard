@@ -2,12 +2,8 @@ package com.thesis.distanceguard.ble_module.util
 
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
-import android.bluetooth.BluetoothGattDescriptor
 import android.bluetooth.BluetoothGattService
-import com.thesis.distanceguard.ble_module.util.Constants.ANDROID_SERVICE_STRING
-import com.thesis.distanceguard.ble_module.util.Constants.CHARACTERISTIC_DEVICE_STRING
-import com.thesis.distanceguard.ble_module.util.Constants.CHARACTERISTIC_USER_STRING
-import com.thesis.distanceguard.ble_module.util.Constants.CLIENT_CONFIGURATION_DESCRIPTOR_SHORT_ID
+import com.thesis.distanceguard.ble_module.util.Constants.SERVICE_STRING
 
 /**
  * Some utilities to help us with various Bluetooth things.
@@ -38,27 +34,6 @@ object BluetoothUtils {
     }
 
     /**
-     * Right now we don't connect so we don't use this, but this method checks to see if this
-     * is our device characteristic
-     *
-     * @param characteristic The characteristic to check
-     * @return True if this matches the one we have in the constants
-     */
-    fun isDeviceCharacteristic(characteristic: BluetoothGattCharacteristic?): Boolean {
-        return characteristicMatches(characteristic, CHARACTERISTIC_DEVICE_STRING)
-    }
-    /**
-     * Right now we don't connect so we don't use this, but this method checks to see if this
-     * is our user characteristic
-     *
-     * @param characteristic The characteristic to check
-     * @return True if this matches the one we have in the constants
-     */
-    fun isUserCharacteristic(characteristic: BluetoothGattCharacteristic?): Boolean {
-        return characteristicMatches(characteristic, CHARACTERISTIC_USER_STRING)
-    }
-
-    /**
      * A helper function for checking matches.
      */
     private fun characteristicMatches(
@@ -72,33 +47,6 @@ object BluetoothUtils {
         return uuidMatches(uuid.toString(), uuidString)
     }
 
-    /**
-     * Checks to see if the characteristic
-     *
-     * @param characteristic the characteristic to match
-     * @return True if they match
-     */
-    private fun isMatchingCharacteristic(characteristic: BluetoothGattCharacteristic?): Boolean {
-        if (characteristic == null) {
-            return false
-        }
-        val uuid = characteristic.uuid
-        return matchesCharacteristicUuidString(uuid.toString())
-    }
-
-    /**
-     * Checks to see if the characteristic matches the UUID strings in the constants
-     *
-     * @param characteristic the characteristic to match
-     * @return True if they match
-     */
-    private fun matchesCharacteristicUuidString(characteristicIdString: String): Boolean {
-        return uuidMatches(
-            characteristicIdString,
-            CHARACTERISTIC_DEVICE_STRING,
-            CHARACTERISTIC_USER_STRING
-        )
-    }
 
     /**
      * Checks to see if the characteristic needs a response
@@ -122,35 +70,6 @@ object BluetoothUtils {
                 == BluetoothGattCharacteristic.PROPERTY_INDICATE)
     }
 
-    /**
-     * find the configuration descriptor
-     *
-     * @param descriptorList The list from the GATT
-     * @return The descriptor
-     */
-    fun findClientConfigurationDescriptor(descriptorList: List<BluetoothGattDescriptor>): BluetoothGattDescriptor? {
-        for (descriptor in descriptorList) {
-            if (isClientConfigurationDescriptor(descriptor)) {
-                return descriptor
-            }
-        }
-        return null
-    }
-
-    /**
-     * Check to see if the configuration descriptor matches the one in the constants
-     *
-     * @param descriptor the descriptor to check
-     * @return True if it matches
-     */
-    private fun isClientConfigurationDescriptor(descriptor: BluetoothGattDescriptor?): Boolean {
-        if (descriptor == null) {
-            return false
-        }
-        val uuid = descriptor.uuid
-        val uuidSubstring = uuid.toString().substring(4, 8)
-        return uuidMatches(uuidSubstring, CLIENT_CONFIGURATION_DESCRIPTOR_SHORT_ID)
-    }
 
     /**
      * Calculates the strength of the signal from another handset taking into consideration
@@ -158,19 +77,15 @@ object BluetoothUtils {
      *
      * @param rssi The RSSI reported from the scan
      * @param txPower The transmission power reported from the scan
-     * @param isAndroid If the handset was iOS or Android
      * @return A signal strength
      */
-    fun calculateSignal(rssi: Int, txPower: Int, isAndroid: Boolean): Int {
+    fun calculateSignal(rssi: Int, txPower: Int): Int {
         // Fix for older handset that don't report power...
         val adjustedTxPower = if (txPower + rssi < 0) Constants.ASSUMED_TX_POWER else txPower
 
         // Notify the user when we are adding a device that's too close
-        var signal = adjustedTxPower + rssi
 
-        if (!isAndroid) signal -= Constants.IOS_SIGNAL_REDUCTION
-
-        return signal
+        return adjustedTxPower + rssi
     }
 
 
@@ -181,7 +96,7 @@ object BluetoothUtils {
      * @return True if if matches the one in the constants
      */
     private fun matchesServiceUuidString(serviceIdString: String): Boolean {
-        return uuidMatches(serviceIdString, ANDROID_SERVICE_STRING)
+        return uuidMatches(serviceIdString, SERVICE_STRING)
     }
 
     /**

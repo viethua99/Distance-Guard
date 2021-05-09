@@ -39,7 +39,7 @@ object DeviceRepository {
 
         // Alert if we need to...
         if (!device.isTeamMember) {
-            val signal = BluetoothUtils.calculateSignal(device.rssi, device.txPower, device.isAndroid)
+            val signal = BluetoothUtils.calculateSignal(device.rssi, device.txPower)
 
             when {
                 signal <= Constants.SIGNAL_DISTANCE_OK -> {
