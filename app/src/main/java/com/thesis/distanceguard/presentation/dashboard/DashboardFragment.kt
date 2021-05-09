@@ -10,7 +10,6 @@ import com.thesis.distanceguard.R
 import com.thesis.distanceguard.api.model.*
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
-import com.thesis.distanceguard.presentation.countries.CountriesAdapter
 import com.thesis.distanceguard.presentation.detail.DetailFragment
 import com.thesis.distanceguard.presentation.information.InformationFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
@@ -212,7 +211,7 @@ class DashboardFragment : BaseFragment() {
 
     }
 
-    private val vietnamHistoryObserver = Observer<HistoricalVietnamResponse> {
+    private val vietnamHistoryObserver = Observer<HistoricalCountryResponse> {
         hideDialog()
         it.let {
             chart_daily_case.animate(

@@ -32,7 +32,8 @@ import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_countries.*
-import kotlinx.android.synthetic.main.layout_bottom_sheet.*
+import kotlinx.android.synthetic.main.layout_bottom_sheet.recycler_view
+import kotlinx.android.synthetic.main.layout_bottom_sheet.img_clear
 import kotlinx.android.synthetic.main.layout_bottom_sheet.edt_search
 import timber.log.Timber
 import kotlin.math.pow
@@ -96,6 +97,10 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
                 recycler_view.scrollToPosition(0)
             }
         })
+
+        img_clear.setOnClickListener {
+            edt_search.text.clear()
+        }
         fetchCountry()
         setupRecyclerView()
     }

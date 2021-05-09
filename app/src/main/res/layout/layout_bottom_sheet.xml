@@ -47,15 +47,12 @@
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:layout_toStartOf="@+id/img_clear"
-            android:layout_toLeftOf="@+id/img_clear"
             android:layout_toEndOf="@id/img_search"
-            android:layout_toRightOf="@id/img_search"
             android:background="@null"
-            android:hint="Type country or province region …"
+            android:hint="Type country or province region"
             android:inputType="text"
-            android:textColor="@color/black"
-            android:textColorHint="#90949c"
-            android:textSize="16sp" />
+            android:textSize="14sp"
+            android:textColorHint="#80bdff" />
 
         <ImageView
             android:id="@+id/img_clear"
@@ -64,7 +61,6 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:visibility="gone"
             app:srcCompat="@drawable/ic_close"
             tools:visibility="visible" />
     </RelativeLayout>

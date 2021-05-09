@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.thesis.distanceguard.api.CovidService
-import com.thesis.distanceguard.api.model.HistoricalVietnamResponse
+import com.thesis.distanceguard.api.model.HistoricalCountryResponse
 import retrofit2.Call
 import javax.inject.Inject
 import retrofit2.Callback
@@ -13,14 +13,14 @@ import timber.log.Timber
 
 
 class DetailViewModel @Inject constructor() : ViewModel() {
-    private val dataCountryResponse = MutableLiveData<HistoricalVietnamResponse>()
+    private val dataCountryResponse = MutableLiveData<HistoricalCountryResponse>()
 
-    fun fetchCountry(countryID: String): LiveData<HistoricalVietnamResponse> {
+    fun fetchCountry(countryID: String): LiveData<HistoricalCountryResponse> {
         CovidService.getApi().getCountryHistory(countryID)
-            .enqueue(object : Callback<HistoricalVietnamResponse> {
+            .enqueue(object : Callback<HistoricalCountryResponse> {
                 override fun onResponse(
-                    call: Call<HistoricalVietnamResponse>,
-                    response: Response<HistoricalVietnamResponse>
+                    call: Call<HistoricalCountryResponse>,
+                    response: Response<HistoricalCountryResponse>
                 ) {
                     Timber.d("check value " + response.body())
                     if (response.isSuccessful) {
@@ -28,7 +28,7 @@ class DetailViewModel @Inject constructor() : ViewModel() {
                     }
                 }
 
-                override fun onFailure(call: Call<HistoricalVietnamResponse>, t: Throwable) {
+                override fun onFailure(call: Call<HistoricalCountryResponse>, t: Throwable) {
                     dataCountryResponse.value = null
                 }
             })

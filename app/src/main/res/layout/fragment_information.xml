@@ -133,9 +133,7 @@
                     android:layout_gravity="center_horizontal|bottom"
                     android:layout_marginBottom="7dp"
                     android:text="Headache"
-                    android:textColor="@color/header_red"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/header_red" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -173,9 +171,7 @@
                     android:layout_marginBottom="7dp"
                     android:text="Cough"
                     android:gravity="center_horizontal"
-                    android:textColor="@color/header_red"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/header_red" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -214,9 +210,7 @@
                     android:layout_marginBottom="7dp"
                     android:text="Fever"
                     android:textColor="@color/header_red"
-                    android:gravity="center_horizontal"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:gravity="center_horizontal" />
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -258,10 +252,10 @@
                             android:layout_marginTop="10dp"
                             android:text="Wear face mask"
                             android:textColor="@color/header_red"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
 
                         <TextView
+                            android:textColor="@color/black"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="138dp"
@@ -302,10 +296,11 @@
                             android:text="Wash your hands"
                             android:layout_marginTop="10dp"
                             android:textSize="16sp"
-                            android:textColor="@color/header_red"
-                            android:textStyle="bold" />
+                            android:textColor="@color/header_red" />
 
                         <TextView
+                            android:textColor="@color/black"
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="15dp"
@@ -345,10 +340,11 @@
                             android:text="Use Nose Rag or Tissue"
                             android:layout_marginTop="10dp"
                             android:textColor="@color/header_red"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
 
                         <TextView
+                            android:textColor="@color/black"
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="15dp"
@@ -387,13 +383,14 @@
                             android:text="Avoid Contact"
                             android:layout_marginTop="10dp"
                             android:textColor="@color/header_red"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="15dp"
+                            android:textColor="@color/black"
+
                             android:layout_marginStart="138dp"
                             android:layout_marginTop="39dp"
                             android:text="These diseases include gastrointestinal infections, such as Salmonella, and respiratory infection, such as influenza." />

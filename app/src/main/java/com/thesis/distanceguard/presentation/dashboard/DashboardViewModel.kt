@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.thesis.distanceguard.api.CovidService
 import com.thesis.distanceguard.api.model.CountryResponse
 import com.thesis.distanceguard.api.model.HistoricalWorldwideResponse
-import com.thesis.distanceguard.api.model.HistoricalVietnamResponse
+import com.thesis.distanceguard.api.model.HistoricalCountryResponse
 import com.thesis.distanceguard.api.model.WorldwideResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,7 +18,7 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
     private val worldwideResponse = MutableLiveData<WorldwideResponse>()
     private val historicalWorldwideResponse = MutableLiveData<HistoricalWorldwideResponse>()
     private val vietnamResponse = MutableLiveData<CountryResponse>()
-    private val historicalVietnamResponse = MutableLiveData<HistoricalVietnamResponse>()
+    private val historicalVietnamResponse = MutableLiveData<HistoricalCountryResponse>()
     val countryList = MutableLiveData<ArrayList<CountryResponse>>()
 
 
@@ -81,12 +81,12 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
         return vietnamResponse
     }
 
-    fun fetchVietnamHistory(): LiveData<HistoricalVietnamResponse> {
-        CovidService.getApi().getVietnamHistory()
-            .enqueue(object : Callback<HistoricalVietnamResponse> {
+    fun fetchVietnamHistory(): LiveData<HistoricalCountryResponse> {
+        CovidService.getApi().getCountryHistory("vietnam")
+            .enqueue(object : Callback<HistoricalCountryResponse> {
                 override fun onResponse(
-                    call: Call<HistoricalVietnamResponse>,
-                    response: Response<HistoricalVietnamResponse>
+                    call: Call<HistoricalCountryResponse>,
+                    response: Response<HistoricalCountryResponse>
                 ) {
                     Timber.d("onResponse: ")
                     response.let {
@@ -96,8 +96,8 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
                     }
                 }
 
-                override fun onFailure(call: Call<HistoricalVietnamResponse>, t: Throwable) {
-                    Timber.d("onFailure: " + t.message)
+                override fun onFailure(call: Call<HistoricalCountryResponse>, t: Throwable) {
+                    Timber.d("onFailure: %s", t.message)
                     historicalVietnamResponse.value = null
                 }
             })
