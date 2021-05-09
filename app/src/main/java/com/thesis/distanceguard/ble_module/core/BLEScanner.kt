@@ -1,14 +1,5 @@
-package ai.kun.opentracesdk_fat.alarm
+package com.thesis.distanceguard.ble_module.core
 
-import ai.kun.opentracesdk_fat.BLETrace
-import ai.kun.opentracesdk_fat.dao.Device
-import ai.kun.opentracesdk_fat.DeviceRepository
-import ai.kun.opentracesdk_fat.util.Constants
-import ai.kun.opentracesdk_fat.util.Constants.ANDROID_MANUFACTURE_ID
-import ai.kun.opentracesdk_fat.util.Constants.ANDROID_MANUFACTURE_SUBSTRING
-import ai.kun.opentracesdk_fat.util.Constants.ANDROID_MANUFACTURE_SUBSTRING_MASK
-import ai.kun.opentracesdk_fat.util.Constants.APPLE_DEVICE_NAME
-import ai.kun.opentracesdk_fat.util.Constants.SCAN_PERIOD
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.bluetooth.le.*
@@ -18,6 +9,14 @@ import android.content.Intent
 import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.AlarmManagerCompat
+import com.thesis.distanceguard.ble_module.BLEController
+import com.thesis.distanceguard.ble_module.dao.Device
+import com.thesis.distanceguard.ble_module.repository.DeviceRepository
+import com.thesis.distanceguard.ble_module.util.Constants
+import com.thesis.distanceguard.ble_module.util.Constants.MANUFACTURER_ID
+import com.thesis.distanceguard.ble_module.util.Constants.MANUFACTURER_SUBSTRING
+import com.thesis.distanceguard.ble_module.util.Constants.MANUFACTURER_SUBSTRING_MASK
+import com.thesis.distanceguard.ble_module.util.Constants.SCAN_PERIOD
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.nio.charset.StandardCharsets
@@ -30,13 +29,11 @@ import java.nio.charset.StandardCharsets
  * cross platform database)
  *
  */
-class BLEClient : BroadcastReceiver() {
-    private val TAG = "BLEClient"
-    private val WAKELOCK_TAG = "ai:kun:socialdistancealarm:worker:BLEClient"
+class BLEScanner : BroadcastReceiver() {
+    private val TAG = "BLEScanner"
+    private val WAKELOCK_TAG = "ai:kun:socialdistancealarm:worker:BLEScanner"
 
     private val INTERVAL_KEY = "interval"
-    private val ISREACTNATIVE_KEY = "isReactNative"
-
     private val RSSI_KEY = "rssi"
     private val UUID_KEY = "uuid"
 
@@ -44,7 +41,6 @@ class BLEClient : BroadcastReceiver() {
     private val START_DELAY = 10
 
     private var mScanning = false
-    private var mConnected = false
 
     /**
      * We use alarm manager and cheat by scheduling a new alarm every time the alarm goes off.
@@ -57,15 +53,14 @@ class BLEClient : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         Log.i(TAG, "onReceive")
         val interval = intent.getIntExtra(INTERVAL_KEY, Constants.BACKGROUND_TRACE_INTERVAL)
-        val isReactNative = intent.getBooleanExtra(ISREACTNATIVE_KEY, false)
         val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
         val wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKELOCK_TAG)
         wl.acquire(interval.toLong())
-        synchronized(BLETrace) {
+        synchronized(BLEController) {
             // Chain the next alarm...
-            BLETrace.init(context.applicationContext, isReactNative)
+            BLEController.init(context.applicationContext)
             next(interval, context.applicationContext)
-            if (BLETrace.isEnabled()) startScan(context.applicationContext)
+            if (BLEController.isEnabled()) startScan()
         }
         wl.release()
     }
@@ -77,7 +72,7 @@ class BLEClient : BroadcastReceiver() {
      * @param context The context to use
      */
     fun next(interval: Int, context: Context) {
-        val alarmManager = BLETrace.getAlarmManager(context)
+        val alarmManager = BLEController.getAlarmManager(context)
         AlarmManagerCompat.setExactAndAllowWhileIdle(alarmManager,
             AlarmManager.RTC_WAKEUP,
             System.currentTimeMillis() + interval,
@@ -92,7 +87,7 @@ class BLEClient : BroadcastReceiver() {
      * @param context The context to use
      */
     fun enable(interval: Int, context: Context) {
-        val alarmManager = BLETrace.getAlarmManager(context)
+        val alarmManager = BLEController.getAlarmManager(context)
         AlarmManagerCompat.setExactAndAllowWhileIdle(alarmManager,
             AlarmManager.RTC_WAKEUP,
             System.currentTimeMillis() + START_DELAY,
@@ -108,9 +103,9 @@ class BLEClient : BroadcastReceiver() {
      * @param context The context to use.
      */
     fun disable(interval: Int, context: Context) {
-        synchronized(BLETrace) {
-            BLETrace.getAlarmManager(context).cancel(getPendingIntent(interval, context))
-            stopScan(context)
+        synchronized(BLEController) {
+            BLEController.getAlarmManager(context).cancel(getPendingIntent(interval, context))
+            stopScan()
         }
     }
 
@@ -122,9 +117,8 @@ class BLEClient : BroadcastReceiver() {
      * @return the intent
      */
     private fun getPendingIntent(interval: Int, context: Context): PendingIntent {
-        val intent = Intent(context, BLEClient::class.java)
+        val intent = Intent(context, BLEScanner::class.java)
         intent.putExtra(INTERVAL_KEY, interval)
-        intent.putExtra(ISREACTNATIVE_KEY, BLETrace.isReactNative)
         return PendingIntent.getBroadcast(
             context,
             CLIENT_REQUEST_CODE,
@@ -137,30 +131,27 @@ class BLEClient : BroadcastReceiver() {
     /**
      * Start scanning
      *
-     * @param context the context to use
      */
-    private fun startScan(context: Context) {
+    private fun startScan() {
         if (mScanning) {
             Log.w(TAG,"Already scanning")
             return
         }
 
         val androidScanFilter = ScanFilter.Builder()
-            .setManufacturerData(ANDROID_MANUFACTURE_ID,
-                            ANDROID_MANUFACTURE_SUBSTRING.toByteArray(StandardCharsets.UTF_8),
-                            ANDROID_MANUFACTURE_SUBSTRING_MASK.toByteArray(StandardCharsets.UTF_8))
+            .setManufacturerData(MANUFACTURER_ID,
+                            MANUFACTURER_SUBSTRING.toByteArray(StandardCharsets.UTF_8),
+                            MANUFACTURER_SUBSTRING_MASK.toByteArray(StandardCharsets.UTF_8))
             .build()
-        val appleScanFilter = ScanFilter.Builder()
-            .setDeviceName(APPLE_DEVICE_NAME)
-            .build()
+
 
         val settings = ScanSettings.Builder()
             .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
             .build()
 
         try {
-            BLETrace.bluetoothLeScanner!!.startScan(listOf(androidScanFilter, appleScanFilter), settings, BtleScanCallback)
-            BtleScanCallback.handler.postDelayed(Runnable { stopScan(context) }, SCAN_PERIOD)
+            BLEController.bluetoothLeScanner!!.startScan(listOf(androidScanFilter), settings, ScanCallbackImpl)
+            ScanCallbackImpl.handler.postDelayed(Runnable { stopScan() }, SCAN_PERIOD)
             mScanning = true
             Log.d(TAG, "+++++++Started scanning.")
         } catch (exception: Exception) {
@@ -174,13 +165,13 @@ class BLEClient : BroadcastReceiver() {
      *
      * @param context the context to use
      */
-    private fun stopScan(context: Context) {
+    private fun stopScan() {
 
-        synchronized(BLETrace) {
+        synchronized(BLEController) {
             try {
-                if (mScanning && BLETrace.bluetoothManager!!.adapter.isEnabled) {
-                    BLETrace.bluetoothLeScanner!!.stopScan(BtleScanCallback)
-                    scanComplete(context)
+                if (mScanning && BLEController.bluetoothManager!!.adapter.isEnabled) {
+                    BLEController.bluetoothLeScanner!!.stopScan(ScanCallbackImpl)
+                    scanComplete()
                 }
 
             } catch (exception: Exception) {
@@ -192,26 +183,12 @@ class BLEClient : BroadcastReceiver() {
         Log.d(TAG, "-------Stopped scanning.")
     }
 
-    private fun scanComplete(context: Context) {
-        if (BLETrace.isReactNative ) {
-            val devices = BtleScanCallback.mScanResults.values
-            Intent().also {  intent ->
-                intent.action = Constants.INTENT_DEVICE_SCANNED
-                intent.putExtra(RSSI_KEY, devices.map { it.rssi }.toIntArray())
-                val ids = devices.map { it.deviceUuid }
-                intent.putExtra(UUID_KEY, ids.toTypedArray())
-                Log.i(TAG, "Sending ids ${ids.size}")
-                context.sendBroadcast(intent)
-            }
-            BtleScanCallback.mScanResults.clear()
-            return
-        }
-
+    private fun scanComplete() {
         var noCurrentDevices = true
 
-        if (BtleScanCallback.mScanResults.isNotEmpty()) {
-            for (deviceAddress in BtleScanCallback.mScanResults.keys) {
-                val result: Device? = BtleScanCallback.mScanResults.get(deviceAddress)
+        if (ScanCallbackImpl.mScanResults.isNotEmpty()) {
+            for (deviceAddress in ScanCallbackImpl.mScanResults.keys) {
+                val result: Device? = ScanCallbackImpl.mScanResults.get(deviceAddress)
                 result?.let { device ->
                     Log.d(
                         TAG,
@@ -227,7 +204,7 @@ class BLEClient : BroadcastReceiver() {
             }
 
             // Clear the scan results
-            BtleScanCallback.mScanResults.clear()
+            ScanCallbackImpl.mScanResults.clear()
         }
         if (noCurrentDevices) {
             GlobalScope.launch { DeviceRepository.noCurrentDevices() }

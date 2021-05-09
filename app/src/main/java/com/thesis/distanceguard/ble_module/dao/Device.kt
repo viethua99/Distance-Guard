@@ -1,4 +1,4 @@
-package ai.kun.opentracesdk_fat.dao
+package com.thesis.distanceguard.ble_module.dao
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -15,7 +15,6 @@ import androidx.room.PrimaryKey
  * @property timeStamp The timestamp
  * @property sessionId The session ID
  * @property isTeamMember True if the detected handset was a team member at the time of detection
- * @property isAndroid True if the device was android, false if the device was iOS
  */
 @Entity(tableName = "device_table")
 data class Device(
@@ -40,8 +39,6 @@ data class Device(
     val sessionId: String,
 
     @ColumnInfo(name = "is_team_member")
-    val isTeamMember: Boolean,
+    val isTeamMember: Boolean
 
-    @ColumnInfo(name = "is_android")
-    val isAndroid: Boolean
 )

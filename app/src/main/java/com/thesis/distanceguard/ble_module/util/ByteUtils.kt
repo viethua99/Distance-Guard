@@ -1,4 +1,4 @@
-package ai.kun.opentracesdk_fat.util
+package com.thesis.distanceguard.ble_module.util
 
 import android.util.Log
 import androidx.annotation.Nullable

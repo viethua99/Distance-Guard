@@ -1,8 +1,5 @@
 package com.thesis.distanceguard.presentation.dashboard
 
-import ai.kun.opentracesdk_fat.dao.Device
-import ai.kun.opentracesdk_fat.util.BluetoothUtils
-import ai.kun.opentracesdk_fat.util.Constants
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
@@ -11,16 +8,11 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SortedList
 import com.bumptech.glide.Glide
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.api.model.CountryResponse
 import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
-import com.thesis.distanceguard.presentation.countries.CountriesAdapter
 import com.thesis.distanceguard.util.AppUtil
-import java.util.*
-import kotlin.Comparator
-import kotlin.collections.ArrayList
 
 class DashboardRecyclerViewAdapter(context: Context) :
     BaseRecyclerViewAdapter<CountryResponse, DashboardRecyclerViewAdapter.ViewHolder>(context) {

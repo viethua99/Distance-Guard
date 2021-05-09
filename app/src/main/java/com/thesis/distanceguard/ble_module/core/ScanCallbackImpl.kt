@@ -1,21 +1,19 @@
-package ai.kun.opentracesdk_fat.alarm
+package com.thesis.distanceguard.ble_module.core
 
-import ai.kun.opentracesdk_fat.BLETrace
-import ai.kun.opentracesdk_fat.dao.Device
-import ai.kun.opentracesdk_fat.util.Constants
-import android.bluetooth.BluetoothDevice
 import android.bluetooth.le.ScanCallback
-import android.bluetooth.le.ScanRecord
 import android.bluetooth.le.ScanResult
 import android.os.Build
 import android.os.Handler
 import android.os.ParcelUuid
 import android.util.Log
+import com.thesis.distanceguard.ble_module.BLEController
+import com.thesis.distanceguard.ble_module.dao.Device
+import com.thesis.distanceguard.ble_module.util.Constants
 
 /**
  * Record the results of the scans
  */
-object BtleScanCallback: ScanCallback() {
+object ScanCallbackImpl: ScanCallback() {
     private val TAG = "BtleScanCallback"
     val mScanResults = HashMap<String, Device>()
     val handler = Handler()
@@ -63,10 +61,10 @@ object BtleScanCallback: ScanCallback() {
         synchronized(this) {
             val deviceAddress = result.device.address
             var uuid: ParcelUuid? = result.scanRecord?.serviceUuids?.get(0)
-            var isAndroid = (uuid.toString().startsWith(Constants.ANDROID_PREFIX))
+
 
             // Only record devices where the UUID is one from our app...
-            if (isAndroid || uuid.toString().startsWith(Constants.IOS_PREFIX)) {
+            if ((uuid.toString().startsWith(Constants.SERVICE_PREFIX))) {
                 var rssi: Int = result.rssi
                 var txPower: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     result.txPower
@@ -85,8 +83,7 @@ object BtleScanCallback: ScanCallback() {
                     timeStampNanos,
                     timeStamp,
                     sessionId,
-                    BLETrace.isTeamMember(uuid.toString()),
-                    isAndroid
+                    BLEController.isTeamMember(uuid.toString())
                 )
 
                 // Use a rolling average...

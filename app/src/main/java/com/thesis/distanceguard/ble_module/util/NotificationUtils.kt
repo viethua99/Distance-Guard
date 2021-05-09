@@ -1,7 +1,5 @@
-package ai.kun.opentracesdk_fat.util
+package com.thesis.distanceguard.ble_module.util
 
-import ai.kun.opentracesdk_fat.R
-import ai.kun.opentracesdk_fat.BLETrace
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -12,16 +10,18 @@ import android.graphics.Color
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.Observer
+import com.thesis.distanceguard.R
+import com.thesis.distanceguard.ble_module.BLEController
 
 /**
  * A set of utilities to help with notifications
  */
 object NotificationUtils {
     // Constants for the notification actions buttons.
-    public const val ACTION_TOO_CLOSE_NOTIFICATION =
+     const val ACTION_TOO_CLOSE_NOTIFICATION =
         "ai.kun.socialdistancealarm.ACTION_TOO_CLOSE_NOTIFICATION"
 
-    public const val ACTION_DANGER_NOTIFICATION =
+     const val ACTION_DANGER_NOTIFICATION =
         "ai.kun.socialdistancealarm.ACTION_DANGER_NOTIFICATION"
 
     // Notification channel ID.
@@ -82,11 +82,11 @@ object NotificationUtils {
         }
 
         // Listen for pause and clear notifications...
-        BLETrace.isStarted.observeForever(Observer { isStarted ->
+        BLEController.isStarted.observeForever { isStarted ->
             if (!isStarted) {
                 notifyManager.cancelAll()
             }
-        })
+        }
     }
 
     /**
@@ -94,7 +94,7 @@ object NotificationUtils {
      *
      */
     fun sendNotificationTooClose() {
-        BLETrace.isStarted.value?.let {
+        BLEController.isStarted.value?.let {
             if (it) {
                 // Sets up the pending intent to update the notification.
                 val updateIntent = Intent(ACTION_TOO_CLOSE_NOTIFICATION)
@@ -118,7 +118,7 @@ object NotificationUtils {
      *
      */
     fun sendNotificationDanger() {
-        BLETrace.isStarted.value?.let {
+        BLEController.isStarted.value?.let {
             if (it) {
                 // Sets up the pending intent to update the notification.
                 val updateIntent = Intent(ACTION_DANGER_NOTIFICATION)

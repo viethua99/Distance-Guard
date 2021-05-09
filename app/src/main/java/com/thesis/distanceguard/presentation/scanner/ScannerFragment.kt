@@ -1,10 +1,5 @@
 package com.thesis.distanceguard.presentation.scanner
 
-import ai.kun.opentracesdk_fat.BLETrace
-import ai.kun.opentracesdk_fat.DeviceRepository
-import ai.kun.opentracesdk_fat.dao.Device
-import ai.kun.opentracesdk_fat.util.BluetoothUtils
-import ai.kun.opentracesdk_fat.util.Constants
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
@@ -19,6 +14,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thesis.distanceguard.R
+import com.thesis.distanceguard.ble_module.BLEController
+import com.thesis.distanceguard.ble_module.dao.Device
+import com.thesis.distanceguard.ble_module.repository.DeviceRepository
+import com.thesis.distanceguard.ble_module.util.BluetoothUtils
+import com.thesis.distanceguard.ble_module.util.Constants
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_scanner.*
@@ -82,6 +82,7 @@ class ScannerFragment : BaseFragment() {
             ViewModelProvider(this, viewModelFactory).get(ScannerViewModel::class.java)
 
         scannerViewModel.isBLEStarted.observe(viewLifecycleOwner, Observer { isStarted ->
+            Timber.d("isStarted = $isStarted")
             isStarted?.let {
                 setupVisibilities(it)
             }
@@ -111,7 +112,7 @@ class ScannerFragment : BaseFragment() {
     }
 
     private fun setupViews() {
-        BLETrace.isStarted.value?.let {
+        BLEController.isStarted.value?.let {
             setupVisibilities(it)
         }
         btn_scanning.setOnClickListener(onScanButtonClickListener)
@@ -184,11 +185,7 @@ class ScannerFragment : BaseFragment() {
             val signalStrengthList = mutableListOf<Int>()
             val memberList = mutableListOf<Device>()
             for (device in devices) {
-                val signal = BluetoothUtils.calculateSignal(
-                    device.rssi,
-                    device.txPower,
-                    device.isAndroid
-                )
+                val signal = BluetoothUtils.calculateSignal(device.rssi, device.txPower)
                 signalStrengthList.add(signal)
 
                 if (device.isTeamMember) {
