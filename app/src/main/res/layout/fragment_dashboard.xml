@@ -410,6 +410,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:text="Cases"
+                        android:textColor="@color/black"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_cases_1_count" />
 
@@ -457,6 +458,8 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:textColor="@color/black"
+
                         android:id="@+id/tv_recover_1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -508,6 +511,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:textColor="@color/black"
                         android:id="@+id/tv_deaths_1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

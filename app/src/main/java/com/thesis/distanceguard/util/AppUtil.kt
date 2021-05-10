@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object AppUtil {
-    private const val DATE_FORMAT = "MM/dd/yyyy"
+    private const val DATE_FORMAT = "MMMM dd, yyyy HH:mm:ss"
 
     fun toNumberWithCommas(input: Long): String {
         return "%,d".format(input)

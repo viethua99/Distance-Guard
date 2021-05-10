@@ -113,7 +113,7 @@ class DashboardFragment : BaseFragment() {
     private fun setupLineChart() {
         chart_daily_case.gradientFillColors =
             intArrayOf(
-                Color.parseColor("#e6f2ff"),
+                Color.parseColor("#99caff"),
                 Color.TRANSPARENT
             )
         chart_daily_case.animation.duration = ANIMATION_DURATION
@@ -121,7 +121,7 @@ class DashboardFragment : BaseFragment() {
 
         chart_daily_recovered.gradientFillColors =
             intArrayOf(
-                Color.parseColor("#e9faee"),
+                Color.parseColor("#a6ecbb"),
                 Color.TRANSPARENT
             )
         chart_daily_recovered.animation.duration = ANIMATION_DURATION
@@ -129,7 +129,7 @@ class DashboardFragment : BaseFragment() {
 
         chart_daily_deaths.gradientFillColors =
             intArrayOf(
-                Color.parseColor("#ffeff2"),
+                Color.parseColor("#ffb9b9"),
                 Color.TRANSPARENT
             )
         chart_daily_deaths.animation.duration = ANIMATION_DURATION

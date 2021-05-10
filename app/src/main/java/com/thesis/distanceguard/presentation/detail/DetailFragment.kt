@@ -61,7 +61,7 @@ class DetailFragment() : BaseFragment() {
     private fun setupLineChart() {
         chart_cases.gradientFillColors =
             intArrayOf(
-                Color.parseColor("#e6f2ff"),
+                Color.parseColor("#99caff"),
                 Color.TRANSPARENT
             )
         chart_cases.animation.duration = animationDuration
@@ -69,7 +69,7 @@ class DetailFragment() : BaseFragment() {
 
         chart_recovered.gradientFillColors =
             intArrayOf(
-                Color.parseColor("#e9faee"),
+                Color.parseColor("#a6ecbb"),
                 Color.TRANSPARENT
             )
         chart_recovered.animation.duration = animationDuration
@@ -77,7 +77,7 @@ class DetailFragment() : BaseFragment() {
 
         chart_death.gradientFillColors =
             intArrayOf(
-                Color.parseColor("#ffeff2"),
+                Color.parseColor("#ffb9b9"),
                 Color.TRANSPARENT
             )
         chart_death.animation.duration = animationDuration
