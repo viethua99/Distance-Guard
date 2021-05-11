@@ -12,6 +12,7 @@ import javax.inject.Inject
 
 class CountriesViewModel @Inject constructor(): ViewModel(){
      val countryList = MutableLiveData<ArrayList<CountryResponse>>()
+     val errorMessage = MutableLiveData<String>()
 
     fun fetchCountryList(): LiveData<ArrayList<CountryResponse>>{
         CovidService.getApi().getCountryListData().enqueue(object : Callback<ArrayList<CountryResponse>>{
@@ -25,7 +26,8 @@ class CountriesViewModel @Inject constructor(): ViewModel(){
             }
 
             override fun onFailure(call: Call<ArrayList<CountryResponse>>, t: Throwable) {
-                    countryList.value = null
+                errorMessage.value = t.message
+
             }
         })
         return countryList

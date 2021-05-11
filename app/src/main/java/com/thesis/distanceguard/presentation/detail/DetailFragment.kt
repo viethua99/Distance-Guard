@@ -42,6 +42,10 @@ class DetailFragment() : BaseFragment() {
     private fun setupViewModel() {
         AndroidSupportInjection.inject(this)
         detailViewModel = ViewModelProvider(this, viewModelFactory).get(DetailViewModel::class.java)
+        detailViewModel.errorMessage.observe(this, Observer {
+            hideDialog()
+            showToastMessage(it)
+        })
     }
 
     override fun onResume() {

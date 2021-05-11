@@ -14,9 +14,10 @@ import timber.log.Timber
 
 class DetailViewModel @Inject constructor() : ViewModel() {
     private val dataCountryResponse = MutableLiveData<HistoricalCountryResponse>()
+     val errorMessage = MutableLiveData<String>()
 
     fun fetchCountry(countryID: String): LiveData<HistoricalCountryResponse> {
-        CovidService.getApi().getCountryHistory(countryID)
+        CovidService.getApi().getCountryHistory(countryID,"30")
             .enqueue(object : Callback<HistoricalCountryResponse> {
                 override fun onResponse(
                     call: Call<HistoricalCountryResponse>,
@@ -25,11 +26,12 @@ class DetailViewModel @Inject constructor() : ViewModel() {
                     Timber.d("check value " + response.body())
                     if (response.isSuccessful) {
                         dataCountryResponse.value = response.body()
-                    }
+                    } else {
+                        errorMessage.value = "Cannot fetch data from server"                    }
                 }
 
                 override fun onFailure(call: Call<HistoricalCountryResponse>, t: Throwable) {
-                    dataCountryResponse.value = null
+                    errorMessage.value = t.message
                 }
             })
         return dataCountryResponse
