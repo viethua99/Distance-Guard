@@ -19,6 +19,8 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
     private val historicalWorldwideResponse = MutableLiveData<HistoricalWorldwideResponse>()
     private val vietnamResponse = MutableLiveData<CountryResponse>()
     private val historicalVietnamResponse = MutableLiveData<HistoricalCountryResponse>()
+     val errorMessage = MutableLiveData<String>()
+
     val countryList = MutableLiveData<ArrayList<CountryResponse>>()
 
 
@@ -34,14 +36,14 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
             }
 
             override fun onFailure(call: Call<WorldwideResponse>, t: Throwable) {
-                worldwideResponse.value = null
+                errorMessage.value = t.message
             }
         })
         return worldwideResponse
     }
 
-    fun fetchWorldwideHistory(): LiveData<HistoricalWorldwideResponse> {
-        CovidService.getApi().getWorldwideHistory().enqueue(object : Callback<HistoricalWorldwideResponse> {
+    fun fetchWorldwideHistory(lastdays:String): LiveData<HistoricalWorldwideResponse> {
+        CovidService.getApi().getWorldwideHistory(lastdays).enqueue(object : Callback<HistoricalWorldwideResponse> {
             override fun onResponse(
                 call: Call<HistoricalWorldwideResponse>,
                 response: Response<HistoricalWorldwideResponse>
@@ -56,7 +58,7 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
 
             override fun onFailure(call: Call<HistoricalWorldwideResponse>, t: Throwable) {
                 Timber.d("onFailure: " + t.message)
-                historicalWorldwideResponse.value = null
+                errorMessage.value = t.message
             }
         })
         return historicalWorldwideResponse
@@ -75,14 +77,14 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
             }
 
             override fun onFailure(call: Call<CountryResponse>, t: Throwable) {
-                vietnamResponse.value = null
+                errorMessage.value = t.message
             }
         })
         return vietnamResponse
     }
 
-    fun fetchVietnamHistory(): LiveData<HistoricalCountryResponse> {
-        CovidService.getApi().getCountryHistory("vietnam")
+    fun fetchVietnamHistory(lastdays: String): LiveData<HistoricalCountryResponse> {
+        CovidService.getApi().getCountryHistory("vietnam",lastdays)
             .enqueue(object : Callback<HistoricalCountryResponse> {
                 override fun onResponse(
                     call: Call<HistoricalCountryResponse>,
@@ -98,7 +100,7 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
 
                 override fun onFailure(call: Call<HistoricalCountryResponse>, t: Throwable) {
                     Timber.d("onFailure: %s", t.message)
-                    historicalVietnamResponse.value = null
+                    errorMessage.value = t.message
                 }
             })
         return historicalVietnamResponse
@@ -116,7 +118,7 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
             }
 
             override fun onFailure(call: Call<ArrayList<CountryResponse>>, t: Throwable) {
-                countryList.value = null
+                errorMessage.value = t.message
             }
         })
         return countryList

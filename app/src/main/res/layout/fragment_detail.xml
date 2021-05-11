@@ -31,11 +31,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="---"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textColor="@color/primary_color"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cases" />
@@ -73,10 +74,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="---"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textColor="@color/green_500"
                     android:textStyle="bold" />
                 <TextView
+                    android:textColor="@color/black"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Recovered"
@@ -117,11 +120,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="---"
-                        android:textSize="18dp"
+                        android:textSize="18sp"
                         android:textColor="@color/red_500"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Deaths"
