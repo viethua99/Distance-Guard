@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.thesis.distanceguard.retrofit.CovidService
 import com.thesis.distanceguard.retrofit.response.CountryResponse
 import com.thesis.distanceguard.retrofit.response.HistoricalWorldwideResponse
 import com.thesis.distanceguard.retrofit.response.HistoricalCountryResponse
@@ -13,13 +12,15 @@ import com.thesis.distanceguard.model.ChartDate
 import com.thesis.distanceguard.model.ChartType
 import com.thesis.distanceguard.model.DashboardMode
 import com.thesis.distanceguard.repository.CovidRepository
+import com.thesis.distanceguard.repository.Result
+
 import com.thesis.distanceguard.repository.Success
-import com.thesis.distanceguard.room.Student
+import com.thesis.distanceguard.repository.Error
+import com.thesis.distanceguard.room.entities.CountryEntity
+import com.thesis.distanceguard.room.entities.WorldwideEntity
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import timber.log.Timber
+
 import javax.inject.Inject
 
 class DashboardViewModel @Inject constructor(private val covidRepository: CovidRepository) :
@@ -29,23 +30,15 @@ class DashboardViewModel @Inject constructor(private val covidRepository: CovidR
     private val dashboardMode = MutableLiveData<DashboardMode>(DashboardMode.WORLDWIDE)
 
 
-    val worldwideResponse = MutableLiveData<WorldwideResponse>()
+    val worldwideResponse = MutableLiveData<WorldwideEntity>()
     val vietnamResponse = MutableLiveData<CountryResponse>()
 
     val historicalWorldwideResponse = MutableLiveData<HistoricalWorldwideResponse>()
     val historicalVietnamResponse = MutableLiveData<HistoricalCountryResponse>()
 
     val errorMessage = MutableLiveData<String>()
-    val countryList = MutableLiveData<ArrayList<CountryResponse>>()
+    val countryList = MutableLiveData<ArrayList<CountryEntity>>()
 
-//    fun testDataBase() {
-//        viewModelScope.launch {
-//            covidRepository.insert(Student(name = "hello", email = "123@gmail.com", sdt = ""))
-//            covidRepository.insert(Student(name = "hello2", email = "12344@gmail.com", sdt = ""))
-//            covidRepository.insert(Student(name = "hello3", email = "12344@gmail.com", sdt = ""))
-//
-//        }
-//    }
 
     fun fetchDashboardData(dashboardMode: DashboardMode) {
         this.dashboardMode.value = dashboardMode
@@ -84,12 +77,6 @@ class DashboardViewModel @Inject constructor(private val covidRepository: CovidR
 
             ChartType.CUMULATIVE -> {
                 fetchChartByDate(chartDate.value!!)
-//                viewModelScope.launch {
-//                    val list = covidRepository.getAllStudents()
-//                    for (student in list) {
-//                        Timber.d(student.toString())
-//                    }
-//                }
             }
         }
     }
@@ -121,10 +108,11 @@ class DashboardViewModel @Inject constructor(private val covidRepository: CovidR
     private fun fetchWorldwideData() {
         viewModelScope.launch {
             when (val result = covidRepository.getWorldwideData()) {
-                is Success<WorldwideResponse> -> {
+                is Success<WorldwideEntity> -> {
                     worldwideResponse.value = result.data
                 }
                 is Error -> {
+                    worldwideResponse.value = covidRepository.getLocalWorldwideData()
                     errorMessage.value = result.message
                 }
 
@@ -174,13 +162,14 @@ class DashboardViewModel @Inject constructor(private val covidRepository: CovidR
         }
     }
 
-    fun fetchCountryList(): LiveData<ArrayList<CountryResponse>> {
+    fun fetchCountryList(): LiveData<ArrayList<CountryEntity>> {
         viewModelScope.launch {
             when (val result = covidRepository.getCountryListData()) {
-                is Success<ArrayList<CountryResponse>> -> {
+                is Success<ArrayList<CountryEntity>> -> {
                     countryList.value = result.data
                 }
                 is Error -> {
+                    countryList.value = covidRepository.getLocalCountryList()
                     errorMessage.value = result.message
                 }
 

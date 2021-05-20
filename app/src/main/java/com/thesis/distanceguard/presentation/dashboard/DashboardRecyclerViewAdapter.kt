@@ -12,10 +12,11 @@ import com.bumptech.glide.Glide
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.retrofit.response.CountryResponse
 import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
+import com.thesis.distanceguard.room.entities.CountryEntity
 import com.thesis.distanceguard.util.AppUtil
 
 class DashboardRecyclerViewAdapter(context: Context) :
-    BaseRecyclerViewAdapter<CountryResponse, DashboardRecyclerViewAdapter.ViewHolder>(context) {
+    BaseRecyclerViewAdapter<CountryEntity, DashboardRecyclerViewAdapter.ViewHolder>(context) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = layoutInflater.inflate(R.layout.item_top_country, parent, false)
@@ -51,7 +52,7 @@ class DashboardRecyclerViewAdapter(context: Context) :
             itemClickListener.onClick(adapterPosition, dataList[adapterPosition])
 
         }
-        fun renderUI(data: CountryResponse,position: Int) {
+        fun renderUI(data: CountryEntity,position: Int) {
             when(position){
                 0 -> {
                     clTopCountryBackground.background = ContextCompat.getDrawable(context,R.drawable.background_gradient_top_one)
@@ -70,12 +71,12 @@ class DashboardRecyclerViewAdapter(context: Context) :
                 }
             }
             tvCountryName.text = data.country
-            tvTodayCaseCount.text = "+" + AppUtil.toNumberWithCommas(data.todayCases.toLong())
-            tvTodayRecoveredCount.text = "+" + AppUtil.toNumberWithCommas(data.todayRecovered.toLong())
-            tvTodayDeathsCount.text = "+" + AppUtil.toNumberWithCommas(data.todayDeaths.toLong())
+            tvTodayCaseCount.text = "+" + AppUtil.toNumberWithCommas(data.todayCases!!.toLong())
+            tvTodayRecoveredCount.text = "+" + AppUtil.toNumberWithCommas(data.todayRecovered!!.toLong())
+            tvTodayDeathsCount.text = "+" + AppUtil.toNumberWithCommas(data.todayDeaths!!.toLong())
             Glide
                 .with(itemView.context)
-                .load(data.countryInfo.flag)
+                .load(data.countryInfoEntity!!.flag)
                 .centerCrop()
                 .into(imgCountryFlag)
 

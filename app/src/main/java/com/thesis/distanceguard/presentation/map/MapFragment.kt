@@ -27,6 +27,7 @@ import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.countries.CountriesAdapter
 import com.thesis.distanceguard.presentation.countries.MapAdapter
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
+import com.thesis.distanceguard.room.entities.CountryEntity
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_bottom_sheet.recycler_view
@@ -127,14 +128,14 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
             adapter = mapAdapter
         }
         mapAdapter.itemClickListener = object :
-            MapAdapter.ItemClickListener<CountryResponse> {
-            override fun onClick(position: Int, item: CountryResponse) {
+            MapAdapter.ItemClickListener<CountryEntity> {
+            override fun onClick(position: Int, item: CountryEntity) {
                 Timber.d("onClick: $item")
                 edt_search.hideKeyboard()
                 selectItem(item)
             }
 
-            override fun onLongClick(position: Int, item: CountryResponse) {}
+            override fun onLongClick(position: Int, item: CountryEntity) {}
         }
     }
 
@@ -153,10 +154,10 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 4f))
     }
 
-    private fun selectItem(data: CountryResponse) {
+    private fun selectItem(data: CountryEntity) {
         googleMap?.let {
-            moveCamera(LatLng(data.countryInfo.lat, data.countryInfo.long))
-            startPulseAnimation(LatLng(data.countryInfo.lat, data.countryInfo.long))
+            moveCamera(LatLng(data.countryInfoEntity!!.lat!!, data.countryInfoEntity!!.long!!))
+            startPulseAnimation(LatLng(data.countryInfoEntity!!.lat!!, data.countryInfoEntity!!.long!!))
         }
     }
 
@@ -164,14 +165,14 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         mapViewModel.fetchCountryList().observe(this, countryListObserver)
     }
 
-    private val countryListObserver = Observer<ArrayList<CountryResponse>> {
+    private val countryListObserver = Observer<ArrayList<CountryEntity>> {
         it?.let {
             updateMarkers(it)
             mapAdapter.add(it)
         }
     }
 
-    private fun updateMarkers(data: ArrayList<CountryResponse>) {
+    private fun updateMarkers(data: ArrayList<CountryEntity>) {
         googleMap?.clear()
         markers.clear()
         data.filterIsInstance<CountryResponse>().forEach {

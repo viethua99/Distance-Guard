@@ -12,6 +12,7 @@ import com.thesis.distanceguard.retrofit.response.CountryResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.detail.DetailFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
+import com.thesis.distanceguard.room.entities.CountryEntity
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_countries.*
 import timber.log.Timber
@@ -76,8 +77,8 @@ class CountriesFragment : BaseFragment() {
         }
 
         countriesAdapter.itemClickListener = object :
-            CountriesAdapter.ItemClickListener<CountryResponse> {
-            override fun onClick(position: Int, item: CountryResponse) {
+            CountriesAdapter.ItemClickListener<CountryEntity> {
+            override fun onClick(position: Int, item: CountryEntity) {
                 Timber.d("onClick: $item")
 
                 ViewCompat.postOnAnimationDelayed(view!!, // Delay to show ripple effect
@@ -93,11 +94,11 @@ class CountriesFragment : BaseFragment() {
 
             }
 
-            override fun onLongClick(position: Int, item: CountryResponse) {}
+            override fun onLongClick(position: Int, item: CountryEntity) {}
         }
     }
 
-    private val countryListObserver = Observer<ArrayList<CountryResponse>> {
+    private val countryListObserver = Observer<ArrayList<CountryEntity>> {
         it?.let {
             countriesAdapter.add(it)
         }

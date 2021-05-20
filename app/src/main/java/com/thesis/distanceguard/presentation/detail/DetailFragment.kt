@@ -10,12 +10,13 @@ import com.thesis.distanceguard.retrofit.response.CountryResponse
 import com.thesis.distanceguard.retrofit.response.HistoricalCountryResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
+import com.thesis.distanceguard.room.entities.CountryEntity
 import com.thesis.distanceguard.util.AppUtil
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_detail.*
 import timber.log.Timber
 
-class DetailFragment(private val itemCountry: CountryResponse) : BaseFragment() {
+class DetailFragment(private val itemCountry: CountryEntity) : BaseFragment() {
 
     companion object {
         const val TAG = "DetailFragment"
@@ -47,7 +48,7 @@ class DetailFragment(private val itemCountry: CountryResponse) : BaseFragment() 
     override fun onResume() {
         super.onResume()
         Timber.d("onResume")
-        setupToolbarTitle(itemCountry.country)
+        setupToolbarTitle(itemCountry.country!!)
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
@@ -85,7 +86,7 @@ class DetailFragment(private val itemCountry: CountryResponse) : BaseFragment() 
 
     private fun fetchCountry() {
         showProgressDialog("Fetching data")
-        detailViewModel.fetchCountry(itemCountry.countryInfo.id.toString())
+        detailViewModel.fetchCountry(itemCountry.countryInfoEntity!!.id.toString())
             .observe(this, countryObserver)
     }
 
@@ -123,21 +124,21 @@ class DetailFragment(private val itemCountry: CountryResponse) : BaseFragment() 
 
 
     private fun updateOtherInformation() {
-        tv_test_count.text = AppUtil.toNumberWithCommas(itemCountry.tests.toLong())
-        tv_population_count.text = AppUtil.toNumberWithCommas(itemCountry.population.toLong())
+        tv_test_count.text = AppUtil.toNumberWithCommas(itemCountry.tests!!.toLong())
+        tv_population_count.text = AppUtil.toNumberWithCommas(itemCountry.population!!.toLong())
         tv_one_case_per_people_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.oneCasePerPeople.toLong())
+            AppUtil.toNumberWithCommas(itemCountry.oneCasePerPeople!!.toLong())
         tv_one_test_per_people_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.oneTestPerPeople.toLong())
+            AppUtil.toNumberWithCommas(itemCountry.oneTestPerPeople!!.toLong())
         tv_one_death_per_people_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.oneDeathPerPeople.toLong())
+            AppUtil.toNumberWithCommas(itemCountry.oneDeathPerPeople!!.toLong())
         tv_case_per_one_million_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.casesPerOneMillion.toLong())
+            AppUtil.toNumberWithCommas(itemCountry.casesPerOneMillion!!.toLong())
         tv_death_per_one_million_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.deathsPerOneMillion.toLong())
+            AppUtil.toNumberWithCommas(itemCountry.deathsPerOneMillion!!.toLong())
         tv_test_per_one_million_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.testsPerOneMillion.toLong())
+            AppUtil.toNumberWithCommas(itemCountry.testsPerOneMillion!!.toLong())
         tv_active_per_one_million_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.activePerOneMillion.toLong())
+            AppUtil.toNumberWithCommas(itemCountry.activePerOneMillion!!.toLong())
     }
 }

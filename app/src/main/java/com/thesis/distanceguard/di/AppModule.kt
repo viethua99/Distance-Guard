@@ -34,7 +34,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideCovidRepository(covidDatabase: CovidDatabase): CovidRepository{
-        return CovidRepository(covidDatabase.studentDao(),CovidService.getApi())
+        return CovidRepository(covidDatabase,CovidService.getApi())
     }
 
 }

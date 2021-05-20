@@ -11,23 +11,24 @@ import androidx.recyclerview.widget.SortedList
 import com.bumptech.glide.Glide
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.retrofit.response.CountryResponse
+import com.thesis.distanceguard.room.entities.CountryEntity
 import com.thesis.distanceguard.util.AppUtil
 import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList
 
 class MapAdapter(private val context:Context): RecyclerView.Adapter<MapAdapter.ViewHolder>() {
-    lateinit var itemClickListener: ItemClickListener<CountryResponse>
+    lateinit var itemClickListener: ItemClickListener<CountryEntity>
 
     companion object {
         fun filter(
-            models: List<CountryResponse>,
+            models: List<CountryEntity>,
             query: String
-        ): List<CountryResponse>? {
+        ): List<CountryEntity>? {
             val lowerCaseQuery = query.toLowerCase(Locale.ROOT)
-            val filteredModelList: MutableList<CountryResponse> = ArrayList()
+            val filteredModelList: MutableList<CountryEntity> = ArrayList()
             for (model in models) {
-                val text: String = model.country.toLowerCase(Locale.ROOT)
+                val text: String = model.country!!.toLowerCase(Locale.ROOT)
                 if (text.contains(lowerCaseQuery)) {
                     filteredModelList.add(model)
                 }
@@ -50,14 +51,14 @@ class MapAdapter(private val context:Context): RecyclerView.Adapter<MapAdapter.V
         holder.renderUI(data)
     }
 
-    fun add(models: List<CountryResponse>) {
+    fun add(models: List<CountryEntity>) {
         sortedList.addAll(models)
     }
 
-    fun replaceAll(models: List<CountryResponse>) {
+    fun replaceAll(models: List<CountryEntity>) {
         sortedList.beginBatchedUpdates()
         for (i in sortedList.size() - 1 downTo 0) {
-            val model: CountryResponse = sortedList.get(i)
+            val model: CountryEntity = sortedList.get(i)
             if (!models.contains(model)) {
                 sortedList.remove(model)
             }
@@ -67,8 +68,8 @@ class MapAdapter(private val context:Context): RecyclerView.Adapter<MapAdapter.V
     }
 
 
-    private val callback : SortedList.Callback<CountryResponse> = object : SortedList.Callback<CountryResponse>(){
-        override fun areItemsTheSame(item1: CountryResponse, item2: CountryResponse): Boolean {
+    private val callback : SortedList.Callback<CountryEntity> = object : SortedList.Callback<CountryEntity>(){
+        override fun areItemsTheSame(item1: CountryEntity, item2: CountryEntity): Boolean {
             return item1.country == item2.country
 
         }
@@ -92,22 +93,22 @@ class MapAdapter(private val context:Context): RecyclerView.Adapter<MapAdapter.V
 
         }
 
-        override fun compare(o1: CountryResponse?, o2: CountryResponse?): Int {
-            val comparator = Comparator<CountryResponse>{ a,b ->
-                a.country.compareTo(b.country)
+        override fun compare(o1: CountryEntity?, o2: CountryEntity?): Int {
+            val comparator = Comparator<CountryEntity>{ a,b ->
+                a.country!!.compareTo(b.country!!)
             }
             return comparator.compare(o1,o2)
         }
 
         override fun areContentsTheSame(
-            oldItem: CountryResponse,
-            newItem: CountryResponse?
+            oldItem: CountryEntity,
+            newItem: CountryEntity?
         ): Boolean {
             return oldItem == newItem
         }
     }
 
-    val sortedList = SortedList<CountryResponse>(CountryResponse::class.java,callback)
+    val sortedList = SortedList<CountryEntity>(CountryEntity::class.java,callback)
 
     inner class ViewHolder(view:View): RecyclerView.ViewHolder(view),View.OnClickListener {
         var imgCountryFlag: ImageView = view.findViewById(R.id.img_country_flag)
@@ -129,15 +130,15 @@ class MapAdapter(private val context:Context): RecyclerView.Adapter<MapAdapter.V
         }
 
 
-        fun renderUI(data: CountryResponse) {
+        fun renderUI(data: CountryEntity) {
             tvCountryName.text = data.country
-            tvConfirmCount.text = AppUtil.toNumberWithCommas(data.cases.toLong())
-            tvRecoveredCount.text = AppUtil.toNumberWithCommas(data.recovered.toLong())
-            tvDeathsCount.text =  AppUtil.toNumberWithCommas(data.deaths.toLong())
-            tvUpdateTime.text = "Last update ${AppUtil.convertMillisecondsToDateFormat(data.updated)}"
+            tvConfirmCount.text = AppUtil.toNumberWithCommas(data.cases!!.toLong())
+            tvRecoveredCount.text = AppUtil.toNumberWithCommas(data.recovered!!.toLong())
+            tvDeathsCount.text =  AppUtil.toNumberWithCommas(data.deaths!!.toLong())
+            tvUpdateTime.text = "Last update ${AppUtil.convertMillisecondsToDateFormat(data.updated!!)}"
             Glide
                 .with(itemView.context)
-                .load(data.countryInfo.flag)
+                .load(data.countryInfoEntity!!.flag)
                 .centerCrop()
                 .into(imgCountryFlag)
 

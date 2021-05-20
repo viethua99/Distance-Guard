@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thesis.distanceguard.repository.CovidRepository
+import com.thesis.distanceguard.repository.Error
 import com.thesis.distanceguard.repository.Success
 import com.thesis.distanceguard.retrofit.CovidService
 import com.thesis.distanceguard.retrofit.response.HistoricalCountryResponse

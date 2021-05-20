@@ -22,6 +22,8 @@ import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
 import com.thesis.distanceguard.presentation.detail.DetailFragment
 import com.thesis.distanceguard.presentation.information.InformationFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
+import com.thesis.distanceguard.room.entities.CountryEntity
+import com.thesis.distanceguard.room.entities.WorldwideEntity
 import com.thesis.distanceguard.util.AppUtil
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_dashboard.*
@@ -89,7 +91,6 @@ class DashboardFragment : BaseFragment() {
 
     private fun fetchInitData() {
         showProgressDialog("Fetching Data")
-      //  dashboardViewModel.testDataBase()
         dashboardViewModel.fetchDashboardData(DashboardMode.WORLDWIDE)
         dashboardViewModel.fetchCountryList().observe(this, countryListObserver)
 
@@ -112,8 +113,8 @@ class DashboardFragment : BaseFragment() {
             adapter = dashboardRecyclerViewAdapter
         }
         dashboardRecyclerViewAdapter.itemClickListener = object :
-            BaseRecyclerViewAdapter.ItemClickListener<CountryResponse> {
-            override fun onClick(position: Int, item: CountryResponse) {
+            BaseRecyclerViewAdapter.ItemClickListener<CountryEntity> {
+            override fun onClick(position: Int, item: CountryEntity) {
                 Timber.d("onClick: $item")
                 ViewCompat.postOnAnimationDelayed(
                     view!!, // Delay to show ripple effect
@@ -128,7 +129,7 @@ class DashboardFragment : BaseFragment() {
                 )
             }
 
-            override fun onLongClick(position: Int, item: CountryResponse) {}
+            override fun onLongClick(position: Int, item: CountryEntity) {}
         }
     }
 
@@ -342,19 +343,19 @@ class DashboardFragment : BaseFragment() {
     }
 
 
-    private val worldwideDataObserver = Observer<WorldwideResponse> {
+    private val worldwideDataObserver = Observer<WorldwideEntity> {
         it?.let {
             activity?.runOnUiThread {
                 hideDialog()
                 tv_update_time.text =
-                    "Last update ${AppUtil.convertMillisecondsToDateFormat(it.updated)}"
-                tv_total_cases_count.text = AppUtil.toNumberWithCommas(it.cases)
-                tv_total_recovered_count.text = AppUtil.toNumberWithCommas(it.recovered)
-                tv_total_death_count.text = AppUtil.toNumberWithCommas(it.deaths)
-                tv_today_cases_count.text = "(+${AppUtil.toNumberWithCommas(it.todayCases)})"
+                    "Last update ${AppUtil.convertMillisecondsToDateFormat(it.updated!!)}"
+                tv_total_cases_count.text = AppUtil.toNumberWithCommas(it.cases!!)
+                tv_total_recovered_count.text = AppUtil.toNumberWithCommas(it.recovered!!)
+                tv_total_death_count.text = AppUtil.toNumberWithCommas(it.deaths!!)
+                tv_today_cases_count.text = "(+${AppUtil.toNumberWithCommas(it.todayCases!!)})"
                 tv_today_recovered_count.text =
-                    "(+${AppUtil.toNumberWithCommas(it.todayRecovered.toLong())})"
-                tv_today_deaths_count.text = "(+${AppUtil.toNumberWithCommas(it.todayDeaths)})"
+                    "(+${AppUtil.toNumberWithCommas(it.todayRecovered!!.toLong())})"
+                tv_today_deaths_count.text = "(+${AppUtil.toNumberWithCommas(it.todayDeaths!!)})"
 
             }
 
@@ -402,7 +403,7 @@ class DashboardFragment : BaseFragment() {
         }
     }
 
-    private val countryListObserver = Observer<ArrayList<CountryResponse>> {
+    private val countryListObserver = Observer<ArrayList<CountryEntity>> {
         it?.let {
             dashboardRecyclerViewAdapter.setDataList(it)
         }
