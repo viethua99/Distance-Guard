@@ -1,9 +1,9 @@
 package com.thesis.distanceguard.api
 
-import com.thesis.distanceguard.api.model.CountryResponse
-import com.thesis.distanceguard.api.model.HistoricalWorldwideResponse
-import com.thesis.distanceguard.api.model.HistoricalCountryResponse
-import com.thesis.distanceguard.api.model.WorldwideResponse
+import com.thesis.distanceguard.api.response.CountryResponse
+import com.thesis.distanceguard.api.response.HistoricalWorldwideResponse
+import com.thesis.distanceguard.api.response.HistoricalCountryResponse
+import com.thesis.distanceguard.api.response.WorldwideResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

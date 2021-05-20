@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.thesis.distanceguard.api.CovidService
-import com.thesis.distanceguard.api.model.CountryResponse
+import com.thesis.distanceguard.api.response.CountryResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

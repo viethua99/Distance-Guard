@@ -13,7 +13,10 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.thesis.distanceguard.R
-import com.thesis.distanceguard.api.model.*
+import com.thesis.distanceguard.api.response.*
+import com.thesis.distanceguard.model.ChartDate
+import com.thesis.distanceguard.model.ChartType
+import com.thesis.distanceguard.model.DashboardMode
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
 import com.thesis.distanceguard.presentation.detail.DetailFragment
@@ -30,9 +33,6 @@ class DashboardFragment : BaseFragment() {
 
     private lateinit var dashboardViewModel: DashboardViewModel
     private lateinit var dashboardRecyclerViewAdapter: DashboardRecyclerViewAdapter
-    private var chartType = "Daily"
-    private var lastdays = "30"
-    private var country = "Worldwide"
     override fun getResLayoutId(): Int {
         return R.layout.fragment_dashboard
     }
@@ -49,7 +49,10 @@ class DashboardFragment : BaseFragment() {
         AndroidSupportInjection.inject(this)
         dashboardViewModel =
             ViewModelProvider(this, viewModelFactory).get(DashboardViewModel::class.java)
-        dashboardViewModel.fetchCountryList().observe(this, topCountryListObserver)
+        dashboardViewModel.worldwideResponse.observe(this, worldwideDataObserver)
+        dashboardViewModel.vietnamResponse.observe(this, vietnamDataObserver)
+        dashboardViewModel.historicalWorldwideResponse.observe(this, worldwideHistoryObserver)
+        dashboardViewModel.historicalVietnamResponse.observe(this, vietnamHistoryObserver)
     }
 
     private fun setupViews() {
@@ -58,22 +61,14 @@ class DashboardFragment : BaseFragment() {
         }
 
         chip_group_filters.setOnCheckedChangeListener { _, checkedId ->
+            showProgressDialog("Fetching Data")
             when (checkedId) {
                 R.id.chip_thirty_days -> {
-                    lastdays = "30"
-                    if (country == "Worldwide") {
-                        fetchWorldwideHistory(lastdays)
-                    } else {
-                        fetchVietnamHistory(lastdays)
-                    }
+                    dashboardViewModel.fetchChartByDate(ChartDate.THIRTY_DAYS)
                 }
                 else -> {
-                    lastdays = "all"
-                    if (country == "Worldwide") {
-                        fetchWorldwideHistory(lastdays)
-                    } else {
-                        fetchVietnamHistory(lastdays)
-                    }
+                    dashboardViewModel.fetchChartByDate(ChartDate.ALL_TIME)
+
                 }
             }
         }
@@ -94,9 +89,9 @@ class DashboardFragment : BaseFragment() {
 
     private fun fetchInitData() {
         showProgressDialog("Fetching Data")
-        fetchTopCountryList()
-        fetchWorldwideData()
-        fetchWorldwideHistory("30")
+        dashboardViewModel.fetchDashboardData(DashboardMode.WORLDWIDE)
+        dashboardViewModel.fetchCountryList().observe(this, countryListObserver)
+
 
         dashboardViewModel.errorMessage.observe(this, Observer {
             hideDialog()
@@ -136,13 +131,6 @@ class DashboardFragment : BaseFragment() {
         }
     }
 
-    private val topCountryListObserver = Observer<ArrayList<CountryResponse>> {
-        it?.let {
-            dashboardRecyclerViewAdapter.setDataList(it)
-        }
-    }
-
-
     private fun setupLineChart() {
         chart_spread.legend.textColor = ContextCompat.getColor(context!!, R.color.primary_color)
         chart_spread.xAxis.textColor = ContextCompat.getColor(context!!, R.color.primary_color)
@@ -153,7 +141,6 @@ class DashboardFragment : BaseFragment() {
         chart_spread.xAxis.isEnabled = false
         chart_spread.axisLeft.setDrawGridLines(false)
         chart_spread.xAxis.setDrawGridLines(false)
-//        chart_spread.xAxis.valueFormatter = MyXAxisValueFormatter()
         chart_spread.setExtraOffsets(0f, 0f, 0f, 15f)
     }
 
@@ -161,26 +148,16 @@ class DashboardFragment : BaseFragment() {
         val popupMenu = PopupMenu(context, tv_chart_type)
         popupMenu.menuInflater.inflate(R.menu.menu_chart_type, popupMenu.menu)
         popupMenu.setOnMenuItemClickListener {
+            showProgressDialog("Fetching Data")
             when (it.itemId) {
                 R.id.item_daily -> {
                     tv_chart_type.text = "Daily"
-                    chartType = "Daily"
-                    if (country == "Worldwide") {
-                        fetchWorldwideHistory(lastdays)
-
-                    } else {
-                        fetchVietnamHistory(lastdays)
-                    }
+                    dashboardViewModel.fetchChartDataByType(ChartType.DAILY)
                 }
                 R.id.item_cumulative -> {
                     tv_chart_type.text = "Cumulative"
-                    chartType = "Cumulative"
-                    if (country == "Worldwide") {
-                        fetchWorldwideHistory(lastdays)
+                    dashboardViewModel.fetchChartDataByType(ChartType.CUMULATIVE)
 
-                    } else {
-                        fetchVietnamHistory(lastdays)
-                    }
                 }
             }
 
@@ -189,29 +166,29 @@ class DashboardFragment : BaseFragment() {
         popupMenu.show()
     }
 
-
-    private fun fetchTopCountryList() {
-        dashboardViewModel.fetchCountryList().observe(this, countryListObserver)
+    private fun getNewCaseList(totalCaseList: List<Pair<String, Long>>): List<Pair<String, Float>> {
+        val newCaseList = ArrayList<Pair<String, Float>>()
+        for (i in 1 until totalCaseList.size) {
+            val difference = totalCaseList[i].second - totalCaseList[i - 1].second
+            if (difference <= 1000000) {
+                val newCase = Pair(totalCaseList[i].first, difference.toFloat())
+                newCaseList.add(newCase)
+            }
+        }
+        return newCaseList
     }
 
-    private fun fetchWorldwideData() {
-        showProgressDialog("Fetching data")
-        dashboardViewModel.fetchWorldwideData().observe(this, worldwideDataObserver)
+    private fun toggleWorldwideSwitch() {
+        sw_worldwide.setOnCheckedChangeListener { _, isChecked ->
+            showProgressDialog("Fetching Data")
+            if (isChecked) {
+                dashboardViewModel.fetchDashboardData(DashboardMode.VIETNAM)
+            } else {
+                dashboardViewModel.fetchDashboardData(DashboardMode.WORLDWIDE)
+            }
+        }
     }
 
-    private fun fetchWorldwideHistory(lastdays: String) {
-        showProgressDialog("Fetching data")
-        dashboardViewModel.fetchWorldwideHistory(lastdays).observe(this, worldwideHistoryObserver)
-    }
-
-    private fun fetchVietnamData() {
-        dashboardViewModel.fetchVietnamData().observe(this, vietnamDataObserver)
-    }
-
-    private fun fetchVietnamHistory(lastdays: String) {
-        showProgressDialog("Fetching data")
-        dashboardViewModel.fetchVietnamHistory(lastdays).observe(this, vietnamHistoryObserver)
-    }
 
     private fun setDailyChart(response: HistoricalWorldwideResponse) {
         val cases = getNewCaseList(response.cases.toList().sortedBy { value -> value.second })
@@ -276,6 +253,9 @@ class DashboardFragment : BaseFragment() {
 
         if (chart_spread.data != null) {
             chart_spread.clearValues()
+            chart_spread.clear()
+            chart_spread.resetZoom()
+
         }
 
         chart_spread.data = LineData(lines).apply {
@@ -348,6 +328,8 @@ class DashboardFragment : BaseFragment() {
 
         if (chart_spread.data != null) {
             chart_spread.clearValues()
+            chart_spread.clear()
+            chart_spread.resetZoom()
         }
 
         chart_spread.data = LineData(lines).apply {
@@ -378,11 +360,11 @@ class DashboardFragment : BaseFragment() {
     private val worldwideHistoryObserver = Observer<HistoricalWorldwideResponse> {
         Timber.d("worldwideHistoryObserver")
         hideDialog()
-        when (chartType) {
-            "Daily" -> {
+        when (dashboardViewModel.chartType.value) {
+            ChartType.DAILY -> {
                 setDailyChart(it)
             }
-            else -> {
+            ChartType.CUMULATIVE -> {
                 setCumulativeChart(it)
             }
         }
@@ -405,11 +387,11 @@ class DashboardFragment : BaseFragment() {
         hideDialog()
         it.let {
             val timeline = it.timeline
-            when (chartType) {
-                "Daily" -> {
+            when (dashboardViewModel.chartType.value) {
+                ChartType.DAILY -> {
                     setDailyChart(timeline)
                 }
-                else -> {
+                ChartType.CUMULATIVE -> {
                     setCumulativeChart(timeline)
                 }
             }
@@ -422,31 +404,5 @@ class DashboardFragment : BaseFragment() {
         }
     }
 
-    private fun getNewCaseList(totalCaseList: List<Pair<String, Long>>): List<Pair<String, Float>> {
-        val newCaseList = ArrayList<Pair<String, Float>>()
-        for (i in 1 until totalCaseList.size) {
-            val difference = totalCaseList[i].second - totalCaseList[i - 1].second
-            if (difference <= 1000000) {
-                val newCase = Pair(totalCaseList[i].first, difference.toFloat())
-                newCaseList.add(newCase)
-            }
-        }
-        return newCaseList
-    }
 
-    private fun toggleWorldwideSwitch() {
-        sw_worldwide.setOnCheckedChangeListener { _, isChecked ->
-            showProgressDialog("Fetching Data")
-            if (isChecked) {
-                country = "Vietnam"
-                fetchVietnamData()
-                fetchVietnamHistory(lastdays)
-            } else {
-                country = "Worldwide"
-                fetchWorldwideData()
-                fetchWorldwideHistory(lastdays)
-
-            }
-        }
-    }
 }

@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thesis.distanceguard.R
-import com.thesis.distanceguard.api.model.CountryResponse
+import com.thesis.distanceguard.api.response.CountryResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.detail.DetailFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
@@ -34,13 +34,8 @@ class CountriesFragment : BaseFragment() {
         setupRecyclerView()
 
         edt_search.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 val filteredList = CountriesAdapter.filter(
@@ -88,7 +83,6 @@ class CountriesFragment : BaseFragment() {
                             DetailFragment.TAG,
                             R.id.container_main
                         )
-
                     }
                     , 50)
 

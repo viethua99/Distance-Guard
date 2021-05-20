@@ -1,4 +1,4 @@
-package com.thesis.distanceguard.api.model
+package com.thesis.distanceguard.api.response
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
