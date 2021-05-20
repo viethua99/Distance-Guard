@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thesis.distanceguard.R
-import com.thesis.distanceguard.api.response.CountryResponse
+import com.thesis.distanceguard.retrofit.response.CountryResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.detail.DetailFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
@@ -58,7 +58,7 @@ class CountriesFragment : BaseFragment() {
         countriesViewModel =
             ViewModelProvider(this, viewModelFactory).get(CountriesViewModel::class.java)
 
-        countriesViewModel.fetchCountryList().observe(this, countryListObserver)
+       // countriesViewModel.fetchCountryList().observe(this, countryListObserver)
     }
 
     private fun setupRecyclerView() {

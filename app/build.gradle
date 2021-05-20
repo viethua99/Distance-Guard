@@ -38,8 +38,9 @@ android {
 dependencies {
     ext {
         lifecycle_version = "2.2.0"
-        room_version = "2.2.5"
         core_version = "1.2.0"
+        room_version = "2.3.0"
+
     }
     //Standard Libraries
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -101,16 +102,18 @@ dependencies {
     implementation 'com.github.f0ris.sweetalert:library:1.6.2'
     implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
 
-// Tooltips
+    // Tooltips
     implementation 'com.diogobernardino.williamchart:tooltip-slider:3.10.1'
     implementation 'com.diogobernardino.williamchart:tooltip-points:3.10.1'
     //Circle indicator
     implementation 'me.relex:circleindicator:2.1.6'
     // Room components
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    androidTestImplementation "androidx.room:room-testing:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
+    // To use Kotlin annotation processing tool (kapt)
+    kapt "androidx.room:room-compiler:$room_version"
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:$room_version"
+    androidTestImplementation "androidx.room:room-testing:$room_version"
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"

@@ -16,7 +16,6 @@ class MyApplication : Application(), HasAndroidInjector {
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
     private lateinit var appComponent: AppComponent
-
     override fun onCreate() {
         super.onCreate()
         if (MyBuildConfig.DEBUG) {

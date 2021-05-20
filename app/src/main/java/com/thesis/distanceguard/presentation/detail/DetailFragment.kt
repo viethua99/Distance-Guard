@@ -6,8 +6,8 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.thesis.distanceguard.R
-import com.thesis.distanceguard.api.response.CountryResponse
-import com.thesis.distanceguard.api.response.HistoricalCountryResponse
+import com.thesis.distanceguard.retrofit.response.CountryResponse
+import com.thesis.distanceguard.retrofit.response.HistoricalCountryResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import com.thesis.distanceguard.util.AppUtil
@@ -85,8 +85,8 @@ class DetailFragment(private val itemCountry: CountryResponse) : BaseFragment() 
 
     private fun fetchCountry() {
         showProgressDialog("Fetching data")
-        detailViewModel.fetchCountry(itemCountry.countryInfo.id.toString())
-            .observe(this, countryObserver)
+//        detailViewModel.fetchCountry(itemCountry.countryInfo.id.toString())
+//            .observe(this, countryObserver)
     }
 
     private val countryObserver = Observer<HistoricalCountryResponse> {

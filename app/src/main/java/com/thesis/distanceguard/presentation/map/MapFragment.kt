@@ -22,7 +22,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.thesis.distanceguard.R
-import com.thesis.distanceguard.api.response.CountryResponse
+import com.thesis.distanceguard.retrofit.response.CountryResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.countries.CountriesAdapter
 import com.thesis.distanceguard.presentation.countries.MapAdapter
@@ -161,7 +161,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun fetchCountry() {
-        mapViewModel.fetchCountryList().observe(this, countryListObserver)
+     //   mapViewModel.fetchCountryList().observe(this, countryListObserver)
     }
 
     private val countryListObserver = Observer<ArrayList<CountryResponse>> {

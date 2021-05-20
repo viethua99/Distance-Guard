@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SortedList
 import com.bumptech.glide.Glide
 import com.thesis.distanceguard.R
-import com.thesis.distanceguard.api.response.CountryResponse
+import com.thesis.distanceguard.retrofit.response.CountryResponse
 import com.thesis.distanceguard.util.AppUtil
 import java.util.*
 import kotlin.Comparator

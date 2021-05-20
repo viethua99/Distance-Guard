@@ -1,4 +1,4 @@
-package com.thesis.distanceguard.api.response
+package com.thesis.distanceguard.retrofit.response
 
 import com.google.gson.annotations.SerializedName
 

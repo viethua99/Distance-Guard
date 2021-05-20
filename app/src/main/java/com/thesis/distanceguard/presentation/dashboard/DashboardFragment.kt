@@ -13,7 +13,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.thesis.distanceguard.R
-import com.thesis.distanceguard.api.response.*
+import com.thesis.distanceguard.retrofit.response.*
 import com.thesis.distanceguard.model.ChartDate
 import com.thesis.distanceguard.model.ChartType
 import com.thesis.distanceguard.model.DashboardMode
@@ -89,6 +89,7 @@ class DashboardFragment : BaseFragment() {
 
     private fun fetchInitData() {
         showProgressDialog("Fetching Data")
+      //  dashboardViewModel.testDataBase()
         dashboardViewModel.fetchDashboardData(DashboardMode.WORLDWIDE)
         dashboardViewModel.fetchCountryList().observe(this, countryListObserver)
 
@@ -343,16 +344,19 @@ class DashboardFragment : BaseFragment() {
 
     private val worldwideDataObserver = Observer<WorldwideResponse> {
         it?.let {
-            hideDialog()
-            tv_update_time.text =
-                "Last update ${AppUtil.convertMillisecondsToDateFormat(it.updated)}"
-            tv_total_cases_count.text = AppUtil.toNumberWithCommas(it.cases)
-            tv_total_recovered_count.text = AppUtil.toNumberWithCommas(it.recovered)
-            tv_total_death_count.text = AppUtil.toNumberWithCommas(it.deaths)
-            tv_today_cases_count.text = "(+${AppUtil.toNumberWithCommas(it.todayCases)})"
-            tv_today_recovered_count.text =
-                "(+${AppUtil.toNumberWithCommas(it.todayRecovered.toLong())})"
-            tv_today_deaths_count.text = "(+${AppUtil.toNumberWithCommas(it.todayDeaths)})"
+            activity?.runOnUiThread {
+                hideDialog()
+                tv_update_time.text =
+                    "Last update ${AppUtil.convertMillisecondsToDateFormat(it.updated)}"
+                tv_total_cases_count.text = AppUtil.toNumberWithCommas(it.cases)
+                tv_total_recovered_count.text = AppUtil.toNumberWithCommas(it.recovered)
+                tv_total_death_count.text = AppUtil.toNumberWithCommas(it.deaths)
+                tv_today_cases_count.text = "(+${AppUtil.toNumberWithCommas(it.todayCases)})"
+                tv_today_recovered_count.text =
+                    "(+${AppUtil.toNumberWithCommas(it.todayRecovered.toLong())})"
+                tv_today_deaths_count.text = "(+${AppUtil.toNumberWithCommas(it.todayDeaths)})"
+
+            }
 
         }
     }

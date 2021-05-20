@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.thesis.distanceguard.R
-import com.thesis.distanceguard.api.response.CountryResponse
+import com.thesis.distanceguard.retrofit.response.CountryResponse
 import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
 import com.thesis.distanceguard.util.AppUtil
 
