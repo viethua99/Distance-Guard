@@ -85,8 +85,8 @@ class DetailFragment(private val itemCountry: CountryResponse) : BaseFragment() 
 
     private fun fetchCountry() {
         showProgressDialog("Fetching data")
-//        detailViewModel.fetchCountry(itemCountry.countryInfo.id.toString())
-//            .observe(this, countryObserver)
+        detailViewModel.fetchCountry(itemCountry.countryInfo.id.toString())
+            .observe(this, countryObserver)
     }
 
     private val countryObserver = Observer<HistoricalCountryResponse> {

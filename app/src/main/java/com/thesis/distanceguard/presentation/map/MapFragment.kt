@@ -161,7 +161,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun fetchCountry() {
-     //   mapViewModel.fetchCountryList().observe(this, countryListObserver)
+        mapViewModel.fetchCountryList().observe(this, countryListObserver)
     }
 
     private val countryListObserver = Observer<ArrayList<CountryResponse>> {

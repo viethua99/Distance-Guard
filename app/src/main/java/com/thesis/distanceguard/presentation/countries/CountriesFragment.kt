@@ -58,7 +58,12 @@ class CountriesFragment : BaseFragment() {
         countriesViewModel =
             ViewModelProvider(this, viewModelFactory).get(CountriesViewModel::class.java)
 
-       // countriesViewModel.fetchCountryList().observe(this, countryListObserver)
+        countriesViewModel.fetchCountryList().observe(this, countryListObserver)
+
+        countriesViewModel.errorMessage.observe(this, Observer {
+            hideDialog()
+            showToastMessage(it)
+        })
     }
 
     private fun setupRecyclerView() {
