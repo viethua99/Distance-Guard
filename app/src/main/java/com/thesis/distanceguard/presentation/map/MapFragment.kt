@@ -156,8 +156,8 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
 
     private fun selectItem(data: CountryEntity) {
         googleMap?.let {
-            moveCamera(LatLng(data.countryInfoEntity!!.lat!!, data.countryInfoEntity!!.long!!))
-            startPulseAnimation(LatLng(data.countryInfoEntity!!.lat!!, data.countryInfoEntity!!.long!!))
+            moveCamera(LatLng(data.countryInfoEntity!!.latitude!!, data.countryInfoEntity!!.longitude!!))
+            startPulseAnimation(LatLng(data.countryInfoEntity!!.latitude!!, data.countryInfoEntity!!.longitude!!))
         }
     }
 

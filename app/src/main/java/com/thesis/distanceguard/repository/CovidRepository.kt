@@ -33,7 +33,7 @@ class CovidRepository(private val covidDatabase: CovidDatabase, private val covi
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     private suspend fun updateLocalCountryList(countryList: ArrayList<CountryResponse>?) {
-        Timber.d("updateLocalData")
+        Timber.d("updateLocalData: $countryList")
         countryList?.let {
             covidDatabase.countryDao().deleteAll()
             covidDatabase.countryDao().insert(CountryMapper.responseListToEntities(it))

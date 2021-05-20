@@ -20,9 +20,9 @@ data class CountryInfoEntity(
     @field:Json(name = "iso3")
     var iso3: String? = null,
 
-    @field:Json(name = "lat")
-    var lat: Double? = null,
+    @field:Json(name = "latitude")
+    var latitude: Double? = null,
 
-    @field:Json(name = "long")
-    var long: Double? = null
+    @field:Json(name = "longitude")
+    var longitude: Double? = null
 )

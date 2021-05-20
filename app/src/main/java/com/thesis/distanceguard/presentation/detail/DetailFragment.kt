@@ -33,7 +33,9 @@ class DetailFragment(private val itemCountry: CountryEntity) : BaseFragment() {
         setHasOptionsMenu(true)
         setupViewModel()
         setupLineChart()
+        Timber.d("${itemCountry.countryInfoEntity}")
         fetchCountry()
+        updateOtherInformation()
     }
 
     private fun setupViewModel() {
@@ -119,7 +121,6 @@ class DetailFragment(private val itemCountry: CountryEntity) : BaseFragment() {
             it.timeline.deaths.toList().sortedBy { value -> value.second }[length].second
         )
 
-        updateOtherInformation()
     }
 
 

@@ -19,8 +19,8 @@ object CountryMapper {
                   flag  = countryResponse.countryInfo.flag,
                   iso2  = countryResponse.countryInfo.iso2,
                   iso3  = countryResponse.countryInfo.iso3,
-                  lat  = countryResponse.countryInfo.lat,
-                  long  = countryResponse.countryInfo.long
+                  latitude  = countryResponse.countryInfo.lat,
+                  longitude  = countryResponse.countryInfo.long
              ),
              critical = countryResponse.critical,
              criticalPerOneMillion = countryResponse.criticalPerOneMillion,
