@@ -4,24 +4,31 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.thesis.distanceguard.room.converter.ListTypeConverter
+import com.thesis.distanceguard.room.converter.MapTypeConverter
 import com.thesis.distanceguard.room.dao.CountryDao
+import com.thesis.distanceguard.room.dao.HistoricalDao
 import com.thesis.distanceguard.room.dao.WorldwideDao
-import com.thesis.distanceguard.room.entities.CountryEntity
-import com.thesis.distanceguard.room.entities.CountryInfoEntity
-import com.thesis.distanceguard.room.entities.WorldwideEntity
+import com.thesis.distanceguard.room.entities.*
 
 /**
  * Created by Viet Hua on 05/20/2021.
  */
 @Database(
-    entities = [WorldwideEntity::class, CountryEntity::class, CountryInfoEntity::class],
+    entities = [WorldwideEntity::class, CountryEntity::class,
+        CountryInfoEntity::class, HistoricalCountryEntity::class,
+        HistoricalWorldwideEntity::class],
     version = 1,
     exportSchema = false
 )
+@TypeConverters(MapTypeConverter::class, ListTypeConverter::class)
 abstract class CovidDatabase : RoomDatabase() {
 
     abstract fun worldwideDao(): WorldwideDao
     abstract fun countryDao(): CountryDao
+    abstract fun historicalDao(): HistoricalDao
+
 
     companion object {
 

@@ -11,6 +11,7 @@ import com.thesis.distanceguard.retrofit.response.HistoricalCountryResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import com.thesis.distanceguard.room.entities.CountryEntity
+import com.thesis.distanceguard.room.entities.HistoricalCountryEntity
 import com.thesis.distanceguard.util.AppUtil
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_detail.*
@@ -24,7 +25,7 @@ class DetailFragment(private val itemCountry: CountryEntity) : BaseFragment() {
     }
 
     private lateinit var detailViewModel: DetailViewModel
-    
+
     override fun getResLayoutId(): Int {
         return R.layout.fragment_detail
     }
@@ -88,38 +89,41 @@ class DetailFragment(private val itemCountry: CountryEntity) : BaseFragment() {
 
     private fun fetchCountry() {
         showProgressDialog("Fetching data")
-        detailViewModel.fetchCountry(itemCountry.countryInfoEntity!!.id.toString())
+        detailViewModel.fetchCountry(itemCountry.country!!)
             .observe(this, countryObserver)
     }
 
-    private val countryObserver = Observer<HistoricalCountryResponse> {
-        hideDialog()
-        chart_cases.animate(
-            AppUtil.convertPairLongToPairFloat(
-                it.timeline.cases.toList().sortedBy { value -> value.second })
-        )
+    private val countryObserver = Observer<HistoricalCountryEntity?> {
+        it?.let {
+            hideDialog()
+            chart_cases.animate(
+                AppUtil.convertPairLongToPairFloat(
+                    it.timeline!!.cases!!.toList().sortedBy { value -> value.second })
+            )
 
-        chart_recovered.animate(
-            AppUtil.convertPairLongToPairFloat(
-                it.timeline.recovered.toList().sortedBy { value -> value.second })
-        )
+            chart_recovered.animate(
+                AppUtil.convertPairLongToPairFloat(
+                    it.timeline!!.recovered!!.toList().sortedBy { value -> value.second })
+            )
 
-        chart_death.animate(
-            AppUtil.convertPairLongToPairFloat(
-                it.timeline.deaths.toList().sortedBy { value -> value.second })
-        )
+            chart_death.animate(
+                AppUtil.convertPairLongToPairFloat(
+                    it.timeline!!.deaths!!.toList().sortedBy { value -> value.second })
+            )
 
-        //update text view
-        val length = it.timeline.cases.toList().size - 1
-        tv_comfirmed_count.text = AppUtil.toNumberWithCommas(
-            it.timeline.cases.toList().sortedBy { value -> value.second }[length].second
-        )
-        tv_recovered_count.text = AppUtil.toNumberWithCommas(
-            it.timeline.recovered.toList().sortedBy { value -> value.second }[length].second
-        )
-        tv_death_count.text = AppUtil.toNumberWithCommas(
-            it.timeline.deaths.toList().sortedBy { value -> value.second }[length].second
-        )
+            //update text view
+            val length = it.timeline!!.cases!!.toList().size - 1
+            tv_comfirmed_count.text = AppUtil.toNumberWithCommas(
+                it.timeline!!.cases!!.toList().sortedBy { value -> value.second }[length].second
+            )
+            tv_recovered_count.text = AppUtil.toNumberWithCommas(
+                it.timeline!!.recovered!!.toList().sortedBy { value -> value.second }[length].second
+            )
+            tv_death_count.text = AppUtil.toNumberWithCommas(
+                it.timeline!!.deaths!!.toList().sortedBy { value -> value.second }[length].second
+            )
+
+        }
 
     }
 

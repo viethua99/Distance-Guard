@@ -17,6 +17,8 @@ import com.thesis.distanceguard.repository.Result
 import com.thesis.distanceguard.repository.Success
 import com.thesis.distanceguard.repository.Error
 import com.thesis.distanceguard.room.entities.CountryEntity
+import com.thesis.distanceguard.room.entities.HistoricalCountryEntity
+import com.thesis.distanceguard.room.entities.HistoricalWorldwideEntity
 import com.thesis.distanceguard.room.entities.WorldwideEntity
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -33,8 +35,8 @@ class DashboardViewModel @Inject constructor(private val covidRepository: CovidR
     val worldwideResponse = MutableLiveData<WorldwideEntity>()
     val vietnamResponse = MutableLiveData<CountryEntity>()
 
-    val historicalWorldwideResponse = MutableLiveData<HistoricalWorldwideResponse>()
-    val historicalVietnamResponse = MutableLiveData<HistoricalCountryResponse>()
+    val historicalWorldwideResponse = MutableLiveData<HistoricalWorldwideEntity>()
+    val historicalVietnamResponse = MutableLiveData<HistoricalCountryEntity>()
 
     val errorMessage = MutableLiveData<String>()
     val countryList = MutableLiveData<ArrayList<CountryEntity>>()
@@ -122,15 +124,15 @@ class DashboardViewModel @Inject constructor(private val covidRepository: CovidR
 
     private fun fetchWorldwideHistory(lastdays: String) {
         viewModelScope.launch {
-            when (val result = covidRepository.getWorldwideHistory(lastdays)) {
-                is Success<HistoricalWorldwideResponse> -> {
-                    historicalWorldwideResponse.value = result.data
-                }
-                is Error -> {
-                    errorMessage.value = result.message
-                }
-
-            }
+//            when (val result = covidRepository.getWorldwideHistory(lastdays)) {
+//                is Success<HistoricalWorldwideEntity> -> {
+//                    historicalWorldwideResponse.value = result.data
+//                }
+//                is Error -> {
+//                    errorMessage.value = result.message
+//                }
+//
+//            }
         }
     }
 
@@ -142,11 +144,15 @@ class DashboardViewModel @Inject constructor(private val covidRepository: CovidR
 
     private fun fetchVietnamHistory(lastdays: String) {
         viewModelScope.launch {
-            when (val result = covidRepository.getCountryHistory("vietnam",lastdays)) {
-                is Success<HistoricalCountryResponse> -> {
-                    historicalVietnamResponse.value = result.data
+            when (val result = covidRepository.getCountryHistory("Vietnam",lastdays)) {
+                is Success<HistoricalCountryEntity> -> {
+                   historicalVietnamResponse.value = result.data
+                    Timber.d("entity = ${result.data}")
                 }
                 is Error -> {
+                    val entity = covidRepository.getLocalHistoricalCountry("Vietnam")
+                    Timber.d("entity = $entity")
+                    historicalVietnamResponse.value = entity
                     errorMessage.value = result.message
                 }
 

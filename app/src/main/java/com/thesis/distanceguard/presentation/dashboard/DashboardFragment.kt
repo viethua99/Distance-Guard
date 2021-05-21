@@ -23,6 +23,8 @@ import com.thesis.distanceguard.presentation.detail.DetailFragment
 import com.thesis.distanceguard.presentation.information.InformationFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import com.thesis.distanceguard.room.entities.CountryEntity
+import com.thesis.distanceguard.room.entities.HistoricalCountryEntity
+import com.thesis.distanceguard.room.entities.HistoricalWorldwideEntity
 import com.thesis.distanceguard.room.entities.WorldwideEntity
 import com.thesis.distanceguard.util.AppUtil
 import dagger.android.support.AndroidSupportInjection
@@ -192,8 +194,8 @@ class DashboardFragment : BaseFragment() {
     }
 
 
-    private fun setDailyChart(response: HistoricalWorldwideResponse) {
-        val cases = getNewCaseList(response.cases.toList().sortedBy { value -> value.second })
+    private fun setDailyChart(response: HistoricalWorldwideEntity) {
+        val cases = getNewCaseList(response.cases!!.toList().sortedBy { value -> value.second })
         val casesEntries = mutableListOf<Entry>()
         cases.forEachIndexed { index, pair ->
             if (pair.second > 1000000) {
@@ -203,13 +205,13 @@ class DashboardFragment : BaseFragment() {
         }
 
         val recovered =
-            getNewCaseList(response.recovered.toList().sortedBy { value -> value.second })
+            getNewCaseList(response.recovered!!.toList().sortedBy { value -> value.second })
         val recoveredEntries = mutableListOf<Entry>()
         recovered.forEachIndexed { index, pair ->
             recoveredEntries.add(Entry(index.toFloat(), pair.second))
         }
 
-        val deaths = getNewCaseList(response.deaths.toList().sortedBy { value -> value.second })
+        val deaths = getNewCaseList(response.deaths!!.toList().sortedBy { value -> value.second })
         val deathsEntries = mutableListOf<Entry>()
         deaths.forEachIndexed { index, pair ->
             deathsEntries.add(Entry(index.toFloat(), pair.second))
@@ -268,8 +270,8 @@ class DashboardFragment : BaseFragment() {
         chart_spread.invalidate()
     }
 
-    private fun setCumulativeChart(response: HistoricalWorldwideResponse) {
-        val cases = response.cases.toList().sortedBy { value -> value.second }
+    private fun setCumulativeChart(response: HistoricalWorldwideEntity) {
+        val cases = response.cases!!.toList().sortedBy { value -> value.second }
         val casesEntries = mutableListOf<Entry>()
         cases.forEachIndexed { index, pair ->
             if (pair.second > 1000000) {
@@ -278,13 +280,13 @@ class DashboardFragment : BaseFragment() {
             casesEntries.add(Entry(index.toFloat(), pair.second.toFloat()))
         }
 
-        val recovered = response.recovered.toList().sortedBy { value -> value.second }
+        val recovered = response.recovered!!.toList().sortedBy { value -> value.second }
         val recoveredEntries = mutableListOf<Entry>()
         recovered.forEachIndexed { index, pair ->
             recoveredEntries.add(Entry(index.toFloat(), pair.second.toFloat()))
         }
 
-        val deaths = response.deaths.toList().sortedBy { value -> value.second }
+        val deaths = response.deaths!!.toList().sortedBy { value -> value.second }
         val deathsEntries = mutableListOf<Entry>()
         deaths.forEachIndexed { index, pair ->
             deathsEntries.add(Entry(index.toFloat(), pair.second.toFloat()))
@@ -362,7 +364,7 @@ class DashboardFragment : BaseFragment() {
         }
     }
 
-    private val worldwideHistoryObserver = Observer<HistoricalWorldwideResponse> {
+    private val worldwideHistoryObserver = Observer<HistoricalWorldwideEntity> {
         Timber.d("worldwideHistoryObserver")
         hideDialog()
         when (dashboardViewModel.chartType.value) {
@@ -388,16 +390,16 @@ class DashboardFragment : BaseFragment() {
 
     }
 
-    private val vietnamHistoryObserver = Observer<HistoricalCountryResponse> {
+    private val vietnamHistoryObserver = Observer<HistoricalCountryEntity> {
         hideDialog()
         it.let {
             val timeline = it.timeline
             when (dashboardViewModel.chartType.value) {
                 ChartType.DAILY -> {
-                    setDailyChart(timeline)
+                    setDailyChart(timeline!!)
                 }
                 ChartType.CUMULATIVE -> {
-                    setCumulativeChart(timeline)
+                    setCumulativeChart(timeline!!)
                 }
             }
         }
