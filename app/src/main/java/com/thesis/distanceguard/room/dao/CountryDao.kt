@@ -1,4 +1,4 @@
-package com.thesis.distanceguard.room
+package com.thesis.distanceguard.room.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

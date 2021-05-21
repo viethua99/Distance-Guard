@@ -1,4 +1,4 @@
-package com.thesis.distanceguard.room
+package com.thesis.distanceguard.room.dao
 
 import androidx.room.*
 import com.thesis.distanceguard.room.entities.WorldwideEntity

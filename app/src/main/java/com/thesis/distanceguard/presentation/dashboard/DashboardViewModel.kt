@@ -31,7 +31,7 @@ class DashboardViewModel @Inject constructor(private val covidRepository: CovidR
 
 
     val worldwideResponse = MutableLiveData<WorldwideEntity>()
-    val vietnamResponse = MutableLiveData<CountryResponse>()
+    val vietnamResponse = MutableLiveData<CountryEntity>()
 
     val historicalWorldwideResponse = MutableLiveData<HistoricalWorldwideResponse>()
     val historicalVietnamResponse = MutableLiveData<HistoricalCountryResponse>()
@@ -136,15 +136,7 @@ class DashboardViewModel @Inject constructor(private val covidRepository: CovidR
 
     private fun fetchVietnamData() {
         viewModelScope.launch {
-            when (val result = covidRepository.getVietnamData()) {
-                is Success<CountryResponse> -> {
-                    vietnamResponse.value = result.data
-                }
-                is Error -> {
-                    errorMessage.value = result.message
-                }
-
-            }
+            vietnamResponse.value = covidRepository.getVietnamData()
         }
     }
 

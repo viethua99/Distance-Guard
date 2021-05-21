@@ -52,6 +52,12 @@ class CovidRepository(private val covidDatabase: CovidDatabase, private val covi
         return covidDatabase.worldwideDao().getWorldwide()
     }
 
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun getCountryData(countryName: String): CountryEntity {
+        return covidDatabase.countryDao().getCountry(countryName)
+    }
+
     //REMOTE
     suspend fun getWorldwideData(): Result<WorldwideEntity> {
         return try {
@@ -69,18 +75,8 @@ class CovidRepository(private val covidDatabase: CovidDatabase, private val covi
     }
 
 
-    suspend fun getVietnamData(): Result<CountryResponse> {
-        return try {
-            val response = covidApi.getVietnamData()
-            if (response.isSuccessful) {
-                Success(response.body()!!)
-            } else {
-                Error(Exception("Something went wrong"))
-            }
-        } catch (exception: Exception) {
-            Error(exception)
-        }
-
+    suspend fun getVietnamData(): CountryEntity {
+        return getCountryData("Vietnam")
     }
 
     suspend fun getCountryListData(): Result<ArrayList<CountryEntity>> {

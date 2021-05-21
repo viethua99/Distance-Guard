@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.thesis.distanceguard.room.dao.CountryDao
+import com.thesis.distanceguard.room.dao.WorldwideDao
 import com.thesis.distanceguard.room.entities.CountryEntity
 import com.thesis.distanceguard.room.entities.CountryInfoEntity
 import com.thesis.distanceguard.room.entities.WorldwideEntity
