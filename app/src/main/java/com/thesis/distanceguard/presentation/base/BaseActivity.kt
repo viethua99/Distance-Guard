@@ -50,14 +50,4 @@ abstract class BaseActivity : AppCompatActivity() {
             .commit()
     }
 
-    fun replaceFragment(fragment: Fragment, tag: String, containerId: Int) {
-        Timber.d("replaceFragment: name=${fragment.javaClass.name}")
-        generateFragmentManager()
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left,0,0,android.R.anim.slide_out_right)
-        fragmentTransaction.replace(containerId, fragment, tag)
-            .addToBackStack(tag)
-            .commit()
-    }
-
 }

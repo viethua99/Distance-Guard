@@ -52,7 +52,7 @@ internal abstract class BarcodeGraphicBase(overlay: GraphicOverlay) : Graphic(ov
         context.resources.getDimensionPixelOffset(R.dimen.barcode_reticle_corner_radius).toFloat()
 
     val pathPaint: Paint = Paint().apply {
-        color = Color.WHITE
+        color =  ContextCompat.getColor(context, R.color.reticle_ripple)
         style = Style.STROKE
         strokeWidth = boxPaint.strokeWidth
         pathEffect = CornerPathEffect(boxCornerRadius)

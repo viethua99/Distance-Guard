@@ -49,34 +49,54 @@ abstract class BaseFragment : Fragment() {
     }
 
     fun showProgressDialog(message: String) {
-        AndroidDialogUtil.getInstance().showLoadingDialog(activity, message)
+        activity?.runOnUiThread {
+            AndroidDialogUtil.getInstance().showLoadingDialog(activity, message)
+
+        }
     }
 
     fun showWarningDialogWithConfirm(message: String, confirmListener: SweetAlertDialog.OnSweetClickListener
     ) {
-        AndroidDialogUtil.getInstance().showWarningDialogWithConfirm(activity, message,confirmListener)
+        activity?.runOnUiThread {
+            AndroidDialogUtil.getInstance().showWarningDialogWithConfirm(activity, message,confirmListener)
+
+        }
     }
 
     fun showWarningDialog(message: String) {
-        AndroidDialogUtil.getInstance().showWarningDialog(activity, message)
+        activity?.runOnUiThread {
+            AndroidDialogUtil.getInstance().showWarningDialog(activity, message)
+
+        }
     }
 
     fun showSuccessDialog(message: String) {
-        AndroidDialogUtil.getInstance().showSuccessDialog(activity, message)
+        activity?.runOnUiThread {
+            AndroidDialogUtil.getInstance().showSuccessDialog(activity, message)
+
+        }
     }
 
 
     fun showFailedDialog(message: String) {
-        AndroidDialogUtil.getInstance().showFailureDialog(activity, message)
+        activity?.runOnUiThread {
+            AndroidDialogUtil.getInstance().showFailureDialog(activity, message)
+
+        }
     }
 
     fun hideDialog() {
-        Timber.d("hideDialog")
-        AndroidDialogUtil.getInstance().hideDialog()
+        activity?.runOnUiThread {
+            AndroidDialogUtil.getInstance().hideDialog()
+
+        }
     }
 
     fun showToastMessage(message: String) {
-        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+        activity?.runOnUiThread {
+            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+
+        }
     }
 
 }

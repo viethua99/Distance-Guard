@@ -8,10 +8,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thesis.distanceguard.R
-import com.thesis.distanceguard.api.model.CountryResponse
+import com.thesis.distanceguard.retrofit.response.CountryResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.detail.DetailFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
+import com.thesis.distanceguard.room.entities.CountryEntity
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_countries.*
 import timber.log.Timber
@@ -34,13 +35,8 @@ class CountriesFragment : BaseFragment() {
         setupRecyclerView()
 
         edt_search.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 val filteredList = CountriesAdapter.filter(
@@ -64,6 +60,11 @@ class CountriesFragment : BaseFragment() {
             ViewModelProvider(this, viewModelFactory).get(CountriesViewModel::class.java)
 
         countriesViewModel.fetchCountryList().observe(this, countryListObserver)
+
+        countriesViewModel.errorMessage.observe(this, Observer {
+            hideDialog()
+            showToastMessage(it)
+        })
     }
 
     private fun setupRecyclerView() {
@@ -76,8 +77,8 @@ class CountriesFragment : BaseFragment() {
         }
 
         countriesAdapter.itemClickListener = object :
-            CountriesAdapter.ItemClickListener<CountryResponse> {
-            override fun onClick(position: Int, item: CountryResponse) {
+            CountriesAdapter.ItemClickListener<CountryEntity> {
+            override fun onClick(position: Int, item: CountryEntity) {
                 Timber.d("onClick: $item")
 
                 ViewCompat.postOnAnimationDelayed(view!!, // Delay to show ripple effect
@@ -88,17 +89,16 @@ class CountriesFragment : BaseFragment() {
                             DetailFragment.TAG,
                             R.id.container_main
                         )
-
                     }
                     , 50)
 
             }
 
-            override fun onLongClick(position: Int, item: CountryResponse) {}
+            override fun onLongClick(position: Int, item: CountryEntity) {}
         }
     }
 
-    private val countryListObserver = Observer<ArrayList<CountryResponse>> {
+    private val countryListObserver = Observer<ArrayList<CountryEntity>> {
         it?.let {
             countriesAdapter.add(it)
         }

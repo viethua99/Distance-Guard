@@ -1,13 +1,9 @@
-package com.thesis.distanceguard.api
+package com.thesis.distanceguard.retrofit
 
-import com.thesis.distanceguard.presentation.dashboard.DashboardFragment
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.Exception
-import java.util.concurrent.TimeUnit
 
 class CovidService {
     companion object {

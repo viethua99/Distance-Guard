@@ -3,124 +3,175 @@ package com.thesis.distanceguard.presentation.dashboard
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.thesis.distanceguard.api.CovidService
-import com.thesis.distanceguard.api.model.CountryResponse
-import com.thesis.distanceguard.api.model.HistoricalWorldwideResponse
-import com.thesis.distanceguard.api.model.HistoricalCountryResponse
-import com.thesis.distanceguard.api.model.WorldwideResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import androidx.lifecycle.viewModelScope
+import com.thesis.distanceguard.retrofit.response.CountryResponse
+import com.thesis.distanceguard.retrofit.response.HistoricalWorldwideResponse
+import com.thesis.distanceguard.retrofit.response.HistoricalCountryResponse
+import com.thesis.distanceguard.retrofit.response.WorldwideResponse
+import com.thesis.distanceguard.model.ChartDate
+import com.thesis.distanceguard.model.ChartType
+import com.thesis.distanceguard.model.DashboardMode
+import com.thesis.distanceguard.repository.CovidRepository
+import com.thesis.distanceguard.repository.Result
+
+import com.thesis.distanceguard.repository.Success
+import com.thesis.distanceguard.repository.Error
+import com.thesis.distanceguard.room.entities.CountryEntity
+import com.thesis.distanceguard.room.entities.HistoricalCountryEntity
+import com.thesis.distanceguard.room.entities.HistoricalWorldwideEntity
+import com.thesis.distanceguard.room.entities.WorldwideEntity
+import kotlinx.coroutines.launch
 import timber.log.Timber
+
 import javax.inject.Inject
 
-class DashboardViewModel @Inject constructor() : ViewModel() {
-    private val worldwideResponse = MutableLiveData<WorldwideResponse>()
-    private val historicalWorldwideResponse = MutableLiveData<HistoricalWorldwideResponse>()
-    private val vietnamResponse = MutableLiveData<CountryResponse>()
-    private val historicalVietnamResponse = MutableLiveData<HistoricalCountryResponse>()
-     val errorMessage = MutableLiveData<String>()
-
-    val countryList = MutableLiveData<ArrayList<CountryResponse>>()
+class DashboardViewModel @Inject constructor(private val covidRepository: CovidRepository) :
+    ViewModel() {
+    val chartType = MutableLiveData<ChartType>(ChartType.DAILY)
+    private val chartDate = MutableLiveData<ChartDate>(ChartDate.THIRTY_DAYS)
+    private val dashboardMode = MutableLiveData<DashboardMode>(DashboardMode.WORLDWIDE)
 
 
-    fun fetchWorldwideData(): LiveData<WorldwideResponse> {
-        CovidService.getApi().getWorldwideData().enqueue(object : Callback<WorldwideResponse> {
-            override fun onResponse(call: Call<WorldwideResponse>, response: Response<WorldwideResponse>) {
-                response.let {
-                    if (it.isSuccessful) {
-                        worldwideResponse.value = it.body()
-                    }
+    val worldwideResponse = MutableLiveData<WorldwideEntity>()
+    val vietnamResponse = MutableLiveData<CountryEntity>()
 
-                }
+    val historicalWorldwideResponse = MutableLiveData<HistoricalWorldwideEntity>()
+    val historicalVietnamResponse = MutableLiveData<HistoricalCountryEntity>()
+
+    val errorMessage = MutableLiveData<String>()
+    val countryList = MutableLiveData<ArrayList<CountryEntity>>()
+
+
+    fun fetchDashboardData(dashboardMode: DashboardMode) {
+        this.dashboardMode.value = dashboardMode
+        when (dashboardMode) {
+            DashboardMode.WORLDWIDE -> {
+                fetchWorldwideData()
+                fetchWorldwideChartByDate(chartDate.value!!)
             }
-
-            override fun onFailure(call: Call<WorldwideResponse>, t: Throwable) {
-                errorMessage.value = t.message
+            DashboardMode.VIETNAM -> {
+                fetchVietnamData()
+                fetchVietnamChartByDate(chartDate.value!!)
             }
-        })
-        return worldwideResponse
+        }
     }
 
-    fun fetchWorldwideHistory(lastdays:String): LiveData<HistoricalWorldwideResponse> {
-        CovidService.getApi().getWorldwideHistory(lastdays).enqueue(object : Callback<HistoricalWorldwideResponse> {
-            override fun onResponse(
-                call: Call<HistoricalWorldwideResponse>,
-                response: Response<HistoricalWorldwideResponse>
-            ) {
-                Timber.d("onResponse: ")
-                response.let {
-                    if (it.isSuccessful) {
-                        historicalWorldwideResponse.value = it.body()
-                    }
-                }
-            }
+    fun fetchChartByDate(chartDate: ChartDate) {
+        this.chartDate.value = chartDate
+        when (dashboardMode.value) {
+            DashboardMode.WORLDWIDE -> {
+                fetchWorldwideChartByDate(chartDate)
 
-            override fun onFailure(call: Call<HistoricalWorldwideResponse>, t: Throwable) {
-                Timber.d("onFailure: " + t.message)
-                errorMessage.value = t.message
             }
-        })
-        return historicalWorldwideResponse
+            DashboardMode.VIETNAM -> {
+                fetchVietnamChartByDate(chartDate)
+
+            }
+        }
     }
 
-    fun fetchVietnamData(): LiveData<CountryResponse> {
-        CovidService.getApi().getVietnamData().enqueue(object : Callback<CountryResponse> {
-            override fun onResponse(
-                call: Call<CountryResponse>,
-                response: Response<CountryResponse>
-            ) {
-                if (response.isSuccessful) {
-                    vietnamResponse.value = response.body()
-                }
-
+    fun fetchChartDataByType(chartType: ChartType) {
+        this.chartType.value = chartType
+        when (chartType) {
+            ChartType.DAILY -> {
+                fetchChartByDate(chartDate.value!!)
             }
 
-            override fun onFailure(call: Call<CountryResponse>, t: Throwable) {
-                errorMessage.value = t.message
+            ChartType.CUMULATIVE -> {
+                fetchChartByDate(chartDate.value!!)
             }
-        })
-        return vietnamResponse
+        }
     }
 
-    fun fetchVietnamHistory(lastdays: String): LiveData<HistoricalCountryResponse> {
-        CovidService.getApi().getCountryHistory("vietnam",lastdays)
-            .enqueue(object : Callback<HistoricalCountryResponse> {
-                override fun onResponse(
-                    call: Call<HistoricalCountryResponse>,
-                    response: Response<HistoricalCountryResponse>
-                ) {
-                    Timber.d("onResponse: ")
-                    response.let {
-                        if (it.isSuccessful) {
-                            historicalVietnamResponse.value = it.body()
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<HistoricalCountryResponse>, t: Throwable) {
-                    Timber.d("onFailure: %s", t.message)
-                    errorMessage.value = t.message
-                }
-            })
-        return historicalVietnamResponse
+    private fun fetchWorldwideChartByDate(chartDate: ChartDate) {
+        this.chartDate.value = chartDate
+        when (chartDate) {
+            ChartDate.THIRTY_DAYS -> {
+                fetchWorldwideHistory("30")
+            }
+            ChartDate.ALL_TIME -> {
+                fetchWorldwideHistory("all")
+            }
+        }
     }
 
-    fun fetchCountryList(): LiveData<ArrayList<CountryResponse>>{
-        CovidService.getApi().getCountryListData().enqueue(object : Callback<ArrayList<CountryResponse>>{
-            override fun onResponse(
-                call: Call<ArrayList<CountryResponse>>,
-                response: Response<ArrayList<CountryResponse>>
-            ) {
-                if(response.isSuccessful){
-                    countryList.value = response.body()
-                }
+    private fun fetchVietnamChartByDate(chartDate: ChartDate) {
+        this.chartDate.value = chartDate
+        when (chartDate) {
+            ChartDate.THIRTY_DAYS -> {
+                fetchVietnamHistory("30")
             }
+            ChartDate.ALL_TIME -> {
+                fetchVietnamHistory("all")
+            }
+        }
+    }
 
-            override fun onFailure(call: Call<ArrayList<CountryResponse>>, t: Throwable) {
-                errorMessage.value = t.message
+    private fun fetchWorldwideData() {
+        viewModelScope.launch {
+            when (val result = covidRepository.getWorldwideData()) {
+                is Success<WorldwideEntity> -> {
+                    worldwideResponse.value = result.data
+                }
+                is Error -> {
+                    worldwideResponse.value = covidRepository.getLocalWorldwideData()
+                    errorMessage.value = result.message
+                }
+
             }
-        })
+        }
+    }
+
+    private fun fetchWorldwideHistory(lastdays: String) {
+        viewModelScope.launch {
+            when (val result = covidRepository.getWorldwideHistory(lastdays)) {
+                is Success<HistoricalWorldwideEntity> -> {
+                    historicalWorldwideResponse.value = result.data
+                }
+                is Error -> {
+                    historicalWorldwideResponse.value = covidRepository.getLocalHistoricalWorldwide()
+
+                }
+
+            }
+        }
+    }
+
+    private fun fetchVietnamData() {
+        viewModelScope.launch {
+            vietnamResponse.value = covidRepository.getVietnamData()
+        }
+    }
+
+    private fun fetchVietnamHistory(lastdays: String) {
+        viewModelScope.launch {
+            when (val result = covidRepository.getCountryHistory("Vietnam",lastdays)) {
+                is Success<HistoricalCountryEntity> -> {
+                   historicalVietnamResponse.value = result.data
+                    Timber.d("entity = ${result.data}")
+                }
+                is Error -> {
+                    val entity = covidRepository.getLocalHistoricalCountry("Vietnam")
+                    Timber.d("entity = $entity")
+                    historicalVietnamResponse.value = entity
+                }
+
+            }
+        }
+    }
+
+    fun fetchCountryList(): LiveData<ArrayList<CountryEntity>> {
+        viewModelScope.launch {
+            when (val result = covidRepository.getCountryListData()) {
+                is Success<ArrayList<CountryEntity>> -> {
+                    countryList.value = result.data
+                }
+                is Error -> {
+                    countryList.value = covidRepository.getLocalCountryList()
+                }
+
+            }
+        }
         return countryList
     }
 }

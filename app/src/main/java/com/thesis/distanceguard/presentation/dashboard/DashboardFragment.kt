@@ -1,8 +1,11 @@
 package com.thesis.distanceguard.presentation.dashboard
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.view.View
 import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -13,26 +16,30 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.thesis.distanceguard.R
-import com.thesis.distanceguard.api.model.*
+import com.thesis.distanceguard.model.ChartDate
+import com.thesis.distanceguard.model.ChartType
+import com.thesis.distanceguard.model.DashboardMode
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
 import com.thesis.distanceguard.presentation.detail.DetailFragment
 import com.thesis.distanceguard.presentation.information.InformationFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
+import com.thesis.distanceguard.room.entities.CountryEntity
+import com.thesis.distanceguard.room.entities.HistoricalCountryEntity
+import com.thesis.distanceguard.room.entities.HistoricalWorldwideEntity
+import com.thesis.distanceguard.room.entities.WorldwideEntity
 import com.thesis.distanceguard.util.AppUtil
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import timber.log.Timber
 import java.util.*
 
+
 class DashboardFragment : BaseFragment() {
 
 
     private lateinit var dashboardViewModel: DashboardViewModel
     private lateinit var dashboardRecyclerViewAdapter: DashboardRecyclerViewAdapter
-    private var chartType = "Daily"
-    private var lastdays = "30"
-    private var country = "Worldwide"
     override fun getResLayoutId(): Int {
         return R.layout.fragment_dashboard
     }
@@ -49,7 +56,10 @@ class DashboardFragment : BaseFragment() {
         AndroidSupportInjection.inject(this)
         dashboardViewModel =
             ViewModelProvider(this, viewModelFactory).get(DashboardViewModel::class.java)
-        dashboardViewModel.fetchCountryList().observe(this, topCountryListObserver)
+        dashboardViewModel.worldwideResponse.observe(this, worldwideDataObserver)
+        dashboardViewModel.vietnamResponse.observe(this, vietnamDataObserver)
+        dashboardViewModel.historicalWorldwideResponse.observe(this, worldwideHistoryObserver)
+        dashboardViewModel.historicalVietnamResponse.observe(this, vietnamHistoryObserver)
     }
 
     private fun setupViews() {
@@ -58,26 +68,23 @@ class DashboardFragment : BaseFragment() {
         }
 
         chip_group_filters.setOnCheckedChangeListener { _, checkedId ->
+            showProgressDialog("Fetching Data")
             when (checkedId) {
                 R.id.chip_thirty_days -> {
-                    lastdays = "30"
-                    if (country == "Worldwide") {
-                        fetchWorldwideHistory(lastdays)
-                    } else {
-                        fetchVietnamHistory(lastdays)
-                    }
+                    dashboardViewModel.fetchChartByDate(ChartDate.THIRTY_DAYS)
                 }
                 else -> {
-                    lastdays = "all"
-                    if (country == "Worldwide") {
-                        fetchWorldwideHistory(lastdays)
-                    } else {
-                        fetchVietnamHistory(lastdays)
-                    }
+                    dashboardViewModel.fetchChartByDate(ChartDate.ALL_TIME)
+
                 }
             }
         }
 
+        if(!isNetworkAvailable()){
+            chip_all.visibility = View.GONE
+        } else {
+            chip_all.visibility = View.VISIBLE
+        }
         setupRecyclerView()
         setupLineChart()
         toggleWorldwideSwitch()
@@ -92,11 +99,18 @@ class DashboardFragment : BaseFragment() {
         }
     }
 
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager =
+            activity!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        val activeNetworkInfo = connectivityManager!!.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected
+    }
+
     private fun fetchInitData() {
         showProgressDialog("Fetching Data")
-        fetchTopCountryList()
-        fetchWorldwideData()
-        fetchWorldwideHistory("30")
+        dashboardViewModel.fetchDashboardData(DashboardMode.WORLDWIDE)
+        dashboardViewModel.fetchCountryList().observe(this, countryListObserver)
+
 
         dashboardViewModel.errorMessage.observe(this, Observer {
             hideDialog()
@@ -116,8 +130,8 @@ class DashboardFragment : BaseFragment() {
             adapter = dashboardRecyclerViewAdapter
         }
         dashboardRecyclerViewAdapter.itemClickListener = object :
-            BaseRecyclerViewAdapter.ItemClickListener<CountryResponse> {
-            override fun onClick(position: Int, item: CountryResponse) {
+            BaseRecyclerViewAdapter.ItemClickListener<CountryEntity> {
+            override fun onClick(position: Int, item: CountryEntity) {
                 Timber.d("onClick: $item")
                 ViewCompat.postOnAnimationDelayed(
                     view!!, // Delay to show ripple effect
@@ -132,16 +146,9 @@ class DashboardFragment : BaseFragment() {
                 )
             }
 
-            override fun onLongClick(position: Int, item: CountryResponse) {}
+            override fun onLongClick(position: Int, item: CountryEntity) {}
         }
     }
-
-    private val topCountryListObserver = Observer<ArrayList<CountryResponse>> {
-        it?.let {
-            dashboardRecyclerViewAdapter.setDataList(it)
-        }
-    }
-
 
     private fun setupLineChart() {
         chart_spread.legend.textColor = ContextCompat.getColor(context!!, R.color.primary_color)
@@ -153,7 +160,6 @@ class DashboardFragment : BaseFragment() {
         chart_spread.xAxis.isEnabled = false
         chart_spread.axisLeft.setDrawGridLines(false)
         chart_spread.xAxis.setDrawGridLines(false)
-//        chart_spread.xAxis.valueFormatter = MyXAxisValueFormatter()
         chart_spread.setExtraOffsets(0f, 0f, 0f, 15f)
     }
 
@@ -161,265 +167,22 @@ class DashboardFragment : BaseFragment() {
         val popupMenu = PopupMenu(context, tv_chart_type)
         popupMenu.menuInflater.inflate(R.menu.menu_chart_type, popupMenu.menu)
         popupMenu.setOnMenuItemClickListener {
+            showProgressDialog("Fetching Data")
             when (it.itemId) {
                 R.id.item_daily -> {
                     tv_chart_type.text = "Daily"
-                    chartType = "Daily"
-                    if (country == "Worldwide") {
-                        fetchWorldwideHistory(lastdays)
-
-                    } else {
-                        fetchVietnamHistory(lastdays)
-                    }
+                    dashboardViewModel.fetchChartDataByType(ChartType.DAILY)
                 }
                 R.id.item_cumulative -> {
                     tv_chart_type.text = "Cumulative"
-                    chartType = "Cumulative"
-                    if (country == "Worldwide") {
-                        fetchWorldwideHistory(lastdays)
+                    dashboardViewModel.fetchChartDataByType(ChartType.CUMULATIVE)
 
-                    } else {
-                        fetchVietnamHistory(lastdays)
-                    }
                 }
             }
 
             return@setOnMenuItemClickListener true
         }
         popupMenu.show()
-    }
-
-
-    private fun fetchTopCountryList() {
-        dashboardViewModel.fetchCountryList().observe(this, countryListObserver)
-    }
-
-    private fun fetchWorldwideData() {
-        showProgressDialog("Fetching data")
-        dashboardViewModel.fetchWorldwideData().observe(this, worldwideDataObserver)
-    }
-
-    private fun fetchWorldwideHistory(lastdays: String) {
-        showProgressDialog("Fetching data")
-        dashboardViewModel.fetchWorldwideHistory(lastdays).observe(this, worldwideHistoryObserver)
-    }
-
-    private fun fetchVietnamData() {
-        dashboardViewModel.fetchVietnamData().observe(this, vietnamDataObserver)
-    }
-
-    private fun fetchVietnamHistory(lastdays: String) {
-        showProgressDialog("Fetching data")
-        dashboardViewModel.fetchVietnamHistory(lastdays).observe(this, vietnamHistoryObserver)
-    }
-
-    private fun setDailyChart(response: HistoricalWorldwideResponse) {
-        val cases = getNewCaseList(response.cases.toList().sortedBy { value -> value.second })
-        val casesEntries = mutableListOf<Entry>()
-        cases.forEachIndexed { index, pair ->
-            if (pair.second > 1000000) {
-                Timber.d(pair.toString())
-            }
-            casesEntries.add(Entry(index.toFloat(), pair.second))
-        }
-
-        val recovered =
-            getNewCaseList(response.recovered.toList().sortedBy { value -> value.second })
-        val recoveredEntries = mutableListOf<Entry>()
-        recovered.forEachIndexed { index, pair ->
-            recoveredEntries.add(Entry(index.toFloat(), pair.second))
-        }
-
-        val deaths = getNewCaseList(response.deaths.toList().sortedBy { value -> value.second })
-        val deathsEntries = mutableListOf<Entry>()
-        deaths.forEachIndexed { index, pair ->
-            deathsEntries.add(Entry(index.toFloat(), pair.second))
-        }
-
-        val lines = arrayListOf<ILineDataSet>().apply {
-            add(
-                LineDataSet(
-                    casesEntries,
-                    "cases"
-                ).apply {
-                    color = ContextCompat.getColor(requireContext(), R.color.primary_color)
-                    setDrawCircles(false)
-                    lineWidth = 2f
-                    mode = LineDataSet.Mode.CUBIC_BEZIER
-                    cubicIntensity = 0.10f
-                })
-
-            add(
-                LineDataSet(
-                    recoveredEntries,
-                    "recovered"
-                ).apply {
-                    color = ContextCompat.getColor(requireContext(), R.color.primary_green)
-                    setDrawCircles(false)
-                    lineWidth = 2f
-                    mode = LineDataSet.Mode.CUBIC_BEZIER
-                    cubicIntensity = 0.10f
-                })
-
-            add(
-                LineDataSet(
-                    deathsEntries,
-                    "deaths"
-                ).apply {
-                    color = ContextCompat.getColor(requireContext(), R.color.primary_red)
-                    setDrawCircles(false)
-                    lineWidth = 2f
-                    mode = LineDataSet.Mode.CUBIC_BEZIER
-                    cubicIntensity = 0.10f
-                })
-        }
-
-        if (chart_spread.data != null) {
-            chart_spread.clearValues()
-        }
-
-        chart_spread.data = LineData(lines).apply {
-            setDrawValues(false)
-        }
-
-        chart_spread.data.notifyDataChanged()
-        chart_spread.invalidate()
-    }
-
-    private fun setCumulativeChart(response: HistoricalWorldwideResponse) {
-        val cases = response.cases.toList().sortedBy { value -> value.second }
-        val casesEntries = mutableListOf<Entry>()
-        cases.forEachIndexed { index, pair ->
-            if (pair.second > 1000000) {
-                Timber.d(pair.toString())
-            }
-            casesEntries.add(Entry(index.toFloat(), pair.second.toFloat()))
-        }
-
-        val recovered = response.recovered.toList().sortedBy { value -> value.second }
-        val recoveredEntries = mutableListOf<Entry>()
-        recovered.forEachIndexed { index, pair ->
-            recoveredEntries.add(Entry(index.toFloat(), pair.second.toFloat()))
-        }
-
-        val deaths = response.deaths.toList().sortedBy { value -> value.second }
-        val deathsEntries = mutableListOf<Entry>()
-        deaths.forEachIndexed { index, pair ->
-            deathsEntries.add(Entry(index.toFloat(), pair.second.toFloat()))
-        }
-
-        val lines = arrayListOf<ILineDataSet>().apply {
-            add(
-                LineDataSet(
-                    casesEntries,
-                    "cases"
-                ).apply {
-                    color = ContextCompat.getColor(requireContext(), R.color.primary_color)
-                    setDrawCircles(false)
-                    lineWidth = 2f
-                    mode = LineDataSet.Mode.CUBIC_BEZIER
-                    cubicIntensity = 0.10f
-                })
-
-            add(
-                LineDataSet(
-                    recoveredEntries,
-                    "recovered"
-                ).apply {
-                    color = ContextCompat.getColor(requireContext(), R.color.primary_green)
-                    setDrawCircles(false)
-                    lineWidth = 2f
-                    mode = LineDataSet.Mode.CUBIC_BEZIER
-                    cubicIntensity = 0.10f
-                })
-
-            add(
-                LineDataSet(
-                    deathsEntries,
-                    "deaths"
-                ).apply {
-                    color = ContextCompat.getColor(requireContext(), R.color.primary_red)
-                    setDrawCircles(false)
-                    lineWidth = 2f
-                    mode = LineDataSet.Mode.CUBIC_BEZIER
-                    cubicIntensity = 0.10f
-                })
-        }
-
-        if (chart_spread.data != null) {
-            chart_spread.clearValues()
-        }
-
-        chart_spread.data = LineData(lines).apply {
-            setDrawValues(false)
-        }
-
-        chart_spread.data.notifyDataChanged()
-        chart_spread.invalidate()
-    }
-
-
-    private val worldwideDataObserver = Observer<WorldwideResponse> {
-        it?.let {
-            hideDialog()
-            tv_update_time.text =
-                "Last update ${AppUtil.convertMillisecondsToDateFormat(it.updated)}"
-            tv_total_cases_count.text = AppUtil.toNumberWithCommas(it.cases)
-            tv_total_recovered_count.text = AppUtil.toNumberWithCommas(it.recovered)
-            tv_total_death_count.text = AppUtil.toNumberWithCommas(it.deaths)
-            tv_today_cases_count.text = "(+${AppUtil.toNumberWithCommas(it.todayCases)})"
-            tv_today_recovered_count.text =
-                "(+${AppUtil.toNumberWithCommas(it.todayRecovered.toLong())})"
-            tv_today_deaths_count.text = "(+${AppUtil.toNumberWithCommas(it.todayDeaths)})"
-
-        }
-    }
-
-    private val worldwideHistoryObserver = Observer<HistoricalWorldwideResponse> {
-        Timber.d("worldwideHistoryObserver")
-        hideDialog()
-        when (chartType) {
-            "Daily" -> {
-                setDailyChart(it)
-            }
-            else -> {
-                setCumulativeChart(it)
-            }
-        }
-    }
-
-    private val vietnamDataObserver = Observer<CountryResponse> {
-        tv_update_time.text =
-            "Last update ${AppUtil.convertMillisecondsToDateFormat(it.updated)}"
-        tv_total_cases_count.text = AppUtil.toNumberWithCommas(it.cases.toLong())
-        tv_total_recovered_count.text = AppUtil.toNumberWithCommas(it.recovered.toLong())
-        tv_total_death_count.text = AppUtil.toNumberWithCommas(it.deaths.toLong())
-        tv_today_cases_count.text = "(+${AppUtil.toNumberWithCommas(it.todayCases.toLong())})"
-        tv_today_recovered_count.text =
-            "(+${AppUtil.toNumberWithCommas(it.todayRecovered.toLong())})"
-        tv_today_deaths_count.text = "(+${AppUtil.toNumberWithCommas(it.todayDeaths.toLong())})"
-
-    }
-
-    private val vietnamHistoryObserver = Observer<HistoricalCountryResponse> {
-        hideDialog()
-        it.let {
-            val timeline = it.timeline
-            when (chartType) {
-                "Daily" -> {
-                    setDailyChart(timeline)
-                }
-                else -> {
-                    setCumulativeChart(timeline)
-                }
-            }
-        }
-    }
-
-    private val countryListObserver = Observer<ArrayList<CountryResponse>> {
-        it?.let {
-            dashboardRecyclerViewAdapter.setDataList(it)
-        }
     }
 
     private fun getNewCaseList(totalCaseList: List<Pair<String, Long>>): List<Pair<String, Float>> {
@@ -438,15 +201,234 @@ class DashboardFragment : BaseFragment() {
         sw_worldwide.setOnCheckedChangeListener { _, isChecked ->
             showProgressDialog("Fetching Data")
             if (isChecked) {
-                country = "Vietnam"
-                fetchVietnamData()
-                fetchVietnamHistory(lastdays)
+                dashboardViewModel.fetchDashboardData(DashboardMode.VIETNAM)
             } else {
-                country = "Worldwide"
-                fetchWorldwideData()
-                fetchWorldwideHistory(lastdays)
-
+                dashboardViewModel.fetchDashboardData(DashboardMode.WORLDWIDE)
             }
         }
     }
+
+
+    private fun setDailyChart(response: HistoricalWorldwideEntity?) {
+        response?.let {
+            val cases = getNewCaseList(it.cases!!.toList().sortedBy { value -> value.second })
+            val casesEntries = mutableListOf<Entry>()
+            cases.forEachIndexed { index, pair ->
+                if (pair.second > 1000000) {
+                    Timber.d(pair.toString())
+                }
+                casesEntries.add(Entry(index.toFloat(), pair.second))
+            }
+
+            val recovered =
+                getNewCaseList(it.recovered!!.toList().sortedBy { value -> value.second })
+            val recoveredEntries = mutableListOf<Entry>()
+            recovered.forEachIndexed { index, pair ->
+                recoveredEntries.add(Entry(index.toFloat(), pair.second))
+            }
+
+            val deaths = getNewCaseList(it.deaths!!.toList().sortedBy { value -> value.second })
+            val deathsEntries = mutableListOf<Entry>()
+            deaths.forEachIndexed { index, pair ->
+                deathsEntries.add(Entry(index.toFloat(), pair.second))
+            }
+
+            val lines = arrayListOf<ILineDataSet>().apply {
+                add(
+                    LineDataSet(
+                        casesEntries,
+                        "cases"
+                    ).apply {
+                        color = ContextCompat.getColor(requireContext(), R.color.primary_color)
+                        setDrawCircles(false)
+                        lineWidth = 2f
+                        mode = LineDataSet.Mode.CUBIC_BEZIER
+                        cubicIntensity = 0.10f
+                    })
+
+                add(
+                    LineDataSet(
+                        recoveredEntries,
+                        "recovered"
+                    ).apply {
+                        color = ContextCompat.getColor(requireContext(), R.color.primary_green)
+                        setDrawCircles(false)
+                        lineWidth = 2f
+                        mode = LineDataSet.Mode.CUBIC_BEZIER
+                        cubicIntensity = 0.10f
+                    })
+
+                add(
+                    LineDataSet(
+                        deathsEntries,
+                        "deaths"
+                    ).apply {
+                        color = ContextCompat.getColor(requireContext(), R.color.primary_red)
+                        setDrawCircles(false)
+                        lineWidth = 2f
+                        mode = LineDataSet.Mode.CUBIC_BEZIER
+                        cubicIntensity = 0.10f
+                    })
+            }
+
+            if (chart_spread.data != null) {
+                chart_spread.clearValues()
+                chart_spread.clear()
+                chart_spread.resetZoom()
+
+            }
+
+            chart_spread.data = LineData(lines).apply {
+                setDrawValues(false)
+            }
+
+            chart_spread.data.notifyDataChanged()
+            chart_spread.invalidate()
+        }
+    }
+
+    private fun setCumulativeChart(response: HistoricalWorldwideEntity?) {
+        response?.let {
+            val cases = it.cases!!.toList().sortedBy { value -> value.second }
+            val casesEntries = mutableListOf<Entry>()
+            cases.forEachIndexed { index, pair ->
+                if (pair.second > 1000000) {
+                    Timber.d(pair.toString())
+                }
+                casesEntries.add(Entry(index.toFloat(), pair.second.toFloat()))
+            }
+
+            val recovered = it.recovered!!.toList().sortedBy { value -> value.second }
+            val recoveredEntries = mutableListOf<Entry>()
+            recovered.forEachIndexed { index, pair ->
+                recoveredEntries.add(Entry(index.toFloat(), pair.second.toFloat()))
+            }
+
+            val deaths = it.deaths!!.toList().sortedBy { value -> value.second }
+            val deathsEntries = mutableListOf<Entry>()
+            deaths.forEachIndexed { index, pair ->
+                deathsEntries.add(Entry(index.toFloat(), pair.second.toFloat()))
+            }
+
+            val lines = arrayListOf<ILineDataSet>().apply {
+                add(
+                    LineDataSet(
+                        casesEntries,
+                        "cases"
+                    ).apply {
+                        color = ContextCompat.getColor(requireContext(), R.color.primary_color)
+                        setDrawCircles(false)
+                        lineWidth = 2f
+                        mode = LineDataSet.Mode.CUBIC_BEZIER
+                        cubicIntensity = 0.10f
+                    })
+
+                add(
+                    LineDataSet(
+                        recoveredEntries,
+                        "recovered"
+                    ).apply {
+                        color = ContextCompat.getColor(requireContext(), R.color.primary_green)
+                        setDrawCircles(false)
+                        lineWidth = 2f
+                        mode = LineDataSet.Mode.CUBIC_BEZIER
+                        cubicIntensity = 0.10f
+                    })
+
+                add(
+                    LineDataSet(
+                        deathsEntries,
+                        "deaths"
+                    ).apply {
+                        color = ContextCompat.getColor(requireContext(), R.color.primary_red)
+                        setDrawCircles(false)
+                        lineWidth = 2f
+                        mode = LineDataSet.Mode.CUBIC_BEZIER
+                        cubicIntensity = 0.10f
+                    })
+            }
+
+            if (chart_spread.data != null) {
+                chart_spread.clearValues()
+                chart_spread.clear()
+                chart_spread.resetZoom()
+            }
+
+            chart_spread.data = LineData(lines).apply {
+                setDrawValues(false)
+            }
+
+            chart_spread.data.notifyDataChanged()
+            chart_spread.invalidate()
+        }
+    }
+
+
+    private val worldwideDataObserver = Observer<WorldwideEntity> {
+        it?.let {
+            activity?.runOnUiThread {
+                hideDialog()
+                tv_update_time.text =
+                    "Last update ${AppUtil.convertMillisecondsToDateFormat(it.updated!!)}"
+                tv_total_cases_count.text = AppUtil.toNumberWithCommas(it.cases!!)
+                tv_total_recovered_count.text = AppUtil.toNumberWithCommas(it.recovered!!)
+                tv_total_death_count.text = AppUtil.toNumberWithCommas(it.deaths!!)
+                tv_today_cases_count.text = "(+${AppUtil.toNumberWithCommas(it.todayCases!!)})"
+                tv_today_recovered_count.text =
+                    "(+${AppUtil.toNumberWithCommas(it.todayRecovered!!.toLong())})"
+                tv_today_deaths_count.text = "(+${AppUtil.toNumberWithCommas(it.todayDeaths!!)})"
+
+            }
+
+        }
+    }
+
+    private val worldwideHistoryObserver = Observer<HistoricalWorldwideEntity> {
+        Timber.d("worldwideHistoryObserver")
+        hideDialog()
+        when (dashboardViewModel.chartType.value) {
+            ChartType.DAILY -> {
+                setDailyChart(it)
+            }
+            ChartType.CUMULATIVE -> {
+                setCumulativeChart(it)
+            }
+        }
+    }
+
+    private val vietnamDataObserver = Observer<CountryEntity> {
+        tv_update_time.text =
+            "Last update ${AppUtil.convertMillisecondsToDateFormat(it.updated!!)}"
+        tv_total_cases_count.text = AppUtil.toNumberWithCommas(it.cases!!.toLong())
+        tv_total_recovered_count.text = AppUtil.toNumberWithCommas(it.recovered!!.toLong())
+        tv_total_death_count.text = AppUtil.toNumberWithCommas(it.deaths!!.toLong())
+        tv_today_cases_count.text = "(+${AppUtil.toNumberWithCommas(it.todayCases!!.toLong())})"
+        tv_today_recovered_count.text =
+            "(+${AppUtil.toNumberWithCommas(it.todayRecovered!!.toLong())})"
+        tv_today_deaths_count.text = "(+${AppUtil.toNumberWithCommas(it.todayDeaths!!.toLong())})"
+
+    }
+
+    private val vietnamHistoryObserver = Observer<HistoricalCountryEntity> {
+        hideDialog()
+        it.let {
+            val timeline = it.timeline
+            when (dashboardViewModel.chartType.value) {
+                ChartType.DAILY -> {
+                    setDailyChart(timeline!!)
+                }
+                ChartType.CUMULATIVE -> {
+                    setCumulativeChart(timeline!!)
+                }
+            }
+        }
+    }
+
+    private val countryListObserver = Observer<ArrayList<CountryEntity>> {
+        it?.let {
+            dashboardRecyclerViewAdapter.setDataList(it)
+        }
+    }
+
+
 }

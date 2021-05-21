@@ -6,28 +6,26 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.thesis.distanceguard.R
-import com.thesis.distanceguard.api.model.CountryResponse
-import com.thesis.distanceguard.api.model.HistoricalCountryResponse
+import com.thesis.distanceguard.retrofit.response.CountryResponse
+import com.thesis.distanceguard.retrofit.response.HistoricalCountryResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
+import com.thesis.distanceguard.room.entities.CountryEntity
+import com.thesis.distanceguard.room.entities.HistoricalCountryEntity
 import com.thesis.distanceguard.util.AppUtil
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_detail.*
 import timber.log.Timber
 
-class DetailFragment() : BaseFragment() {
-    constructor(itemCountry: CountryResponse) : this() {
-        this.itemCountry = itemCountry
-    }
+class DetailFragment(private val itemCountry: CountryEntity) : BaseFragment() {
 
     companion object {
         const val TAG = "DetailFragment"
         private const val animationDuration = 1000L
     }
 
-    private lateinit var itemCountry: CountryResponse
     private lateinit var detailViewModel: DetailViewModel
-    
+
     override fun getResLayoutId(): Int {
         return R.layout.fragment_detail
     }
@@ -36,7 +34,9 @@ class DetailFragment() : BaseFragment() {
         setHasOptionsMenu(true)
         setupViewModel()
         setupLineChart()
+        Timber.d("${itemCountry.countryInfoEntity}")
         fetchCountry()
+        updateOtherInformation()
     }
 
     private fun setupViewModel() {
@@ -51,7 +51,7 @@ class DetailFragment() : BaseFragment() {
     override fun onResume() {
         super.onResume()
         Timber.d("onResume")
-        setupToolbarTitle(itemCountry.country)
+        setupToolbarTitle(itemCountry.country!!)
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
@@ -89,65 +89,61 @@ class DetailFragment() : BaseFragment() {
 
     private fun fetchCountry() {
         showProgressDialog("Fetching data")
-        detailViewModel.fetchCountry(itemCountry.countryInfo.id.toString())
+        detailViewModel.fetchCountry(itemCountry.country!!)
             .observe(this, countryObserver)
     }
 
-    private val countryObserver = Observer<HistoricalCountryResponse> {
-        hideDialog()
-        chart_cases.animate(
-            AppUtil.convertPairLongToPairFloat(
-                it.timeline.cases.toList().sortedBy { value -> value.second })
-        )
+    private val countryObserver = Observer<HistoricalCountryEntity?> {
+        it?.let {
+            hideDialog()
+            chart_cases.animate(
+                AppUtil.convertPairLongToPairFloat(
+                    it.timeline!!.cases!!.toList().sortedBy { value -> value.second })
+            )
 
-        chart_recovered.animate(
-            AppUtil.convertPairLongToPairFloat(
-                it.timeline.recovered.toList().sortedBy { value -> value.second })
-        )
+            chart_recovered.animate(
+                AppUtil.convertPairLongToPairFloat(
+                    it.timeline!!.recovered!!.toList().sortedBy { value -> value.second })
+            )
 
-        chart_death.animate(
-            AppUtil.convertPairLongToPairFloat(
-                it.timeline.deaths.toList().sortedBy { value -> value.second })
-        )
+            chart_death.animate(
+                AppUtil.convertPairLongToPairFloat(
+                    it.timeline!!.deaths!!.toList().sortedBy { value -> value.second })
+            )
 
-        //update text view
-        val length = it.timeline.cases.toList().size - 1
-        tv_comfirmed_count.text = AppUtil.toNumberWithCommas(
-            it.timeline.cases.toList().sortedBy { value -> value.second }[length].second
-        )
-        tv_recovered_count.text = AppUtil.toNumberWithCommas(
-            it.timeline.recovered.toList().sortedBy { value -> value.second }[length].second
-        )
-        tv_death_count.text = AppUtil.toNumberWithCommas(
-            it.timeline.deaths.toList().sortedBy { value -> value.second }[length].second
-        )
+            //update text view
+            val length = it.timeline!!.cases!!.toList().size - 1
+            tv_comfirmed_count.text = AppUtil.toNumberWithCommas(
+                it.timeline!!.cases!!.toList().sortedBy { value -> value.second }[length].second
+            )
+            tv_recovered_count.text = AppUtil.toNumberWithCommas(
+                it.timeline!!.recovered!!.toList().sortedBy { value -> value.second }[length].second
+            )
+            tv_death_count.text = AppUtil.toNumberWithCommas(
+                it.timeline!!.deaths!!.toList().sortedBy { value -> value.second }[length].second
+            )
 
-        updateOtherInformation()
+        }
+
     }
 
-    private fun updateMainInformation() {
-//        tv_total_cases_count.text = AppUtil.toNumberWithCommas(itemCountry.cases.toLong())
-//        tv_recover_count.text = AppUtil.toNumberWithCommas(itemCountry.recovered.toLong())
-//        tv_active_count.text = AppUtil.toNumberWithCommas(itemCountry.active.toLong())
-//        tv_deaths_count.text = AppUtil.toNumberWithCommas(itemCountry.deaths.toLong())
-    }
 
     private fun updateOtherInformation() {
-        tv_test_count.text = AppUtil.toNumberWithCommas(itemCountry.tests.toLong())
-        tv_population_count.text = AppUtil.toNumberWithCommas(itemCountry.population.toLong())
+        tv_test_count.text = AppUtil.toNumberWithCommas(itemCountry.tests!!.toLong())
+        tv_population_count.text = AppUtil.toNumberWithCommas(itemCountry.population!!.toLong())
         tv_one_case_per_people_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.oneCasePerPeople.toLong())
+            AppUtil.toNumberWithCommas(itemCountry.oneCasePerPeople!!.toLong())
         tv_one_test_per_people_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.oneTestPerPeople.toLong())
+            AppUtil.toNumberWithCommas(itemCountry.oneTestPerPeople!!.toLong())
         tv_one_death_per_people_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.oneDeathPerPeople.toLong())
+            AppUtil.toNumberWithCommas(itemCountry.oneDeathPerPeople!!.toLong())
         tv_case_per_one_million_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.casesPerOneMillion.toLong())
+            AppUtil.toNumberWithCommas(itemCountry.casesPerOneMillion!!.toLong())
         tv_death_per_one_million_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.deathsPerOneMillion.toLong())
+            AppUtil.toNumberWithCommas(itemCountry.deathsPerOneMillion!!.toLong())
         tv_test_per_one_million_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.testsPerOneMillion.toLong())
+            AppUtil.toNumberWithCommas(itemCountry.testsPerOneMillion!!.toLong())
         tv_active_per_one_million_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.activePerOneMillion.toLong())
+            AppUtil.toNumberWithCommas(itemCountry.activePerOneMillion!!.toLong())
     }
 }
