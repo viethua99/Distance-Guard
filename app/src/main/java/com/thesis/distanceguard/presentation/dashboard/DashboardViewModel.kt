@@ -124,15 +124,16 @@ class DashboardViewModel @Inject constructor(private val covidRepository: CovidR
 
     private fun fetchWorldwideHistory(lastdays: String) {
         viewModelScope.launch {
-//            when (val result = covidRepository.getWorldwideHistory(lastdays)) {
-//                is Success<HistoricalWorldwideEntity> -> {
-//                    historicalWorldwideResponse.value = result.data
-//                }
-//                is Error -> {
-//                    errorMessage.value = result.message
-//                }
-//
-//            }
+            when (val result = covidRepository.getWorldwideHistory(lastdays)) {
+                is Success<HistoricalWorldwideEntity> -> {
+                    historicalWorldwideResponse.value = result.data
+                }
+                is Error -> {
+                    historicalWorldwideResponse.value = covidRepository.getLocalHistoricalWorldwide()
+
+                }
+
+            }
         }
     }
 
@@ -153,7 +154,6 @@ class DashboardViewModel @Inject constructor(private val covidRepository: CovidR
                     val entity = covidRepository.getLocalHistoricalCountry("Vietnam")
                     Timber.d("entity = $entity")
                     historicalVietnamResponse.value = entity
-                    errorMessage.value = result.message
                 }
 
             }
@@ -168,7 +168,6 @@ class DashboardViewModel @Inject constructor(private val covidRepository: CovidR
                 }
                 is Error -> {
                     countryList.value = covidRepository.getLocalCountryList()
-                    errorMessage.value = result.message
                 }
 
             }

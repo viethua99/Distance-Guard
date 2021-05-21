@@ -11,7 +11,7 @@ import com.thesis.distanceguard.room.entities.HistoricalCountryEntity
  */
 
 @Dao
-interface HistoricalDao {
+interface HistoricalCountryDao {
 
     @Query("SELECT * FROM historical_country WHERE country=:countryName")
     suspend fun getHistoricalCountryEntity(countryName:String): HistoricalCountryEntity

@@ -2,11 +2,13 @@ package com.thesis.distanceguard.repository
 
 import androidx.annotation.WorkerThread
 import com.thesis.distanceguard.mapper.CountryMapper
-import com.thesis.distanceguard.mapper.HistoricalMapper
+import com.thesis.distanceguard.mapper.HistoricalCountryMapper
+import com.thesis.distanceguard.mapper.HistoricalWorldwideMapper
 import com.thesis.distanceguard.mapper.WorldwideMapper
 import com.thesis.distanceguard.retrofit.CovidApi
 import com.thesis.distanceguard.retrofit.response.CountryResponse
 import com.thesis.distanceguard.retrofit.response.HistoricalCountryResponse
+import com.thesis.distanceguard.retrofit.response.HistoricalWorldwideResponse
 import com.thesis.distanceguard.retrofit.response.WorldwideResponse
 import com.thesis.distanceguard.room.CovidDatabase
 import com.thesis.distanceguard.room.entities.CountryEntity
@@ -37,9 +39,17 @@ class CovidRepository(private val covidDatabase: CovidDatabase, private val covi
     private suspend fun updateHistoricalCountry(historicalCountryResponse: HistoricalCountryResponse?) {
         historicalCountryResponse?.let {
             Timber.d("updateHistoricalCountry: $it")
+            covidDatabase.historicalCountryDao().insert(HistoricalCountryMapper.responseToEntity(it))
+        }
+    }
 
-//            covidDatabase.historicalDao().deleteAll()
-            covidDatabase.historicalDao().insert(HistoricalMapper.responseToEntity(it))
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    private suspend fun updateHistoricalWorldwide(historicalWorldwideResponse: HistoricalWorldwideResponse?) {
+        historicalWorldwideResponse?.let {
+            Timber.d("updateHistoricalCountry: $it")
+            covidDatabase.historicalWorldwideDao().insert(HistoricalWorldwideMapper.responseToEntity(it))
         }
     }
 
@@ -69,7 +79,13 @@ class CovidRepository(private val covidDatabase: CovidDatabase, private val covi
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun getLocalHistoricalCountry(countryName:String): HistoricalCountryEntity {
-        return covidDatabase.historicalDao().getHistoricalCountryEntity(countryName)
+        return covidDatabase.historicalCountryDao().getHistoricalCountryEntity(countryName)
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun getLocalHistoricalWorldwide(): HistoricalWorldwideEntity {
+        return covidDatabase.historicalWorldwideDao().getHistoricalWorldwideEntity()
     }
 
     @Suppress("RedundantSuspendModifier")
@@ -84,8 +100,7 @@ class CovidRepository(private val covidDatabase: CovidDatabase, private val covi
             val response = covidApi.getWorldwideData()
             if (response.isSuccessful) {
                 updateLocalWorldwideData(response.body())
-                val entity = getLocalWorldwideData()
-                Success(entity)
+                Success(WorldwideMapper.responseToEntity(response.body()!!))
             } else {
                 Error(Exception("Something went wrong"))
             }
@@ -104,8 +119,7 @@ class CovidRepository(private val covidDatabase: CovidDatabase, private val covi
             val response = covidApi.getCountryListData()
             if (response.isSuccessful) {
                 updateLocalCountryList(response.body())
-                val data = getLocalCountryList()
-                Success(data)
+                Success(CountryMapper.responseListToEntities(response.body()!!))
             } else {
                 Error(Exception("Something went wrong"))
             }
@@ -119,7 +133,10 @@ class CovidRepository(private val covidDatabase: CovidDatabase, private val covi
         return try {
             val response = covidApi.getWorldwideHistory(lastdays)
             if (response.isSuccessful) {
-                Success(HistoricalWorldwideEntity())
+                if(lastdays == "30"){
+                    updateHistoricalWorldwide(response.body())
+                }
+                Success(HistoricalWorldwideMapper.responseToEntity(response.body()!!))
             } else {
                 Error(Exception("Something went wrong"))
             }
@@ -136,9 +153,10 @@ class CovidRepository(private val covidDatabase: CovidDatabase, private val covi
         return try {
             val response = covidApi.getCountryHistory(country, lastdays)
             if (response.isSuccessful) {
-                updateHistoricalCountry(response.body())
-                val entity = getLocalHistoricalCountry(country)
-                Success(entity)
+                if(lastdays == "30"){
+                    updateHistoricalCountry(response.body())
+                }
+                Success(HistoricalCountryMapper.responseToEntity(response.body()!!))
             } else {
                 Error(Exception("Something went wrong"))
             }

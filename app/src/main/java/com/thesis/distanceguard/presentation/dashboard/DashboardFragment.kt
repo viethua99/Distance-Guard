@@ -194,154 +194,158 @@ class DashboardFragment : BaseFragment() {
     }
 
 
-    private fun setDailyChart(response: HistoricalWorldwideEntity) {
-        val cases = getNewCaseList(response.cases!!.toList().sortedBy { value -> value.second })
-        val casesEntries = mutableListOf<Entry>()
-        cases.forEachIndexed { index, pair ->
-            if (pair.second > 1000000) {
-                Timber.d(pair.toString())
+    private fun setDailyChart(response: HistoricalWorldwideEntity?) {
+        response?.let {
+            val cases = getNewCaseList(it.cases!!.toList().sortedBy { value -> value.second })
+            val casesEntries = mutableListOf<Entry>()
+            cases.forEachIndexed { index, pair ->
+                if (pair.second > 1000000) {
+                    Timber.d(pair.toString())
+                }
+                casesEntries.add(Entry(index.toFloat(), pair.second))
             }
-            casesEntries.add(Entry(index.toFloat(), pair.second))
+
+            val recovered =
+                getNewCaseList(it.recovered!!.toList().sortedBy { value -> value.second })
+            val recoveredEntries = mutableListOf<Entry>()
+            recovered.forEachIndexed { index, pair ->
+                recoveredEntries.add(Entry(index.toFloat(), pair.second))
+            }
+
+            val deaths = getNewCaseList(it.deaths!!.toList().sortedBy { value -> value.second })
+            val deathsEntries = mutableListOf<Entry>()
+            deaths.forEachIndexed { index, pair ->
+                deathsEntries.add(Entry(index.toFloat(), pair.second))
+            }
+
+            val lines = arrayListOf<ILineDataSet>().apply {
+                add(
+                    LineDataSet(
+                        casesEntries,
+                        "cases"
+                    ).apply {
+                        color = ContextCompat.getColor(requireContext(), R.color.primary_color)
+                        setDrawCircles(false)
+                        lineWidth = 2f
+                        mode = LineDataSet.Mode.CUBIC_BEZIER
+                        cubicIntensity = 0.10f
+                    })
+
+                add(
+                    LineDataSet(
+                        recoveredEntries,
+                        "recovered"
+                    ).apply {
+                        color = ContextCompat.getColor(requireContext(), R.color.primary_green)
+                        setDrawCircles(false)
+                        lineWidth = 2f
+                        mode = LineDataSet.Mode.CUBIC_BEZIER
+                        cubicIntensity = 0.10f
+                    })
+
+                add(
+                    LineDataSet(
+                        deathsEntries,
+                        "deaths"
+                    ).apply {
+                        color = ContextCompat.getColor(requireContext(), R.color.primary_red)
+                        setDrawCircles(false)
+                        lineWidth = 2f
+                        mode = LineDataSet.Mode.CUBIC_BEZIER
+                        cubicIntensity = 0.10f
+                    })
+            }
+
+            if (chart_spread.data != null) {
+                chart_spread.clearValues()
+                chart_spread.clear()
+                chart_spread.resetZoom()
+
+            }
+
+            chart_spread.data = LineData(lines).apply {
+                setDrawValues(false)
+            }
+
+            chart_spread.data.notifyDataChanged()
+            chart_spread.invalidate()
         }
-
-        val recovered =
-            getNewCaseList(response.recovered!!.toList().sortedBy { value -> value.second })
-        val recoveredEntries = mutableListOf<Entry>()
-        recovered.forEachIndexed { index, pair ->
-            recoveredEntries.add(Entry(index.toFloat(), pair.second))
-        }
-
-        val deaths = getNewCaseList(response.deaths!!.toList().sortedBy { value -> value.second })
-        val deathsEntries = mutableListOf<Entry>()
-        deaths.forEachIndexed { index, pair ->
-            deathsEntries.add(Entry(index.toFloat(), pair.second))
-        }
-
-        val lines = arrayListOf<ILineDataSet>().apply {
-            add(
-                LineDataSet(
-                    casesEntries,
-                    "cases"
-                ).apply {
-                    color = ContextCompat.getColor(requireContext(), R.color.primary_color)
-                    setDrawCircles(false)
-                    lineWidth = 2f
-                    mode = LineDataSet.Mode.CUBIC_BEZIER
-                    cubicIntensity = 0.10f
-                })
-
-            add(
-                LineDataSet(
-                    recoveredEntries,
-                    "recovered"
-                ).apply {
-                    color = ContextCompat.getColor(requireContext(), R.color.primary_green)
-                    setDrawCircles(false)
-                    lineWidth = 2f
-                    mode = LineDataSet.Mode.CUBIC_BEZIER
-                    cubicIntensity = 0.10f
-                })
-
-            add(
-                LineDataSet(
-                    deathsEntries,
-                    "deaths"
-                ).apply {
-                    color = ContextCompat.getColor(requireContext(), R.color.primary_red)
-                    setDrawCircles(false)
-                    lineWidth = 2f
-                    mode = LineDataSet.Mode.CUBIC_BEZIER
-                    cubicIntensity = 0.10f
-                })
-        }
-
-        if (chart_spread.data != null) {
-            chart_spread.clearValues()
-            chart_spread.clear()
-            chart_spread.resetZoom()
-
-        }
-
-        chart_spread.data = LineData(lines).apply {
-            setDrawValues(false)
-        }
-
-        chart_spread.data.notifyDataChanged()
-        chart_spread.invalidate()
     }
 
-    private fun setCumulativeChart(response: HistoricalWorldwideEntity) {
-        val cases = response.cases!!.toList().sortedBy { value -> value.second }
-        val casesEntries = mutableListOf<Entry>()
-        cases.forEachIndexed { index, pair ->
-            if (pair.second > 1000000) {
-                Timber.d(pair.toString())
+    private fun setCumulativeChart(response: HistoricalWorldwideEntity?) {
+        response?.let {
+            val cases = it.cases!!.toList().sortedBy { value -> value.second }
+            val casesEntries = mutableListOf<Entry>()
+            cases.forEachIndexed { index, pair ->
+                if (pair.second > 1000000) {
+                    Timber.d(pair.toString())
+                }
+                casesEntries.add(Entry(index.toFloat(), pair.second.toFloat()))
             }
-            casesEntries.add(Entry(index.toFloat(), pair.second.toFloat()))
+
+            val recovered = it.recovered!!.toList().sortedBy { value -> value.second }
+            val recoveredEntries = mutableListOf<Entry>()
+            recovered.forEachIndexed { index, pair ->
+                recoveredEntries.add(Entry(index.toFloat(), pair.second.toFloat()))
+            }
+
+            val deaths = it.deaths!!.toList().sortedBy { value -> value.second }
+            val deathsEntries = mutableListOf<Entry>()
+            deaths.forEachIndexed { index, pair ->
+                deathsEntries.add(Entry(index.toFloat(), pair.second.toFloat()))
+            }
+
+            val lines = arrayListOf<ILineDataSet>().apply {
+                add(
+                    LineDataSet(
+                        casesEntries,
+                        "cases"
+                    ).apply {
+                        color = ContextCompat.getColor(requireContext(), R.color.primary_color)
+                        setDrawCircles(false)
+                        lineWidth = 2f
+                        mode = LineDataSet.Mode.CUBIC_BEZIER
+                        cubicIntensity = 0.10f
+                    })
+
+                add(
+                    LineDataSet(
+                        recoveredEntries,
+                        "recovered"
+                    ).apply {
+                        color = ContextCompat.getColor(requireContext(), R.color.primary_green)
+                        setDrawCircles(false)
+                        lineWidth = 2f
+                        mode = LineDataSet.Mode.CUBIC_BEZIER
+                        cubicIntensity = 0.10f
+                    })
+
+                add(
+                    LineDataSet(
+                        deathsEntries,
+                        "deaths"
+                    ).apply {
+                        color = ContextCompat.getColor(requireContext(), R.color.primary_red)
+                        setDrawCircles(false)
+                        lineWidth = 2f
+                        mode = LineDataSet.Mode.CUBIC_BEZIER
+                        cubicIntensity = 0.10f
+                    })
+            }
+
+            if (chart_spread.data != null) {
+                chart_spread.clearValues()
+                chart_spread.clear()
+                chart_spread.resetZoom()
+            }
+
+            chart_spread.data = LineData(lines).apply {
+                setDrawValues(false)
+            }
+
+            chart_spread.data.notifyDataChanged()
+            chart_spread.invalidate()
         }
-
-        val recovered = response.recovered!!.toList().sortedBy { value -> value.second }
-        val recoveredEntries = mutableListOf<Entry>()
-        recovered.forEachIndexed { index, pair ->
-            recoveredEntries.add(Entry(index.toFloat(), pair.second.toFloat()))
-        }
-
-        val deaths = response.deaths!!.toList().sortedBy { value -> value.second }
-        val deathsEntries = mutableListOf<Entry>()
-        deaths.forEachIndexed { index, pair ->
-            deathsEntries.add(Entry(index.toFloat(), pair.second.toFloat()))
-        }
-
-        val lines = arrayListOf<ILineDataSet>().apply {
-            add(
-                LineDataSet(
-                    casesEntries,
-                    "cases"
-                ).apply {
-                    color = ContextCompat.getColor(requireContext(), R.color.primary_color)
-                    setDrawCircles(false)
-                    lineWidth = 2f
-                    mode = LineDataSet.Mode.CUBIC_BEZIER
-                    cubicIntensity = 0.10f
-                })
-
-            add(
-                LineDataSet(
-                    recoveredEntries,
-                    "recovered"
-                ).apply {
-                    color = ContextCompat.getColor(requireContext(), R.color.primary_green)
-                    setDrawCircles(false)
-                    lineWidth = 2f
-                    mode = LineDataSet.Mode.CUBIC_BEZIER
-                    cubicIntensity = 0.10f
-                })
-
-            add(
-                LineDataSet(
-                    deathsEntries,
-                    "deaths"
-                ).apply {
-                    color = ContextCompat.getColor(requireContext(), R.color.primary_red)
-                    setDrawCircles(false)
-                    lineWidth = 2f
-                    mode = LineDataSet.Mode.CUBIC_BEZIER
-                    cubicIntensity = 0.10f
-                })
-        }
-
-        if (chart_spread.data != null) {
-            chart_spread.clearValues()
-            chart_spread.clear()
-            chart_spread.resetZoom()
-        }
-
-        chart_spread.data = LineData(lines).apply {
-            setDrawValues(false)
-        }
-
-        chart_spread.data.notifyDataChanged()
-        chart_spread.invalidate()
     }
 
 

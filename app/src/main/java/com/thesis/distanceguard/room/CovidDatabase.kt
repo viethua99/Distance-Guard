@@ -8,7 +8,8 @@ import androidx.room.TypeConverters
 import com.thesis.distanceguard.room.converter.ListTypeConverter
 import com.thesis.distanceguard.room.converter.MapTypeConverter
 import com.thesis.distanceguard.room.dao.CountryDao
-import com.thesis.distanceguard.room.dao.HistoricalDao
+import com.thesis.distanceguard.room.dao.HistoricalCountryDao
+import com.thesis.distanceguard.room.dao.HistoricalWorldwideDao
 import com.thesis.distanceguard.room.dao.WorldwideDao
 import com.thesis.distanceguard.room.entities.*
 
@@ -27,7 +28,8 @@ abstract class CovidDatabase : RoomDatabase() {
 
     abstract fun worldwideDao(): WorldwideDao
     abstract fun countryDao(): CountryDao
-    abstract fun historicalDao(): HistoricalDao
+    abstract fun historicalCountryDao(): HistoricalCountryDao
+    abstract fun historicalWorldwideDao(): HistoricalWorldwideDao
 
 
     companion object {

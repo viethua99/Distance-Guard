@@ -7,7 +7,7 @@ import com.thesis.distanceguard.room.entities.HistoricalWorldwideEntity
 /**
  * Created by Viet Hua on 05/21/2021.
  */
-object HistoricalMapper {
+object HistoricalCountryMapper {
 
     fun responseToEntity(historicalCountryResponse: HistoricalCountryResponse) : HistoricalCountryEntity {
         return HistoricalCountryEntity(
