@@ -167,6 +167,7 @@ class CameraActivity : BaseActivity(), View.OnClickListener {
                 val returnIntent = Intent()
                 returnIntent.putExtra("UUID", barcode.rawValue)
                 setResult(Activity.RESULT_OK, returnIntent)
+                showToastMessage("Scan your team member succeed")
                 finish()
             }
 

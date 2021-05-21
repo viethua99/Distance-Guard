@@ -47,6 +47,7 @@ class TeamFragment : BaseFragment() {
             showWarningDialogWithConfirm("Exiting your team will remove teammates you scanned",
                 SweetAlertDialog.OnSweetClickListener {
                     //Confirm Listener
+                    showToastMessage("Leave your team succeed")
                     BLEController.leaveTeam()
                     setQRCode()
                     setTeamCount()

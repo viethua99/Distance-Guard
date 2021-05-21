@@ -1,8 +1,11 @@
 package com.thesis.distanceguard.presentation.dashboard
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.view.View
 import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -13,7 +16,6 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.thesis.distanceguard.R
-import com.thesis.distanceguard.retrofit.response.*
 import com.thesis.distanceguard.model.ChartDate
 import com.thesis.distanceguard.model.ChartType
 import com.thesis.distanceguard.model.DashboardMode
@@ -31,6 +33,7 @@ import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import timber.log.Timber
 import java.util.*
+
 
 class DashboardFragment : BaseFragment() {
 
@@ -77,6 +80,11 @@ class DashboardFragment : BaseFragment() {
             }
         }
 
+        if(!isNetworkAvailable()){
+            chip_all.visibility = View.GONE
+        } else {
+            chip_all.visibility = View.VISIBLE
+        }
         setupRecyclerView()
         setupLineChart()
         toggleWorldwideSwitch()
@@ -89,6 +97,13 @@ class DashboardFragment : BaseFragment() {
                 R.id.container_main
             )
         }
+    }
+
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager =
+            activity!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        val activeNetworkInfo = connectivityManager!!.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected
     }
 
     private fun fetchInitData() {
