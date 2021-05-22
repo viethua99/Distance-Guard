@@ -9,6 +9,7 @@ import com.thesis.distanceguard.R
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import com.thesis.distanceguard.presentation.map.MapFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import timber.log.Timber
 
@@ -22,8 +23,8 @@ class MainFragment : BaseFragment() {
 
     override fun onMyViewCreated(view: View) {
         Timber.d("onMyViewCreated")
-        setHasOptionsMenu(true)
-        setupToolbarTitle( getString(R.string.nav_item_dashboard))
+        setupToolbarTitle(getString(R.string.nav_item_dashboard))
+        (activity as MainActivity).appBarLayout.visibility = View.VISIBLE
         setupBottomNavigationView()
         setupViewPager()
 
@@ -33,20 +34,6 @@ class MainFragment : BaseFragment() {
         super.onResume()
         Timber.d("onResume")
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_map,menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            R.id.item_map -> {
-                (activity as MainActivity).addFragment(MapFragment(),MapFragment.TAG,R.id.container_main)
-            }
-        }
-        return true
     }
 
 

@@ -2,6 +2,9 @@ package com.thesis.distanceguard.presentation.countries
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
@@ -31,6 +34,7 @@ class CountriesFragment : BaseFragment() {
 
     override fun onMyViewCreated(view: View) {
         Timber.d("onMyViewCreated")
+        setHasOptionsMenu(true)
         setupViewModel()
         setupRecyclerView()
 
@@ -50,7 +54,21 @@ class CountriesFragment : BaseFragment() {
         img_clear.setOnClickListener {
             edt_search.text.clear()
         }
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_countries,menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.item_reload -> {
+                showProgressDialog("Fetching Data")
+                countriesViewModel.fetchCountryList()
+            }
+        }
+        return true
     }
 
     private fun setupViewModel() {
@@ -99,8 +117,15 @@ class CountriesFragment : BaseFragment() {
     }
 
     private val countryListObserver = Observer<ArrayList<CountryEntity>> {
+        hideDialog()
         it?.let {
-            countriesAdapter.add(it)
+            if(it.isNotEmpty()){
+                rl_empty.visibility = View.GONE
+                countriesAdapter.add(it)
+            } else {
+                rl_empty.visibility = View.VISIBLE
+            }
+
         }
     }
 }

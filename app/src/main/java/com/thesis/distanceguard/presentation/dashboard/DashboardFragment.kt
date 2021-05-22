@@ -2,6 +2,9 @@ package com.thesis.distanceguard.presentation.dashboard
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
@@ -24,6 +27,7 @@ import com.thesis.distanceguard.presentation.base.BaseRecyclerViewAdapter
 import com.thesis.distanceguard.presentation.detail.DetailFragment
 import com.thesis.distanceguard.presentation.information.InformationFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
+import com.thesis.distanceguard.presentation.map.MapFragment
 import com.thesis.distanceguard.room.entities.CountryEntity
 import com.thesis.distanceguard.room.entities.HistoricalCountryEntity
 import com.thesis.distanceguard.room.entities.HistoricalWorldwideEntity
@@ -45,9 +49,30 @@ class DashboardFragment : BaseFragment() {
     }
 
     override fun onMyViewCreated(view: View) {
+        setHasOptionsMenu(true)
         setupViewModel()
         setupViews()
         fetchInitData()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_dashboard, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_reload -> {
+                showProgressDialog("Fetching Data")
+                dashboardViewModel.reloadData()
+                checkAllChipVisibility()
+            }
+
+            R.id.item_map -> {
+                (activity as MainActivity).addFragment(MapFragment(),MapFragment.TAG,R.id.container_main)
+            }
+        }
+        return true
     }
 
 
@@ -80,11 +105,7 @@ class DashboardFragment : BaseFragment() {
             }
         }
 
-        if(!isNetworkAvailable()){
-            chip_all.visibility = View.GONE
-        } else {
-            chip_all.visibility = View.VISIBLE
-        }
+        checkAllChipVisibility()
         setupRecyclerView()
         setupLineChart()
         toggleWorldwideSwitch()
@@ -104,6 +125,14 @@ class DashboardFragment : BaseFragment() {
             activity!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
         val activeNetworkInfo = connectivityManager!!.activeNetworkInfo
         return activeNetworkInfo != null && activeNetworkInfo.isConnected
+    }
+
+    private fun checkAllChipVisibility() {
+        if (!isNetworkAvailable()) {
+            chip_all.visibility = View.GONE
+        } else {
+            chip_all.visibility = View.VISIBLE
+        }
     }
 
     private fun fetchInitData() {

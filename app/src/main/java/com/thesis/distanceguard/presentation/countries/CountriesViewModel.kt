@@ -18,6 +18,7 @@ class CountriesViewModel @Inject constructor(private val covidRepository: CovidR
      val countryList = MutableLiveData<ArrayList<CountryEntity>>()
      val errorMessage = MutableLiveData<String>()
 
+
     fun fetchCountryList(): LiveData<ArrayList<CountryEntity>>{
         viewModelScope.launch {
             when (val result = covidRepository.getCountryListData()) {

@@ -41,6 +41,10 @@ class DashboardViewModel @Inject constructor(private val covidRepository: CovidR
     val errorMessage = MutableLiveData<String>()
     val countryList = MutableLiveData<ArrayList<CountryEntity>>()
 
+    fun reloadData(){
+        fetchDashboardData(dashboardMode.value!!)
+        fetchCountryList()
+    }
 
     fun fetchDashboardData(dashboardMode: DashboardMode) {
         this.dashboardMode.value = dashboardMode
