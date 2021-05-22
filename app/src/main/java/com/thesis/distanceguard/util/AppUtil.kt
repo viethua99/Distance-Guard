@@ -12,7 +12,7 @@ object AppUtil {
 
     fun convertMillisecondsToDateFormat(milliSeconds: Long): String? {
         val calendar: Calendar = Calendar.getInstance()
-        val formatter = SimpleDateFormat(DATE_FORMAT)
+        val formatter = SimpleDateFormat(DATE_FORMAT,Locale.US)
         calendar.timeInMillis = milliSeconds
         return formatter.format(calendar.time)
     }
