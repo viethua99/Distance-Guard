@@ -9,6 +9,7 @@ import com.thesis.distanceguard.myapp.Constants
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import com.thesis.distanceguard.presentation.main.fragment.MainFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_onboarding_three.*
 
 class OnboardingThreeFragment : BaseFragment(){
