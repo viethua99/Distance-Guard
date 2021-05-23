@@ -32,11 +32,11 @@ class DashboardViewModel @Inject constructor(private val covidRepository: CovidR
     private val dashboardMode = MutableLiveData<DashboardMode>(DashboardMode.WORLDWIDE)
 
 
-    val worldwideResponse = MutableLiveData<WorldwideEntity>()
-    val vietnamResponse = MutableLiveData<CountryEntity>()
+    val worldwideResponse = MutableLiveData<WorldwideEntity?>()
+    val vietnamResponse = MutableLiveData<CountryEntity?>()
 
-    val historicalWorldwideResponse = MutableLiveData<HistoricalWorldwideEntity>()
-    val historicalVietnamResponse = MutableLiveData<HistoricalCountryEntity>()
+    val historicalWorldwideResponse = MutableLiveData<HistoricalWorldwideEntity?>()
+    val historicalVietnamResponse = MutableLiveData<HistoricalCountryEntity?>()
 
     val errorMessage = MutableLiveData<String>()
     val countryList = MutableLiveData<ArrayList<CountryEntity>>()

@@ -69,7 +69,11 @@ class DashboardFragment : BaseFragment() {
             }
 
             R.id.item_map -> {
-                (activity as MainActivity).addFragment(MapFragment(),MapFragment.TAG,R.id.container_main)
+                (activity as MainActivity).addFragment(
+                    MapFragment(),
+                    MapFragment.TAG,
+                    R.id.container_main
+                )
             }
         }
         return true
@@ -393,7 +397,7 @@ class DashboardFragment : BaseFragment() {
     }
 
 
-    private val worldwideDataObserver = Observer<WorldwideEntity> {
+    private val worldwideDataObserver = Observer<WorldwideEntity?> {
         it?.let {
             activity?.runOnUiThread {
                 hideDialog()
@@ -412,7 +416,7 @@ class DashboardFragment : BaseFragment() {
         }
     }
 
-    private val worldwideHistoryObserver = Observer<HistoricalWorldwideEntity> {
+    private val worldwideHistoryObserver = Observer<HistoricalWorldwideEntity?> {
         Timber.d("worldwideHistoryObserver")
         hideDialog()
         when (dashboardViewModel.chartType.value) {
@@ -425,22 +429,34 @@ class DashboardFragment : BaseFragment() {
         }
     }
 
-    private val vietnamDataObserver = Observer<CountryEntity> {
-        tv_update_time.text =
-            "Last update ${AppUtil.convertMillisecondsToDateFormat(it.updated!!)}"
-        tv_total_cases_count.text = AppUtil.toNumberWithCommas(it.cases!!.toLong())
-        tv_total_recovered_count.text = AppUtil.toNumberWithCommas(it.recovered!!.toLong())
-        tv_total_death_count.text = AppUtil.toNumberWithCommas(it.deaths!!.toLong())
-        tv_today_cases_count.text = "(+${AppUtil.toNumberWithCommas(it.todayCases!!.toLong())})"
-        tv_today_recovered_count.text =
-            "(+${AppUtil.toNumberWithCommas(it.todayRecovered!!.toLong())})"
-        tv_today_deaths_count.text = "(+${AppUtil.toNumberWithCommas(it.todayDeaths!!.toLong())})"
+    private val vietnamDataObserver = Observer<CountryEntity?> {
+        it?.let { countryEntity ->
+            tv_update_time.text =
+                "Last update ${AppUtil.convertMillisecondsToDateFormat(countryEntity.updated!!)}"
+            tv_total_cases_count.text = AppUtil.toNumberWithCommas(countryEntity.cases!!.toLong())
+            tv_total_recovered_count.text =
+                AppUtil.toNumberWithCommas(countryEntity.recovered!!.toLong())
+            tv_total_death_count.text = AppUtil.toNumberWithCommas(countryEntity.deaths!!.toLong())
+            tv_today_cases_count.text =
+                "(+${AppUtil.toNumberWithCommas(countryEntity.todayCases!!.toLong())})"
+            tv_today_recovered_count.text =
+                "(+${AppUtil.toNumberWithCommas(countryEntity.todayRecovered!!.toLong())})"
+            tv_today_deaths_count.text =
+                "(+${AppUtil.toNumberWithCommas(countryEntity.todayDeaths!!.toLong())})"
+
+        }
 
     }
 
-    private val vietnamHistoryObserver = Observer<HistoricalCountryEntity> {
+    private val vietnamHistoryObserver = Observer<HistoricalCountryEntity?> {
         hideDialog()
-        it.let {
+        if (it == null) {
+            if (chart_spread.data != null) {
+                chart_spread.clearValues()
+                chart_spread.clear()
+            }
+        }
+        it?.let {
             val timeline = it.timeline
             when (dashboardViewModel.chartType.value) {
                 ChartType.DAILY -> {
