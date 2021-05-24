@@ -103,12 +103,12 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         setupRecyclerView()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         val mainActivity = activity as MainActivity
         mainActivity.appBarLayout.visibility = View.VISIBLE
-
     }
+
 
     fun EditText.hideKeyboard(): Boolean {
         return (context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager)
@@ -252,13 +252,3 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         const val FULL = 3
     }
 }
-
-
-/**
-object CaseType {
-const val CONFIRMED = 0
-const val DEATHS = 1
-const val RECOVERED = 2
-const val FULL = 3
-}
- * */

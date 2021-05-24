@@ -94,8 +94,16 @@ class DetailFragment(private val itemCountry: CountryEntity) : BaseFragment() {
     }
 
     private val countryObserver = Observer<HistoricalCountryEntity?> {
+        if(it == null){
+            chart_cases.visibility = View.INVISIBLE
+            chart_recovered.visibility = View.INVISIBLE
+            chart_death.visibility = View.INVISIBLE
+        }
         it?.let {
             hideDialog()
+            chart_cases.visibility = View.VISIBLE
+            chart_recovered.visibility = View.VISIBLE
+            chart_death.visibility = View.VISIBLE
             chart_cases.animate(
                 AppUtil.convertPairLongToPairFloat(
                     it.timeline!!.cases!!.toList().sortedBy { value -> value.second })
