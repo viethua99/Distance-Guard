@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +17,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.utils.EntryXComparator
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.model.ChartDate
 import com.thesis.distanceguard.model.ChartType
@@ -33,6 +33,8 @@ import com.thesis.distanceguard.room.entities.HistoricalCountryEntity
 import com.thesis.distanceguard.room.entities.HistoricalWorldwideEntity
 import com.thesis.distanceguard.room.entities.WorldwideEntity
 import com.thesis.distanceguard.util.AppUtil
+import com.thesis.distanceguard.util.DateValueFormatter
+import com.thesis.distanceguard.util.MyMarkerView
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import timber.log.Timber
@@ -184,15 +186,18 @@ class DashboardFragment : BaseFragment() {
     }
 
     private fun setupLineChart() {
+        val mv = MyMarkerView(activity, R.layout.custom_marker_view)
+        chart_spread.marker = mv
         chart_spread.legend.textColor = ContextCompat.getColor(context!!, R.color.primary_color)
-        chart_spread.xAxis.textColor = ContextCompat.getColor(context!!, R.color.primary_color)
-        chart_spread.axisLeft.textColor = ContextCompat.getColor(context!!, R.color.primary_color)
-        chart_spread.xAxis.position = XAxis.XAxisPosition.BOTTOM
         chart_spread.description = null
         chart_spread.axisRight.isEnabled = false
-        chart_spread.xAxis.isEnabled = false
+        chart_spread.axisLeft.textColor = ContextCompat.getColor(context!!, R.color.primary_color)
         chart_spread.axisLeft.setDrawGridLines(false)
         chart_spread.xAxis.setDrawGridLines(false)
+        chart_spread.xAxis.isEnabled = true
+        chart_spread.xAxis.textColor = ContextCompat.getColor(context!!, R.color.primary_color)
+        chart_spread.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        chart_spread.xAxis.valueFormatter = DateValueFormatter()
         chart_spread.setExtraOffsets(0f, 0f, 0f, 15f)
     }
 
@@ -246,25 +251,33 @@ class DashboardFragment : BaseFragment() {
         response?.let {
             val cases = getNewCaseList(it.cases!!.toList().sortedBy { value -> value.second })
             val casesEntries = mutableListOf<Entry>()
-            cases.forEachIndexed { index, pair ->
-                if (pair.second > 1000000) {
-                    Timber.d(pair.toString())
-                }
-                casesEntries.add(Entry(index.toFloat(), pair.second))
+            cases.forEachIndexed { _, pair ->
+                val first = pair.first
+
+                val mill = AppUtil.convertStringDateToMillisecond(pair.first)
+                val time = AppUtil.convertMillisecondsToDateFormat(mill)
+                Timber.d("testt: first=$first --- mill=$mill -- time=$time")
+                casesEntries.add(Entry(AppUtil.convertStringDateToMillisecond(pair.first).toFloat(), pair.second))
             }
+            casesEntries.sortWith(EntryXComparator())
 
             val recovered =
                 getNewCaseList(it.recovered!!.toList().sortedBy { value -> value.second })
             val recoveredEntries = mutableListOf<Entry>()
-            recovered.forEachIndexed { index, pair ->
-                recoveredEntries.add(Entry(index.toFloat(), pair.second))
+            recovered.forEachIndexed { _, pair ->
+                recoveredEntries.add(Entry(AppUtil.convertStringDateToMillisecond(pair.first).toFloat(), pair.second))
             }
+            recoveredEntries.sortWith(EntryXComparator())
+
 
             val deaths = getNewCaseList(it.deaths!!.toList().sortedBy { value -> value.second })
             val deathsEntries = mutableListOf<Entry>()
-            deaths.forEachIndexed { index, pair ->
-                deathsEntries.add(Entry(index.toFloat(), pair.second))
+            deaths.forEachIndexed { _, pair ->
+                deathsEntries.add(Entry(AppUtil.convertStringDateToMillisecond(pair.first).toFloat(), pair.second))
             }
+
+            deathsEntries.sortWith(EntryXComparator())
+
 
             val lines = arrayListOf<ILineDataSet>().apply {
                 add(
@@ -324,24 +337,27 @@ class DashboardFragment : BaseFragment() {
         response?.let {
             val cases = it.cases!!.toList().sortedBy { value -> value.second }
             val casesEntries = mutableListOf<Entry>()
-            cases.forEachIndexed { index, pair ->
-                if (pair.second > 1000000) {
-                    Timber.d(pair.toString())
-                }
-                casesEntries.add(Entry(index.toFloat(), pair.second.toFloat()))
+            cases.forEachIndexed { _, pair ->
+                casesEntries.add(Entry(AppUtil.convertStringDateToMillisecond(pair.first).toFloat(), pair.second.toFloat()))
             }
+            casesEntries.sortWith(EntryXComparator())
+
 
             val recovered = it.recovered!!.toList().sortedBy { value -> value.second }
             val recoveredEntries = mutableListOf<Entry>()
-            recovered.forEachIndexed { index, pair ->
-                recoveredEntries.add(Entry(index.toFloat(), pair.second.toFloat()))
+            recovered.forEachIndexed { _, pair ->
+                recoveredEntries.add(Entry(AppUtil.convertStringDateToMillisecond(pair.first).toFloat(), pair.second.toFloat()))
             }
+            recoveredEntries.sortWith(EntryXComparator())
+
 
             val deaths = it.deaths!!.toList().sortedBy { value -> value.second }
             val deathsEntries = mutableListOf<Entry>()
-            deaths.forEachIndexed { index, pair ->
-                deathsEntries.add(Entry(index.toFloat(), pair.second.toFloat()))
+            deaths.forEachIndexed { _, pair ->
+                deathsEntries.add(Entry(AppUtil.convertStringDateToMillisecond(pair.first).toFloat(), pair.second.toFloat()))
             }
+            deathsEntries.sortWith(EntryXComparator())
+
 
             val lines = arrayListOf<ILineDataSet>().apply {
                 add(

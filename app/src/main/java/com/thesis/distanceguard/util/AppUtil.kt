@@ -5,9 +5,17 @@ import java.util.*
 
 object AppUtil {
     private const val DATE_FORMAT = "MMMM dd, yyyy HH:mm:ss"
+    private const val SHORT_DATE_FORMAT = "MMMM dd, yyyy"
 
     fun toNumberWithCommas(input: Long): String {
         return "%,d".format(input)
+    }
+
+    fun convertMillisecondsToShortDateFormat(milliSeconds: Long): String? {
+        val calendar: Calendar = Calendar.getInstance()
+        val formatter = SimpleDateFormat(SHORT_DATE_FORMAT,Locale.US)
+        calendar.timeInMillis = milliSeconds
+        return formatter.format(calendar.time)
     }
 
     fun convertMillisecondsToDateFormat(milliSeconds: Long): String? {
@@ -15,6 +23,12 @@ object AppUtil {
         val formatter = SimpleDateFormat(DATE_FORMAT,Locale.US)
         calendar.timeInMillis = milliSeconds
         return formatter.format(calendar.time)
+    }
+
+    fun convertStringDateToMillisecond(time: String): Long {
+        val formatter = SimpleDateFormat("MM/dd/yy",Locale.US)
+        val date = formatter.parse(time)
+        return date.time
     }
 
     // Pair<String,Long> -> Pair<String,Float>
