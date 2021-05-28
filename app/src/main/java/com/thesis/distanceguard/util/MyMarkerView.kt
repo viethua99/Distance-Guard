@@ -2,6 +2,7 @@ package com.thesis.distanceguard.util
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Canvas
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -45,6 +46,11 @@ class MyMarkerView(context: Context?, layoutResource: Int) :
 
         super.refreshContent(entry, highlight)
 
+    }
+
+    override fun draw(canvas: Canvas?, posX: Float, posY: Float) {
+        super.draw(canvas, posX, posY)
+        getOffsetForDrawingAtPoint(posX,posY)
     }
 
     override fun getOffset(): MPPointF {

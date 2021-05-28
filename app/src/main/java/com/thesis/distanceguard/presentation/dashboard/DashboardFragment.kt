@@ -187,6 +187,7 @@ class DashboardFragment : BaseFragment() {
 
     private fun setupLineChart() {
         val mv = MyMarkerView(activity, R.layout.custom_marker_view)
+        mv.chartView = chart_spread
         chart_spread.marker = mv
         chart_spread.legend.textColor = ContextCompat.getColor(context!!, R.color.primary_color)
         chart_spread.description = null
