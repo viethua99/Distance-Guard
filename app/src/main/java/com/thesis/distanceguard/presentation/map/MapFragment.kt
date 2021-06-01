@@ -142,7 +142,12 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     override fun onMapReady(p0: GoogleMap?) {
         this.googleMap = p0
         try {
-            googleMap?.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.style_json))
+            googleMap?.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    activity,
+                    R.raw.style_retro
+                )
+            )
         } catch (e: Resources.NotFoundException) {
             e.printStackTrace()
         }
@@ -155,9 +160,21 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun selectItem(data: CountryEntity) {
+        markers.clear()
         googleMap?.let {
-            moveCamera(LatLng(data.countryInfoEntity!!.latitude!!, data.countryInfoEntity!!.longitude!!))
-            startPulseAnimation(LatLng(data.countryInfoEntity!!.latitude!!, data.countryInfoEntity!!.longitude!!))
+            moveCamera(
+                LatLng(
+                    data.countryInfoEntity!!.latitude!!,
+                    data.countryInfoEntity!!.longitude!!
+                )
+            )
+            startPulseAnimation(
+                LatLng(
+                    data.countryInfoEntity!!.latitude!!,
+                    data.countryInfoEntity!!.longitude!!
+                )
+            )
+            singleMarkers(data)
         }
     }
 
@@ -167,32 +184,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
 
     private val countryListObserver = Observer<ArrayList<CountryEntity>> {
         it?.let {
-            updateMarkers(it)
             mapAdapter.add(it)
-        }
-    }
-
-    private fun updateMarkers(data: ArrayList<CountryEntity>) {
-        googleMap?.clear()
-        markers.clear()
-        data.filterIsInstance<CountryResponse>().forEach {
-            val marker = googleMap?.addMarker(
-                MarkerOptions().position(LatLng(it.countryInfo.lat, it.countryInfo.long))
-                    .anchor(0.5f, 0.5f)
-                    .title(it.country)
-                    .icon(
-                        BitmapDescriptorFactory.fromResource(
-                            when (caseType) {
-                                CaseType.DEATHS -> R.drawable.img_deaths_marker
-                                CaseType.RECOVERED -> R.drawable.img_recovered_marker
-                                else -> R.drawable.img_confirmed_marker
-                            }
-                        )
-                    )
-            )
-            marker?.let { m ->
-                markers.add(m)
-            }
         }
     }
 
@@ -243,6 +235,33 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         })
 
         valueAnimator.start()
+    }
+
+    private fun singleMarkers(data: CountryEntity) {
+        googleMap?.clear()
+        markers.clear()
+        val marker = googleMap?.addMarker(
+            MarkerOptions().position(
+                LatLng(
+                    data.countryInfoEntity?.latitude!!,
+                    data.countryInfoEntity?.longitude!!
+                )
+            )
+                .anchor(0.5f, 0.5f)
+                .title(data.country)
+                .icon(
+                    BitmapDescriptorFactory.fromResource(
+                        when (caseType) {
+                            CaseType.DEATHS -> R.drawable.ic_death_marker
+                            CaseType.RECOVERED -> R.drawable.ic_recovered_marker
+                            else -> R.drawable.ic_confirmed_marker
+                        }
+                    )
+                )
+        )
+        marker?.let { m ->
+            markers.add(m)
+        }
     }
 
     object CaseType {
