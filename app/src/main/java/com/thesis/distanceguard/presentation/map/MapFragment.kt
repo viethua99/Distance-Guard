@@ -54,7 +54,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         private const val LON_DEFAULT = 114.8260094
 
         private val RECOVERED_COLOR = Color.argb(70, 0, 204, 153)
-        private val CONFIRMED_COLOR = Color.argb(70, 242, 185, 0)
+        private val CONFIRMED_COLOR = Color.argb(70, 0, 123, 255)
         private val DEATH_COLOR = Color.argb(70, 226, 108, 90)
 
         private const val TYPE = "type"
