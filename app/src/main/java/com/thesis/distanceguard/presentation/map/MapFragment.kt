@@ -160,7 +160,6 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun selectItem(data: CountryEntity) {
-        markers.clear()
         googleMap?.let {
             moveCamera(
                 LatLng(
