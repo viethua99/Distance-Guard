@@ -167,13 +167,13 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
                     data.countryInfoEntity!!.longitude!!
                 )
             )
+            singleMarkers(data)
             startPulseAnimation(
                 LatLng(
                     data.countryInfoEntity!!.latitude!!,
                     data.countryInfoEntity!!.longitude!!
                 )
             )
-            singleMarkers(data)
         }
     }
 
