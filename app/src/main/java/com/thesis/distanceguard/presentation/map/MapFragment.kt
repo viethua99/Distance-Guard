@@ -248,12 +248,12 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
                 )
             )
                 .anchor(0.5f, 0.5f)
-                .title(data.country)
                 .icon(
                     BitmapDescriptorFactory.fromBitmap(
                         iconGenerator.makeIcon(
                             String.format(
-                                "%s\n%s\n%s", "Case: " + data.cases,
+                                "%s\n%s\n%s\n%s", data.country,
+                                "Case: " + data.cases,
                                 "Recovered: " + data.recovered,
                                 "Death: " + data.deaths
                             )
