@@ -21,8 +21,8 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.maps.android.ui.IconGenerator
 import com.thesis.distanceguard.R
-import com.thesis.distanceguard.retrofit.response.CountryResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.countries.CountriesAdapter
 import com.thesis.distanceguard.presentation.countries.MapAdapter
@@ -239,6 +239,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     private fun singleMarkers(data: CountryEntity) {
         googleMap?.clear()
         markers.clear()
+        val iconGenerator = IconGenerator(activity)
         val marker = googleMap?.addMarker(
             MarkerOptions().position(
                 LatLng(
@@ -249,14 +250,17 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
                 .anchor(0.5f, 0.5f)
                 .title(data.country)
                 .icon(
-                    BitmapDescriptorFactory.fromResource(
-                        when (caseType) {
-                            CaseType.DEATHS -> R.drawable.ic_death_marker
-                            CaseType.RECOVERED -> R.drawable.ic_recovered_marker
-                            else -> R.drawable.ic_confirmed_marker
-                        }
+                    BitmapDescriptorFactory.fromBitmap(
+                        iconGenerator.makeIcon(
+                            String.format(
+                                "%s\n%s\n%s", "Case: " + data.cases,
+                                "Recovered: " + data.recovered,
+                                "Death: " + data.deaths
+                            )
+                        )
                     )
                 )
+
         )
         marker?.let { m ->
             markers.add(m)
