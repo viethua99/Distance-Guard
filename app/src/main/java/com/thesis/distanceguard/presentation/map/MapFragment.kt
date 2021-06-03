@@ -14,6 +14,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
+import android.widget.LinearLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.maps.android.ui.IconGenerator
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.presentation.base.BaseFragment
@@ -31,9 +33,7 @@ import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import com.thesis.distanceguard.room.entities.CountryEntity
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.layout_bottom_sheet.recycler_view
-import kotlinx.android.synthetic.main.layout_bottom_sheet.img_clear
-import kotlinx.android.synthetic.main.layout_bottom_sheet.edt_search
+import kotlinx.android.synthetic.main.layout_bottom_sheet.*
 import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
@@ -43,13 +43,14 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     private val markers = mutableListOf<Marker>()
     private var googleMap: GoogleMap? = null
     private var pulseCircle: Circle? = null
-    private lateinit var listCountry: List<CountryEntity>
+    private lateinit var listCountry: List<CountryEntity> // list countries to get item show near countries
     private val caseType by lazy {
         arguments?.getInt(TYPE) ?: CaseType.FULL
     }
 
     private lateinit var mapViewModel: MapViewModel
     private lateinit var mapAdapter: MapAdapter
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     companion object {
         const val TAG = "MapFragment"
@@ -76,6 +77,9 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         setupViewModel()
         val mainActivity = activity as MainActivity
         mainActivity.appBarLayout.visibility = View.GONE
+
+        //bottom sheet
+        setupBottomSheet();
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map_fr) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -112,6 +116,26 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         mainActivity.appBarLayout.visibility = View.VISIBLE
     }
 
+    private fun setupBottomSheet() {
+        bottomSheetBehavior = BottomSheetBehavior.from(layout_bottom_sheet)
+
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
+
+        })
+    }
+
+    fun onSlideBottomSheet() {
+        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+    }
 
     fun EditText.hideKeyboard(): Boolean {
         return (context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager)
@@ -136,6 +160,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
                 Timber.d("onClick: $item")
                 edt_search.hideKeyboard()
                 selectItem(item)
+                onSlideBottomSheet()
             }
 
             override fun onLongClick(position: Int, item: CountryEntity) {}
