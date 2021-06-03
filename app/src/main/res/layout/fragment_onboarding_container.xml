@@ -86,32 +86,21 @@
             android:id="@+id/btn_next_step"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@+id/indicator_onboard"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/red_rounded_corner_button"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="100dp"
-            android:layout_marginBottom="110dp"
+            android:paddingHorizontal="40dp"
             android:text="Next Step"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:textColor="@color/white" />
 
         <me.relex.circleindicator.CircleIndicator
             android:id="@+id/indicator_onboard"
             android:layout_width="86dp"
             android:layout_height="40dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="160dp"
-            android:layout_marginTop="86dp"
-            android:layout_marginEnd="165dp"
-            android:layout_marginBottom="43dp"
+            android:layout_marginBottom="30dp"
             app:ci_drawable="@drawable/bg_circle"/>
     </RelativeLayout>
 

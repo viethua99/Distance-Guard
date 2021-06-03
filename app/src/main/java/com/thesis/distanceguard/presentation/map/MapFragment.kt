@@ -6,47 +6,51 @@ import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.res.Resources
 import android.graphics.Color
-import android.widget.EditText
+import android.location.Location
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import android.widget.LinearLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnCameraIdleListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.maps.android.ui.IconGenerator
 import com.thesis.distanceguard.R
-import com.thesis.distanceguard.retrofit.response.CountryResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.countries.CountriesAdapter
 import com.thesis.distanceguard.presentation.countries.MapAdapter
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import com.thesis.distanceguard.room.entities.CountryEntity
+import com.thesis.distanceguard.util.AppUtil
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.layout_bottom_sheet.recycler_view
-import kotlinx.android.synthetic.main.layout_bottom_sheet.img_clear
-import kotlinx.android.synthetic.main.layout_bottom_sheet.edt_search
+import kotlinx.android.synthetic.main.layout_bottom_sheet.*
 import timber.log.Timber
 import kotlin.math.pow
 
-class MapFragment : BaseFragment(), OnMapReadyCallback {
+class MapFragment : BaseFragment(), OnMapReadyCallback, OnCameraIdleListener {
     private val markers = mutableListOf<Marker>()
     private var googleMap: GoogleMap? = null
     private var pulseCircle: Circle? = null
-
+    private lateinit var listCountry: List<CountryEntity> // list countries to get item show near countries
     private val caseType by lazy {
         arguments?.getInt(TYPE) ?: CaseType.FULL
     }
 
     private lateinit var mapViewModel: MapViewModel
     private lateinit var mapAdapter: MapAdapter
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     companion object {
         const val TAG = "MapFragment"
@@ -54,7 +58,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         private const val LON_DEFAULT = 114.8260094
 
         private val RECOVERED_COLOR = Color.argb(70, 0, 204, 153)
-        private val CONFIRMED_COLOR = Color.argb(70, 242, 185, 0)
+        private val CONFIRMED_COLOR = Color.argb(70, 0, 123, 255)
         private val DEATH_COLOR = Color.argb(70, 226, 108, 90)
 
         private const val TYPE = "type"
@@ -69,10 +73,15 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         return R.layout.fragment_map
     }
 
+
+
     override fun onMyViewCreated(view: View) {
         setupViewModel()
         val mainActivity = activity as MainActivity
         mainActivity.appBarLayout.visibility = View.GONE
+
+        //bottom sheet
+        setupBottomSheet();
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map_fr) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -109,6 +118,35 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         mainActivity.appBarLayout.visibility = View.VISIBLE
     }
 
+    override fun onCameraIdle() {
+        Timber.d("onCameraIdle")
+        val center: LatLng = googleMap!!.cameraPosition.target
+        val centerLocation = Location("center")
+        centerLocation.latitude = center.latitude
+        centerLocation.longitude = center.longitude
+        mapViewModel.checkNearbyCountryList(centerLocation)
+    }
+
+    private fun setupBottomSheet() {
+        bottomSheetBehavior = BottomSheetBehavior.from(layout_bottom_sheet)
+
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
+
+        })
+    }
+
+    fun onSlideBottomSheet() {
+        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+    }
 
     fun EditText.hideKeyboard(): Boolean {
         return (context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager)
@@ -118,6 +156,11 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     private fun setupViewModel() {
         AndroidSupportInjection.inject(this)
         mapViewModel = ViewModelProvider(this, viewModelFactory).get(MapViewModel::class.java)
+        mapViewModel.nearbyCountryList.observe(this, Observer {
+            it?.let {
+                showMarkerNearByCountry(it)
+            }
+        })
     }
 
     private fun setupRecyclerView() {
@@ -133,6 +176,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
                 Timber.d("onClick: $item")
                 edt_search.hideKeyboard()
                 selectItem(item)
+                onSlideBottomSheet()
             }
 
             override fun onLongClick(position: Int, item: CountryEntity) {}
@@ -142,22 +186,38 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     override fun onMapReady(p0: GoogleMap?) {
         this.googleMap = p0
         try {
-            googleMap?.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.style_json))
+            googleMap?.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    activity,
+                    R.raw.style_retro
+                )
+            )
         } catch (e: Resources.NotFoundException) {
             e.printStackTrace()
         }
         moveCamera(LatLng(LAT_DEFAULT, LON_DEFAULT))
+        googleMap?.setOnCameraIdleListener(this)
 
     }
 
     private fun moveCamera(latLng: LatLng) {
-        googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 4f))
+        googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5f))
     }
 
     private fun selectItem(data: CountryEntity) {
         googleMap?.let {
-            moveCamera(LatLng(data.countryInfoEntity!!.latitude!!, data.countryInfoEntity!!.longitude!!))
-            startPulseAnimation(LatLng(data.countryInfoEntity!!.latitude!!, data.countryInfoEntity!!.longitude!!))
+            moveCamera(
+                LatLng(
+                    data.countryInfoEntity!!.latitude!!,
+                    data.countryInfoEntity!!.longitude!!
+                )
+            )
+            startPulseAnimation(
+                LatLng(
+                    data.countryInfoEntity!!.latitude!!,
+                    data.countryInfoEntity!!.longitude!!
+                )
+            )
         }
     }
 
@@ -167,32 +227,8 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
 
     private val countryListObserver = Observer<ArrayList<CountryEntity>> {
         it?.let {
-            updateMarkers(it)
             mapAdapter.add(it)
-        }
-    }
-
-    private fun updateMarkers(data: ArrayList<CountryEntity>) {
-        googleMap?.clear()
-        markers.clear()
-        data.filterIsInstance<CountryResponse>().forEach {
-            val marker = googleMap?.addMarker(
-                MarkerOptions().position(LatLng(it.countryInfo.lat, it.countryInfo.long))
-                    .anchor(0.5f, 0.5f)
-                    .title(it.country)
-                    .icon(
-                        BitmapDescriptorFactory.fromResource(
-                            when (caseType) {
-                                CaseType.DEATHS -> R.drawable.img_deaths_marker
-                                CaseType.RECOVERED -> R.drawable.img_recovered_marker
-                                else -> R.drawable.img_confirmed_marker
-                            }
-                        )
-                    )
-            )
-            marker?.let { m ->
-                markers.add(m)
-            }
+            listCountry = it
         }
     }
 
@@ -245,8 +281,40 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         valueAnimator.start()
     }
 
+
+
+    private fun showMarkerNearByCountry(nearByCountryList: MutableList<CountryEntity>) {
+        Timber.d("showMarkerNearByCountry " + nearByCountryList.size)
+        nearByCountryList.forEach { data ->
+            val iconGenerator = IconGenerator(activity)
+            val marker = googleMap?.addMarker(
+                MarkerOptions().position(
+                    LatLng(
+                        data.countryInfoEntity?.latitude!!,
+                        data.countryInfoEntity?.longitude!!
+                    )
+                )
+                    .anchor(0.5f, 0.5f)
+                    .icon(
+                        BitmapDescriptorFactory.fromBitmap(
+                            iconGenerator.makeIcon(
+                                String.format(
+                                    "%s\n%s\n%s\n%s",data.country,
+                                    "Case: " +  AppUtil.toNumberWithCommas(data.cases!!.toLong()) ,
+                                    "Recovered: " +  AppUtil.toNumberWithCommas( data.recovered!!.toLong()),
+                                    "Death: " +  AppUtil.toNumberWithCommas(data.deaths!!.toLong())
+                                )
+                            )
+                        )
+                    )
+            )
+            marker?.let { m ->
+                markers.add(m)
+            }
+        }
+    }
+
     object CaseType {
-        const val CONFIRMED = 0
         const val DEATHS = 1
         const val RECOVERED = 2
         const val FULL = 3
