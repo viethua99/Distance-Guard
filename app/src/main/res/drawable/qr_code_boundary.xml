@@ -3,7 +3,7 @@
 
 <vector
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="250dp" android:height="250dp" android:viewportHeight="230.0" android:viewportWidth="230.0">
+    android:width="185dp" android:height="185dp" android:viewportHeight="230.0" android:viewportWidth="230.0">
     <path android:fillColor="#00000000" android:fillType="evenOdd"
         android:pathData="M200,5C197.1,5 198,5 225,5L225,30.79L225,6"
         android:strokeColor="#007BFF" android:strokeWidth="2"/>
