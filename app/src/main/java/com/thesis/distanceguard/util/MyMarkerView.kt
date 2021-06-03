@@ -24,7 +24,7 @@ class MyMarkerView(context: Context?, layoutResource: Int) :
 
     override fun refreshContent(entry: Entry?, highlight: Highlight?) {
         highlight?.let {
-            tvTime.text = "Time: " +  AppUtil.convertMillisecondsToShortDateFormat(it.x.toLong())
+            tvTime.text = "Time: " +  AppUtil.convertMillisecondsToDateFormat(it.x.toLong())
 
             when(highlight.dataSetIndex){
                 0 -> {
