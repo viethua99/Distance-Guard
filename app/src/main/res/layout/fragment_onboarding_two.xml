@@ -10,15 +10,15 @@
 
 
     <ImageView
+        android:layout_marginTop="20dp"
+
         android:id="@+id/img_wear_mask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_wear_mask"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.319" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_wear_mask"
@@ -28,13 +28,13 @@
         android:textAlignment="center"
         android:textColor="#FF4B63"
         android:textSize="25sp"
+        android:layout_marginTop="20dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tv_wear_mask_message"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.529"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_wear_mask"
-        app:layout_constraintVertical_bias="0.083" />
+        app:layout_constraintTop_toBottomOf="@+id/img_wear_mask" />
 
     <TextView
         android:id="@+id/tv_wear_mask_message"

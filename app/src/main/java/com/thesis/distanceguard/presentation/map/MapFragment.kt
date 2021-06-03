@@ -7,19 +7,20 @@ import android.app.Activity
 import android.content.res.Resources
 import android.graphics.Color
 import android.location.Location
-import android.widget.EditText
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnCameraIdleListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
@@ -31,15 +32,14 @@ import com.thesis.distanceguard.presentation.countries.CountriesAdapter
 import com.thesis.distanceguard.presentation.countries.MapAdapter
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import com.thesis.distanceguard.room.entities.CountryEntity
+import com.thesis.distanceguard.util.AppUtil
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_bottom_sheet.*
 import timber.log.Timber
-import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.pow
 
-class MapFragment : BaseFragment(), OnMapReadyCallback {
+class MapFragment : BaseFragment(), OnMapReadyCallback, OnCameraIdleListener {
     private val markers = mutableListOf<Marker>()
     private var googleMap: GoogleMap? = null
     private var pulseCircle: Circle? = null
@@ -72,6 +72,8 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     override fun getResLayoutId(): Int {
         return R.layout.fragment_map
     }
+
+
 
     override fun onMyViewCreated(view: View) {
         setupViewModel()
@@ -116,6 +118,15 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         mainActivity.appBarLayout.visibility = View.VISIBLE
     }
 
+    override fun onCameraIdle() {
+        Timber.d("onCameraIdle")
+        val center: LatLng = googleMap!!.cameraPosition.target
+        val centerLocation = Location("center")
+        centerLocation.latitude = center.latitude
+        centerLocation.longitude = center.longitude
+        mapViewModel.checkNearbyCountryList(centerLocation)
+    }
+
     private fun setupBottomSheet() {
         bottomSheetBehavior = BottomSheetBehavior.from(layout_bottom_sheet)
 
@@ -145,6 +156,11 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     private fun setupViewModel() {
         AndroidSupportInjection.inject(this)
         mapViewModel = ViewModelProvider(this, viewModelFactory).get(MapViewModel::class.java)
+        mapViewModel.nearbyCountryList.observe(this, Observer {
+            it?.let {
+                showMarkerNearByCountry(it)
+            }
+        })
     }
 
     private fun setupRecyclerView() {
@@ -180,11 +196,12 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
             e.printStackTrace()
         }
         moveCamera(LatLng(LAT_DEFAULT, LON_DEFAULT))
+        googleMap?.setOnCameraIdleListener(this)
 
     }
 
     private fun moveCamera(latLng: LatLng) {
-        googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 4f))
+        googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5f))
     }
 
     private fun selectItem(data: CountryEntity) {
@@ -195,7 +212,6 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
                     data.countryInfoEntity!!.longitude!!
                 )
             )
-            singleMarkers(data)
             startPulseAnimation(
                 LatLng(
                     data.countryInfoEntity!!.latitude!!,
@@ -265,43 +281,10 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         valueAnimator.start()
     }
 
-    private fun singleMarkers(data: CountryEntity) {
-        googleMap?.clear()
-        markers.clear()
-        val iconGenerator = IconGenerator(activity)
-        val marker = googleMap?.addMarker(
-            MarkerOptions().position(
-                LatLng(
-                    data.countryInfoEntity?.latitude!!,
-                    data.countryInfoEntity?.longitude!!
-                )
-            )
-                .anchor(0.5f, 0.5f)
-                .icon(
-                    BitmapDescriptorFactory.fromBitmap(
-                        iconGenerator.makeIcon(
-                            String.format(
-                                "%s\n%s\n%s\n%s", data.country,
-                                "Case: " + data.cases,
-                                "Recovered: " + data.recovered,
-                                "Death: " + data.deaths
-                            )
-                        )
-                    )
-                )
-        )
-        // send data to show near marker
-        centerOfCountry(data)
 
-        marker?.let { m ->
-            markers.add(m)
-        }
-    }
 
     private fun showMarkerNearByCountry(nearByCountryList: MutableList<CountryEntity>) {
         Timber.d("showMarkerNearByCountry " + nearByCountryList.size)
-//        googleMap?.clear()
-//        markers.clear()
         nearByCountryList.forEach { data ->
             val iconGenerator = IconGenerator(activity)
             val marker = googleMap?.addMarker(
@@ -316,10 +299,10 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
                         BitmapDescriptorFactory.fromBitmap(
                             iconGenerator.makeIcon(
                                 String.format(
-                                    "%s\n%s\n%s\n%s", data.country,
-                                    "Case: " + data.cases,
-                                    "Recovered: " + data.recovered,
-                                    "Death: " + data.deaths
+                                    "%s\n%s\n%s\n%s",data.country,
+                                    "Case: " +  AppUtil.toNumberWithCommas(data.cases!!.toLong()) ,
+                                    "Recovered: " +  AppUtil.toNumberWithCommas( data.recovered!!.toLong()),
+                                    "Death: " +  AppUtil.toNumberWithCommas(data.deaths!!.toLong())
                                 )
                             )
                         )
@@ -331,49 +314,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         }
     }
 
-    private fun centerOfCountry(item: CountryEntity) {
-        Timber.d("centerOfCountry %s", item.toString())
-        val center: Location = Location("center")
-        center.latitude = item.countryInfoEntity?.latitude!!
-        center.longitude = item.countryInfoEntity?.longitude!!
-        getNearByCountries(center) // get list data to compare
-    }
-
-    private fun getNearByCountries(currentLocation: Location) {
-        Timber.d("getNearByCountries " + currentLocation.latitude)
-        Timber.d("getNearByCountries " + currentLocation.longitude)
-
-        var nearByCountryList = mutableListOf<CountryEntity>()
-        this.listCountry.forEach { it ->
-            if (checkIfCountryIsNearby(it, currentLocation)) {
-                // check near true - > add item into list near
-                nearByCountryList.add(it)
-            }
-        }
-        Timber.d("getNearByCountries " + nearByCountryList.size)
-
-        showMarkerNearByCountry(nearByCountryList)  // show multiple marker when near center(countries)
-    }
-
-    private fun checkIfCountryIsNearby(
-        countryEntity: CountryEntity,
-        currentLocation: Location
-    ): Boolean {
-        Timber.d("checkIfCountryIsNearby " + countryEntity.countryInfoEntity?.latitude!!)
-        Timber.d("checkIfCountryIsNearby " + countryEntity.countryInfoEntity?.longitude!!)
-
-        val target: Location = Location("target")
-        target.latitude = countryEntity.countryInfoEntity?.latitude!!
-        target.longitude = countryEntity.countryInfoEntity?.longitude!!
-        Timber.d("checkIfCountryIsNearby " + currentLocation.distanceTo(target))
-        if (currentLocation.distanceTo(target) < 1000000) {
-            return true
-        }
-        return false
-    }
-
     object CaseType {
-        const val CONFIRMED = 0
         const val DEATHS = 1
         const val RECOVERED = 2
         const val FULL = 3
