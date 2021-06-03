@@ -6,6 +6,7 @@ import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.res.Resources
 import android.graphics.Color
+import android.location.Location
 import android.widget.EditText
 import android.os.Bundle
 import android.text.Editable
@@ -34,13 +35,15 @@ import kotlinx.android.synthetic.main.layout_bottom_sheet.recycler_view
 import kotlinx.android.synthetic.main.layout_bottom_sheet.img_clear
 import kotlinx.android.synthetic.main.layout_bottom_sheet.edt_search
 import timber.log.Timber
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.pow
 
 class MapFragment : BaseFragment(), OnMapReadyCallback {
     private val markers = mutableListOf<Marker>()
     private var googleMap: GoogleMap? = null
     private var pulseCircle: Circle? = null
-
+    private lateinit var listCountry: List<CountryEntity>
     private val caseType by lazy {
         arguments?.getInt(TYPE) ?: CaseType.FULL
     }
@@ -184,6 +187,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     private val countryListObserver = Observer<ArrayList<CountryEntity>> {
         it?.let {
             mapAdapter.add(it)
+            listCountry = it
         }
     }
 
@@ -260,11 +264,87 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
                         )
                     )
                 )
-
         )
+        // send data to show near marker
+        centerOfCountry(data)
+
         marker?.let { m ->
             markers.add(m)
         }
+    }
+
+    private fun showMarkerNearByCountry(nearByCountryList: MutableList<CountryEntity>) {
+        Timber.d("showMarkerNearByCountry " + nearByCountryList.size)
+//        googleMap?.clear()
+//        markers.clear()
+        nearByCountryList.forEach { data ->
+            val iconGenerator = IconGenerator(activity)
+            val marker = googleMap?.addMarker(
+                MarkerOptions().position(
+                    LatLng(
+                        data.countryInfoEntity?.latitude!!,
+                        data.countryInfoEntity?.longitude!!
+                    )
+                )
+                    .anchor(0.5f, 0.5f)
+                    .icon(
+                        BitmapDescriptorFactory.fromBitmap(
+                            iconGenerator.makeIcon(
+                                String.format(
+                                    "%s\n%s\n%s\n%s", data.country,
+                                    "Case: " + data.cases,
+                                    "Recovered: " + data.recovered,
+                                    "Death: " + data.deaths
+                                )
+                            )
+                        )
+                    )
+            )
+            marker?.let { m ->
+                markers.add(m)
+            }
+        }
+    }
+
+    private fun centerOfCountry(item: CountryEntity) {
+        Timber.d("centerOfCountry %s", item.toString())
+        val center: Location = Location("center")
+        center.latitude = item.countryInfoEntity?.latitude!!
+        center.longitude = item.countryInfoEntity?.longitude!!
+        getNearByCountries(center) // get list data to compare
+    }
+
+    private fun getNearByCountries(currentLocation: Location) {
+        Timber.d("getNearByCountries " + currentLocation.latitude)
+        Timber.d("getNearByCountries " + currentLocation.longitude)
+
+        var nearByCountryList = mutableListOf<CountryEntity>()
+        this.listCountry.forEach { it ->
+            if (checkIfCountryIsNearby(it, currentLocation)) {
+                // check near true - > add item into list near
+                nearByCountryList.add(it)
+            }
+        }
+        Timber.d("getNearByCountries " + nearByCountryList.size)
+
+        showMarkerNearByCountry(nearByCountryList)  // show multiple marker when near center(countries)
+    }
+
+    private fun checkIfCountryIsNearby(
+        countryEntity: CountryEntity,
+        currentLocation: Location
+    ): Boolean {
+        Timber.d("checkIfCountryIsNearby " + countryEntity.countryInfoEntity?.latitude!!)
+        Timber.d("checkIfCountryIsNearby " + countryEntity.countryInfoEntity?.longitude!!)
+
+        val target: Location = Location("target")
+        target.latitude = countryEntity.countryInfoEntity?.latitude!!
+        target.longitude = countryEntity.countryInfoEntity?.longitude!!
+        Timber.d("checkIfCountryIsNearby " + currentLocation.distanceTo(target))
+        if (currentLocation.distanceTo(target) < 1000000) {
+            return true
+        }
+        return false
     }
 
     object CaseType {
