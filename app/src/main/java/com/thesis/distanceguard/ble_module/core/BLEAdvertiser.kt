@@ -154,6 +154,7 @@ class BLEAdvertiser : BroadcastReceiver()  {
     private fun stopAdvertising() {
         synchronized(this) {
             try {
+                BLEController.bluetoothLeAdvertiser?.stopAdvertising(object :AdvertiseCallback(){})
                 BLEController.bluetoothGattServer?.let { stopServer(it) }
                 Timber.d("<<<<<<<<<<BLE Beacon Forced Stopped")
             }catch (exception: Exception) {
