@@ -15,6 +15,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.thesis.distanceguard.R
+import com.thesis.distanceguard.ble_module.BLEController
 import timber.log.Timber
 import java.util.*
 
@@ -24,8 +25,8 @@ import java.util.*
 
 class DistanceGuardService : Service() {
     companion object {
-        const val TAG = "FireMeshService"
-        const val NOTIFICATION_CHANNEL_ID = "ceslab.firemesh"
+        const val TAG = "DistanceGuardService"
+        const val NOTIFICATION_CHANNEL_ID = "ceslab.distanceguard"
 
     }
 
@@ -53,14 +54,14 @@ class DistanceGuardService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand")
-        startTimer()
+        BLEController.isPaused = false
         return START_STICKY
     }
 
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy")
-        stopTimerTask()
+        BLEController.isPaused = true
         val broadcastIntent = Intent()
         broadcastIntent.action = "restartService"
         broadcastIntent.setClass(this, Restarter::class.java)
@@ -74,7 +75,7 @@ class DistanceGuardService : Service() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun startMyOwnForeGround() {
-        val channelName = "FireMesh Background Service"
+        val channelName = "DistanceGuard Background Service"
         val chan = NotificationChannel(
             NOTIFICATION_CHANNEL_ID,
             channelName,
@@ -88,7 +89,7 @@ class DistanceGuardService : Service() {
         val notificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
         val notification = notificationBuilder.setOngoing(true)
             .setSmallIcon(R.drawable.ic_my_app)
-            .setContentTitle("Fire Mesh")
+            .setContentTitle("Distance Guard")
             .setContentText("App is running in background")
             .setPriority(NotificationManager.IMPORTANCE_MIN)
             .setCategory(Notification.CATEGORY_SERVICE)

@@ -19,6 +19,7 @@ import com.thesis.distanceguard.ble_module.util.Constants.MANUFACTURER_SUBSTRING
 import com.thesis.distanceguard.ble_module.util.Constants.SCAN_PERIOD
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.nio.charset.StandardCharsets
 
 
@@ -145,6 +146,7 @@ class BLEScanner : BroadcastReceiver() {
     }
 
     private fun scanComplete() {
+        Timber.d("scanComplete")
         var noCurrentDevices = true
 
         if (ScanCallbackImpl.mScanResults.isNotEmpty()) {

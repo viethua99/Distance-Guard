@@ -9,6 +9,7 @@ import android.util.Log
 import com.thesis.distanceguard.ble_module.BLEController
 import com.thesis.distanceguard.ble_module.dao.Device
 import com.thesis.distanceguard.ble_module.util.Constants
+import timber.log.Timber
 
 
 object ScanCallbackImpl: ScanCallback() {
@@ -22,6 +23,7 @@ object ScanCallbackImpl: ScanCallback() {
         callbackType: Int,
         result: ScanResult
     ) {
+        Timber.d("BtleScanCallback onScanResult")
         addScanResult(result)
     }
 
