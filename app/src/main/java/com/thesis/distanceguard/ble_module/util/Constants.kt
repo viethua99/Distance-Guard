@@ -8,8 +8,8 @@ object Constants {
     const val PREF_FILE_NAME = "com.thesis.distanceguard.preferencesV2"
 
     const val MANUFACTURER_SUBSTRING = "9b4"
-    const val MANUFACTURER_SUBSTRING_MASK = "111"
-    const val MANUFACTURER_ID = 0x6868
+    const val MANUFACTURER_SUBSTRING_MASK = "000"
+    const val MANUFACTURER_ID = 1023
 
     const val SERVICE_STRING = "d2b99ccb-263e-3ac6-838b-0d00b1f549ed"
     var SERVICE_PREFIX = SERVICE_STRING.subSequence(0..7 )
