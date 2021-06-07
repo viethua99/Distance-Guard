@@ -214,8 +214,7 @@ class ScannerFragment : BaseFragment() {
                 showToastMessage("Please enable bluetooth and location")
             } else {
                 scannerViewModel.triggerBLEScan()
-                val mainActivity = activity as MainActivity
-                mainActivity.startDistanceGuardService()
+
             }
         }
     }

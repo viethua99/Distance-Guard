@@ -80,10 +80,10 @@ class MainActivity : BaseActivity() {
 
 
     override fun onDestroy() {
-        val broadcastIntent = Intent()
-        broadcastIntent.action = "restartService"
-        broadcastIntent.setClass(this, Restarter::class.java)
-        this.sendBroadcast(broadcastIntent)
+//        val broadcastIntent = Intent()
+//        broadcastIntent.action = "restartService"
+//        broadcastIntent.setClass(this, Restarter::class.java)
+//        this.sendBroadcast(broadcastIntent)
         super.onDestroy()
 
     }

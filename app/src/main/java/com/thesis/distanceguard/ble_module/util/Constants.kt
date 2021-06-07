@@ -11,7 +11,7 @@ object Constants {
     const val MANUFACTURER_SUBSTRING_MASK = "111"
     const val MANUFACTURER_ID = 0x6868
 
-    const val SERVICE_STRING = "d2b86f5b-263e-3ac6-838b-0d00b1f549ed"
+    const val SERVICE_STRING = "d2b99ccb-263e-3ac6-838b-0d00b1f549ed"
     var SERVICE_PREFIX = SERVICE_STRING.subSequence(0..7 )
 
 
