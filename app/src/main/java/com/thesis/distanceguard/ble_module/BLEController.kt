@@ -48,23 +48,15 @@ object BLEController {
     val isStarted: MutableLiveData<Boolean> = MutableLiveData(false)
 
     // A thread safe way to check if things are paused
-    var isPaused: Boolean
+    var isPaused: Boolean = true
         get() {
             synchronized(this) {
-                val sharedPrefs = context.getSharedPreferences(
-                    PREF_FILE_NAME, Context.MODE_PRIVATE
-                )
-                return sharedPrefs.getBoolean(PREF_IS_PAUSED, true)
+             return field
             }
         }
         set(value) {
             synchronized(this) {
-                val sharedPrefs = context.getSharedPreferences(
-                    PREF_FILE_NAME, Context.MODE_PRIVATE
-                )
-                val editor: SharedPreferences.Editor = sharedPrefs.edit()
-                editor.putBoolean(PREF_IS_PAUSED, value)
-                editor.apply()
+               field = value
                 if (value) {
                     stopBLEScan()
                 } else {

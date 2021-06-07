@@ -3,10 +3,12 @@ package com.thesis.distanceguard.presentation.scanner
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.LocationManager
 import android.os.Build
+import android.provider.Settings
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -17,9 +19,11 @@ import com.thesis.distanceguard.R
 import com.thesis.distanceguard.ble_module.BLEController
 import com.thesis.distanceguard.ble_module.dao.Device
 import com.thesis.distanceguard.ble_module.repository.DeviceRepository
+import com.thesis.distanceguard.ble_module.state.BLEStatus
 import com.thesis.distanceguard.ble_module.util.BluetoothUtils
 import com.thesis.distanceguard.ble_module.util.Constants
 import com.thesis.distanceguard.presentation.base.BaseFragment
+import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_scanner.*
 import kotlinx.android.synthetic.main.fragment_team.*
@@ -66,8 +70,6 @@ class ScannerFragment : BaseFragment() {
                         }
                         if (!BluetoothAdapter.getDefaultAdapter().isEnabled || !isLocationEnabled()) {
                             showToastMessage("Please enable bluetooth and location")
-                        } else {
-                            scannerViewModel.triggerBLEScan()
                         }
                     }
                 }
@@ -81,6 +83,24 @@ class ScannerFragment : BaseFragment() {
         scannerViewModel =
             ViewModelProvider(this, viewModelFactory).get(ScannerViewModel::class.java)
 
+        scannerViewModel.bleStatus.observe(viewLifecycleOwner, Observer {
+            it.let {
+                when(it) {
+                    BLEStatus.BLUETOOTH_STATE_CHANGED -> {
+                        showBluetoothEnableView()
+                        if (!BluetoothAdapter.getDefaultAdapter().isEnabled) {
+                            BLEController.isPaused = true
+                        }
+                    }
+                    BLEStatus.LOCATION_STATE_CHANGED -> {
+                        showLocationEnableView()
+                        if (!isLocationEnabled()) {
+                            BLEController.isPaused = true
+                        }
+                    }
+                }
+            }
+        })
         scannerViewModel.isBLEStarted.observe(viewLifecycleOwner, Observer { isStarted ->
             Timber.d("isStarted = $isStarted")
             isStarted?.let {
@@ -112,6 +132,8 @@ class ScannerFragment : BaseFragment() {
     }
 
     private fun setupViews() {
+        showBluetoothEnableView()
+        showLocationEnableView()
         BLEController.isStarted.value?.let {
             setupVisibilities(it)
         }
@@ -128,6 +150,38 @@ class ScannerFragment : BaseFragment() {
             layoutManager = linearLayoutManager
             setHasFixedSize(true)
             adapter = scannerRecyclerViewAdapter
+        }
+    }
+
+    private fun showBluetoothEnableView() {
+        Timber.d("showBluetoothEnableView")
+        if (!BluetoothAdapter.getDefaultAdapter().isEnabled) {
+
+            bluetooth_enable.visibility = View.VISIBLE
+            bluetooth_enable_btn.setOnClickListener {
+                BluetoothAdapter.getDefaultAdapter().enable()
+            }
+        } else {
+            bluetooth_enable.visibility = View.GONE
+        }
+    }
+
+    private fun showLocationEnableView() {
+        Timber.d("showLocationEnableView")
+        if (!isLocationEnabled()) {
+            location_enable.visibility = View.VISIBLE
+            location_enable_btn.setOnClickListener {
+                location_enable.visibility = View.GONE
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+                if (Build.VERSION.SDK_INT >= 23)
+                    requestPermissions(
+                        arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+                        PERMISSIONS_REQUEST_CODE
+                    )
+            }
+        } else {
+            location_enable.visibility = View.GONE
         }
     }
 
@@ -160,6 +214,8 @@ class ScannerFragment : BaseFragment() {
                 showToastMessage("Please enable bluetooth and location")
             } else {
                 scannerViewModel.triggerBLEScan()
+                val mainActivity = activity as MainActivity
+                mainActivity.startDistanceGuardService()
             }
         }
     }

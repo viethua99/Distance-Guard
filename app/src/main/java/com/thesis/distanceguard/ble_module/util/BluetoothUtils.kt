@@ -26,18 +26,6 @@ object BluetoothUtils {
 
 
 
-    fun findService(serviceList: List<BluetoothGattService>): BluetoothGattService? {
-        for (service in serviceList) {
-            val serviceIdString = service.uuid
-                .toString()
-            if (matchesServiceUuidString(serviceIdString)) {
-                return service
-            }
-        }
-        return null
-    }
-
-
     private fun uuidMatches(
         uuidString: String,
         vararg matches: String
