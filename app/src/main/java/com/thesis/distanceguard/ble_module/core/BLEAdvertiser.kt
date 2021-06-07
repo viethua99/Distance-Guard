@@ -50,7 +50,7 @@ class BLEAdvertiser : BroadcastReceiver()  {
             next(interval)
             if (BLEController.isEnabled()) {
                 setupServer()
-                startAdvertising(object :AdvertiseCallback(){}, BLEController.deviceNameServiceUuid)
+                startAdvertising(BLEAdvertiseCallbackImpl, BLEController.deviceNameServiceUuid)
 
             }
         }
@@ -154,7 +154,7 @@ class BLEAdvertiser : BroadcastReceiver()  {
     private fun stopAdvertising() {
         synchronized(this) {
             try {
-                BLEController.bluetoothLeAdvertiser?.stopAdvertising(object :AdvertiseCallback(){})
+                BLEController.bluetoothLeAdvertiser?.stopAdvertising(BLEAdvertiseCallbackImpl)
                 BLEController.bluetoothGattServer?.let { stopServer(it) }
                 Timber.d("<<<<<<<<<<BLE Beacon Forced Stopped")
             }catch (exception: Exception) {
