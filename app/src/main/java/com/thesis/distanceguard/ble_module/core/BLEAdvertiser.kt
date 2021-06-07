@@ -25,12 +25,7 @@ import java.nio.charset.StandardCharsets
 import java.util.*
 
 
-/**
- * This code implements broadcasting a BLE UUID (a beacon) for other devices to detect. I know
- * it seems extra complicated, but trust me this code was developed by testing on many devices
- * in the wild in many countries and it works.  If you try to make it simpler you'll quickly run
- * into problems.
- */
+
 class BLEAdvertiser : BroadcastReceiver()  {
     private val TAG = "BLEAdvertiser"
     private val WAKELOCK_TAG = "com:thesis:distanceguard:ble_module:core:BLEAdvertiser"
@@ -40,12 +35,8 @@ class BLEAdvertiser : BroadcastReceiver()  {
 
     lateinit var appContext: Context
 
-    /**
-     * This function cheats by using Alarm Manager and scheduling a new alarm when the current one expires.
-     *
-     * @param context The Context to use
-     * @param intent The intent we built
-     */
+
+
     override fun onReceive(context: Context, intent: Intent) {
         Log.i(TAG, "onReceive")
         val interval = intent.getIntExtra(INTERVAL_KEY, BACKGROUND_TRACE_INTERVAL)
@@ -66,40 +57,27 @@ class BLEAdvertiser : BroadcastReceiver()  {
         wl.release()
     }
 
-    /**
-     * Schedule the next alarm
-     *
-     * @param interval The interval at which to restart the BLE broadcast
-     */
+
     fun next(interval: Int) {
-        val alarmManager = BLEController.getAlarmManager(appContext)
+        val alarmManager = getAlarmManager(appContext)
         AlarmManagerCompat.setExactAndAllowWhileIdle(alarmManager,
             AlarmManager.RTC_WAKEUP,
             System.currentTimeMillis() + interval,
             getPendingIntent(interval, appContext))
     }
 
-    /**
-     * enable BLE broadcasting of the device UUID for detection
-     *
-     * @param interval The interval at which to restart the BLE broadcast
-     * @param context The context
-     */
+
     fun enable(interval: Int, context: Context) {
         this.appContext = context.applicationContext
-        val alarmManager = BLEController.getAlarmManager(appContext)
+        val alarmManager = getAlarmManager(appContext)
         AlarmManagerCompat.setExactAndAllowWhileIdle(alarmManager,
             AlarmManager.RTC_WAKEUP,
             System.currentTimeMillis() + START_DELAY,
             getPendingIntent(interval, appContext))
     }
 
-    /**
-     * disable BLE broadcasting
-     *
-     * @param interval The interval at which it was started.  This must not change from what was used to start.
-     * @param context The context
-     */
+
+
     fun disable(interval: Int, context: Context) {
         synchronized (BLEController) {
             this.appContext = context.applicationContext
@@ -111,13 +89,7 @@ class BLEAdvertiser : BroadcastReceiver()  {
         }
     }
 
-    /**
-     * Create a pending intent to use with Alarm Manager
-     *
-     * @param interval The interval at which to scan
-     * @param context The context to use
-     * @return an intent
-     */
+
     private fun getPendingIntent(interval: Int, context: Context) : PendingIntent {
         val intent = Intent(context, BLEAdvertiser::class.java)
         intent.putExtra(INTERVAL_KEY, interval)
@@ -125,10 +97,7 @@ class BLEAdvertiser : BroadcastReceiver()  {
     }
 
 
-    /**
-     * set up the GATT server
-     *
-     */
+
     private fun setupServer() {
         try {
             if (BLEController.bluetoothGattServer!!.getService(
@@ -145,22 +114,14 @@ class BLEAdvertiser : BroadcastReceiver()  {
         }
     }
 
-    /**
-     * stop the Gatt server
-     *
-     * @param gattServer the server
-     */
+
     private fun stopServer(gattServer: BluetoothGattServer) {
         gattServer.close()
         Timber.d("server closed.")
     }
 
-    /**
-     * Start advertising the unique device UUID on the Gatt server
-     *
-     * @param callback The callback method
-     * @param uuid The UUID to broadcast
-     */
+
+
     private fun startAdvertising(callback: AdvertiseCallback, uuid: UUID) {
         try {
             val settings = AdvertiseSettings.Builder()
@@ -189,10 +150,7 @@ class BLEAdvertiser : BroadcastReceiver()  {
         }
     }
 
-    /**
-     * Stop broadcasting the UUID
-     *
-     */
+
     private fun stopAdvertising() {
         synchronized(this) {
             try {

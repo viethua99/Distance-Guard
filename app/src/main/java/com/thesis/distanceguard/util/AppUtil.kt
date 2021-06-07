@@ -11,12 +11,6 @@ object AppUtil {
         return "%,d".format(input)
     }
 
-    fun convertMillisecondsToShortDateFormat(milliSeconds: Long): String? {
-        val calendar: Calendar = Calendar.getInstance()
-        val formatter = SimpleDateFormat(SHORT_DATE_FORMAT,Locale.US)
-        calendar.timeInMillis = milliSeconds
-        return formatter.format(calendar.time)
-    }
 
     fun convertMillisecondsToDateFormat(milliSeconds: Long): String? {
         val calendar: Calendar = Calendar.getInstance()
@@ -31,7 +25,7 @@ object AppUtil {
         return date.time
     }
 
-    // Pair<String,Long> -> Pair<String,Float>
+
     fun convertPairLongToPairFloat(currentList: List<Pair<String, Long>>): List<Pair<String, Float>> {
         val newList = ArrayList<Pair<String, Float>>()
         for (i in 1 until currentList.size) {

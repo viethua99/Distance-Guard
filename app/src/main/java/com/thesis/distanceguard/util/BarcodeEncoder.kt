@@ -8,14 +8,8 @@ import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 
 
-/**
- * Helper class for encoding barcodes as a Bitmap.
- *
- * Adapted from QRCodeEncoder, from the zxing project:
- * https://github.com/zxing/zxing
- *
- * Licensed under the Apache License, Version 2.0.
- */
+
+
 class BarcodeEncoder {
     fun createBitmap(matrix: BitMatrix): Bitmap {
         val width = matrix.width

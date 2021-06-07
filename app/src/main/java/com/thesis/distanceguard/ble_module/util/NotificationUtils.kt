@@ -13,16 +13,13 @@ import androidx.lifecycle.Observer
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.ble_module.BLEController
 
-/**
- * A set of utilities to help with notifications
- */
+
 object NotificationUtils {
-    // Constants for the notification actions buttons.
      const val ACTION_TOO_CLOSE_NOTIFICATION =
-        "ai.kun.socialdistancealarm.ACTION_TOO_CLOSE_NOTIFICATION"
+        "com.thesis.distanceguard.ACTION_TOO_CLOSE_NOTIFICATION"
 
      const val ACTION_DANGER_NOTIFICATION =
-        "ai.kun.socialdistancealarm.ACTION_DANGER_NOTIFICATION"
+        "com.thesis.distanceguard.ACTION_DANGER_NOTIFICATION"
 
     // Notification channel ID.
     private const val TOO_CLOSE_CHANNEL_ID = "too_close_notification_channel"

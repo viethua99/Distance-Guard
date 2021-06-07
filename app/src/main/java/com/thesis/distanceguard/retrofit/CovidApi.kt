@@ -20,9 +20,6 @@ interface CovidApi {
     @GET("/v3/covid-19/historical/all")
     suspend fun getWorldwideHistory(@Query("lastdays") lastdays: String): Response<HistoricalWorldwideResponse>
 
-    @GET("/v3/covid-19/countries/Vietnam?strict=true")
-    suspend fun getVietnamData(): Response<CountryResponse>
-
     @GET("/v3/covid-19/historical/{country}")
     suspend fun getCountryHistory(
         @Path("country") country: String,

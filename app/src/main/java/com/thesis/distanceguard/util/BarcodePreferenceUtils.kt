@@ -8,28 +8,10 @@ import androidx.annotation.StringRes
 import com.google.android.gms.common.images.Size
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 
-/**
- * This code was imported from the example project we used.
- */
+
+
 object BarcodePreferenceUtils {
 
-    fun isAutoSearchEnabled(context: Context): Boolean {
-        return true
-    }
-
-    fun isMultipleObjectsMode(context: Context): Boolean {
-        return false
-    }
-
-    fun isClassificationEnabled(context: Context): Boolean {
-        return false
-    }
-
-    fun getConfirmationTimeMs(context: Context): Int = when {
-        isMultipleObjectsMode(context) -> 300
-        isAutoSearchEnabled(context) -> 1500
-        else -> 500
-    }
 
     fun getProgressToMeetBarcodeSizeRequirement(
         overlay: GraphicOverlay,
@@ -54,9 +36,6 @@ object BarcodePreferenceUtils {
         return true
     }
 
-    private fun getIntPref(context: Context, @StringRes prefKeyId: Int, defaultValue: Int): Int {
-        return defaultValue
-    }
 
     fun getUserSpecifiedPreviewSize(context: Context): CameraSizePair? {
         return try {
@@ -68,7 +47,5 @@ object BarcodePreferenceUtils {
         }
     }
 
-    private fun getBooleanPref(context: Context, @StringRes prefKeyId: Int, defaultValue: Boolean): Boolean {
-        return defaultValue
-    }
+
 }
