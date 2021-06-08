@@ -19,7 +19,7 @@
 
     <!-- LOCATION PERMISSIONS -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <!--CAMERA PERMISSIONS -->
@@ -47,11 +47,11 @@
         </receiver>
         <receiver
             android:enabled="true"
-            android:exported="false"
+            android:exported="true"
             android:name=".ble_module.core.BLEScanner" />
         <receiver
             android:enabled="true"
-            android:exported="false"
+            android:exported="true"
             android:name=".ble_module.core.BLEAdvertiser" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"

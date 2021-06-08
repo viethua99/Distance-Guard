@@ -3,6 +3,7 @@ package com.thesis.distanceguard.presentation.main.activity
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -21,7 +22,8 @@ import timber.log.Timber
 class MainActivity : BaseActivity() {
     private lateinit var mainActivityViewModel: MainActivityViewModel
 
-
+    private lateinit var serviceIntent: Intent
+    private var distanceGuardService: DistanceGuardService? = null
     override fun getResLayoutId(): Int {
         return R.layout.activity_main
     }
@@ -29,6 +31,8 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.d("onCreate")
+        setupDistanceGuardService()
+
         setupViewModel()
         setupViews()
     }
@@ -80,24 +84,35 @@ class MainActivity : BaseActivity() {
 
 
     override fun onDestroy() {
-//        val broadcastIntent = Intent()
-//        broadcastIntent.action = "restartService"
-//        broadcastIntent.setClass(this, Restarter::class.java)
-//        this.sendBroadcast(broadcastIntent)
+        if (isServiceRunning(distanceGuardService!!::class.java)) {
+            stopService(serviceIntent)
+            val broadcastIntent = Intent()
+            broadcastIntent.action = "restartService"
+            broadcastIntent.setClass(this, Restarter::class.java)
+            this.sendBroadcast(broadcastIntent)
+        }
         super.onDestroy()
 
     }
 
-    lateinit var serviceIntent : Intent
-    private lateinit var  distanceGuardService: DistanceGuardService
 
-     fun startDistanceGuardService(){
-        Timber.d("startDistanceGuardService")
+    private fun setupDistanceGuardService() {
         distanceGuardService = DistanceGuardService()
-        serviceIntent = Intent(this,distanceGuardService::class.java)
-        if(!isServiceRunning(distanceGuardService::class.java)){
-            startService(serviceIntent)
+        serviceIntent = Intent(this, distanceGuardService!!::class.java)
+    }
+
+     fun triggerDistanceGuardService() {
+        Timber.d("triggerDistanceGuardService")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (!isServiceRunning(distanceGuardService!!::class.java)) {
+                startService(serviceIntent)
+            } else {
+                stopService(serviceIntent)
+            }
+        } else {
+            showToastMessage("Only Android 8.0 (Oreo) or higher can use this feature")
         }
+
     }
 
     private fun isServiceRunning(serviceClass: Class<*>): Boolean{

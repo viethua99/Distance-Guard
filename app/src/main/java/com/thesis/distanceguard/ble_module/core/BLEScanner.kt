@@ -112,7 +112,7 @@ class BLEScanner : BroadcastReceiver() {
 
 
         val settings = ScanSettings.Builder()
-            .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+            .setScanMode(ScanSettings.SCAN_MODE_BALANCED)
             .build()
 
         try {
@@ -168,6 +168,8 @@ class BLEScanner : BroadcastReceiver() {
 
             // Clear the scan results
             ScanCallbackImpl.mScanResults.clear()
+        } else {
+            Timber.d("empty")
         }
         if (noCurrentDevices) {
             GlobalScope.launch { DeviceRepository.noCurrentDevices() }

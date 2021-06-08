@@ -9,6 +9,9 @@ import android.graphics.Color
 import android.location.LocationManager
 import android.os.Build
 import android.provider.Settings
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -52,6 +55,7 @@ class ScannerFragment : BaseFragment() {
 
     override fun onMyViewCreated(view: View) {
         Timber.d("onMyViewCreated")
+        setHasOptionsMenu(true)
         setupViewModel()
         setupViews()
     }
@@ -76,6 +80,22 @@ class ScannerFragment : BaseFragment() {
             }
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_scanner,menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.item_background_scan -> {
+             val mainActivity = activity as MainActivity
+                mainActivity.triggerDistanceGuardService()
+            }
+        }
+        return true
+    }
+
 
     private fun setupViewModel() {
         Timber.d("setupViewModel")

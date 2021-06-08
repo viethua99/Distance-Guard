@@ -42,7 +42,7 @@ object ScanCallbackImpl: ScanCallback() {
 
 
 
-    private fun addScanResult(result: ScanResult) {
+     fun addScanResult(result: ScanResult) {
         synchronized(this) {
             val deviceAddress = result.device.address
             var uuid: ParcelUuid? = result.scanRecord?.serviceUuids?.get(0)

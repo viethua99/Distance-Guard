@@ -34,7 +34,7 @@ class ScannerRecyclerViewAdapter(context: Context) :
 
         fun renderUI(data: Device) {
             // Notify the user when we are adding a device that's too close
-            val signal = BluetoothUtils.calculateSignal(data.rssi, data.txPower)
+            val signal = BluetoothUtils.calculateSignal(data.rssi,data.txPower  )
             tvStrength.text = signal.toString()
             when {
                 signal <= Constants.SIGNAL_DISTANCE_OK -> {
