@@ -11,6 +11,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.thesis.distanceguard.ble_module.core.BLEAdvertiseCallbackImpl
 import com.thesis.distanceguard.ble_module.core.BLEAdvertiser
 import com.thesis.distanceguard.ble_module.core.BLEScanner
 import com.thesis.distanceguard.ble_module.repository.DeviceRepository
@@ -178,15 +179,16 @@ object BLEController {
         if (isEnabled() && !isPaused) {
             Log.i(TAG, "startForeground")
             isStarted.postValue(true)
-            mBLEAdvertiser.enable(
-                Constants.REBROADCAST_PERIOD,
-                context
-            )
+//            mBLEAdvertiser.enable(
+//                Constants.REBROADCAST_PERIOD,
+//                context
+//            )
 //            mBLEScanner.enable(
 //                Constants.FOREGROUND_TRACE_INTERVAL,
 //                context
 //            )
-            mBLEScanner.startScan()
+             mBLEAdvertiser.startAdvertising()
+             mBLEScanner.startScan()
         } else {
             isStarted.postValue(false)
         }
@@ -199,14 +201,17 @@ object BLEController {
 
     private fun stopForeground() {
         if (isEnabled()) {
-            mBLEAdvertiser.disable(
-                Constants.REBROADCAST_PERIOD,
-                context
-            )
-            mBLEScanner.disable(
-                Constants.FOREGROUND_TRACE_INTERVAL,
-                context
-            )
+//            mBLEAdvertiser.disable(
+//                Constants.REBROADCAST_PERIOD,
+//                context
+//            )
+//            mBLEScanner.disable(
+//                Constants.FOREGROUND_TRACE_INTERVAL,
+//                context
+//            )
+            mBLEScanner.stopScan()
+            mBLEAdvertiser.stopAdvertising()
+
         }
         isStarted.postValue(false)
     }

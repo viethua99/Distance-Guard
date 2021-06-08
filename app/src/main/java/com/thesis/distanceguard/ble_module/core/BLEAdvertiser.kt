@@ -114,6 +114,13 @@ class BLEAdvertiser : BroadcastReceiver()  {
         }
     }
 
+    fun startAdvertising(){
+        setupServer()
+        startAdvertising(BLEAdvertiseCallbackImpl, BLEController.deviceNameServiceUuid)
+    }
+
+
+
 
     private fun stopServer(gattServer: BluetoothGattServer) {
         gattServer.close()
@@ -151,7 +158,7 @@ class BLEAdvertiser : BroadcastReceiver()  {
     }
 
 
-    private fun stopAdvertising() {
+     fun stopAdvertising() {
         synchronized(this) {
             try {
                 BLEController.bluetoothLeAdvertiser?.stopAdvertising(BLEAdvertiseCallbackImpl)

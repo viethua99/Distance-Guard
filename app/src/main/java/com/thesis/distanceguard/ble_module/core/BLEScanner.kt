@@ -129,7 +129,7 @@ class BLEScanner : BroadcastReceiver() {
     }
 
 
-    private fun stopScan() {
+     fun stopScan() {
 
         synchronized(BLEController) {
             try {
