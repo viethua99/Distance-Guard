@@ -136,11 +136,13 @@ class BLEScanner : BroadcastReceiver() {
                 if (mScanning && BLEController.bluetoothManager!!.adapter.isEnabled) {
                     Timber.d("stopScan")
                     BLEController.bluetoothLeScanner!!.stopScan(scanCallback)
-                    ScanCallbackImpl.mScanResults.clear()
-                    GlobalScope.launch { DeviceRepository.deleteAll() }
+                    checkResultList()
+                    GlobalScope.launch {
+                        DeviceRepository.deleteAll()
+                    }
+
                     stopHandler()
                    isHandlerStarted = false
-                   isListChecked = false
                 }
 
             } catch (exception: Exception) {
@@ -154,7 +156,6 @@ class BLEScanner : BroadcastReceiver() {
 
     private val taskHandler: Handler = Handler()
     private var isHandlerStarted = false
-    private var isListChecked = false
 
 
     private fun startHandler() {
@@ -166,7 +167,8 @@ class BLEScanner : BroadcastReceiver() {
     }
 
     private val repeatableTaskRunnable = Runnable {
-        isListChecked = false //Reset flag every 15 seconds
+        Timber.d("repeat")
+        checkResultList()
         startHandler()
     }
 
@@ -182,10 +184,6 @@ class BLEScanner : BroadcastReceiver() {
                 }
                 ScanCallbackImpl.addScanResult(it)
 
-                if(!isListChecked){
-                    checkResultList()
-                    isListChecked = true //Flag to make sure data is alarm only trigger one time for every 15 seconds
-                }
             }
 
         }
