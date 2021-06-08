@@ -9,16 +9,13 @@ import android.bluetooth.le.BluetoothLeAdvertiser
 import android.bluetooth.le.BluetoothLeScanner
 import android.content.Context
 import android.content.SharedPreferences
-import android.location.LocationManager
 import android.util.Log
-import androidx.core.location.LocationManagerCompat
 import androidx.lifecycle.MutableLiveData
 import com.thesis.distanceguard.ble_module.core.BLEAdvertiser
 import com.thesis.distanceguard.ble_module.core.BLEScanner
 import com.thesis.distanceguard.ble_module.repository.DeviceRepository
 import com.thesis.distanceguard.ble_module.util.Constants
 import com.thesis.distanceguard.ble_module.util.Constants.PREF_FILE_NAME
-import com.thesis.distanceguard.ble_module.util.Constants.PREF_IS_PAUSED
 import com.thesis.distanceguard.ble_module.util.Constants.PREF_TEAM_IDS
 import com.thesis.distanceguard.ble_module.util.Constants.PREF_UNIQUE_ID
 import com.thesis.distanceguard.ble_module.util.NotificationUtils
@@ -185,10 +182,11 @@ object BLEController {
                 Constants.REBROADCAST_PERIOD,
                 context
             )
-            mBLEScanner.enable(
-                Constants.FOREGROUND_TRACE_INTERVAL,
-                context
-            )
+//            mBLEScanner.enable(
+//                Constants.FOREGROUND_TRACE_INTERVAL,
+//                context
+//            )
+            mBLEScanner.startScan()
         } else {
             isStarted.postValue(false)
         }

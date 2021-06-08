@@ -6,6 +6,7 @@ import android.bluetooth.le.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
 import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.AlarmManagerCompat
@@ -16,7 +17,7 @@ import com.thesis.distanceguard.ble_module.util.Constants
 import com.thesis.distanceguard.ble_module.util.Constants.MANUFACTURER_ID
 import com.thesis.distanceguard.ble_module.util.Constants.MANUFACTURER_SUBSTRING
 import com.thesis.distanceguard.ble_module.util.Constants.MANUFACTURER_SUBSTRING_MASK
-import com.thesis.distanceguard.ble_module.util.Constants.SCAN_PERIOD
+import com.thesis.distanceguard.ble_module.util.Constants.CHECK_PERIOD
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -39,7 +40,7 @@ class BLEScanner : BroadcastReceiver() {
 
 
     override fun onReceive(context: Context, intent: Intent) {
-        Log.i(TAG, "onReceive")
+        Timber.d("onReceive")
         val interval = intent.getIntExtra(INTERVAL_KEY, Constants.BACKGROUND_TRACE_INTERVAL)
         val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
         val wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKELOCK_TAG)
@@ -56,6 +57,7 @@ class BLEScanner : BroadcastReceiver() {
 
 
     fun next(interval: Int, context: Context) {
+        Timber.d("next")
         val alarmManager = BLEController.getAlarmManager(context)
         AlarmManagerCompat.setExactAndAllowWhileIdle(alarmManager,
             AlarmManager.RTC_WAKEUP,
@@ -67,6 +69,7 @@ class BLEScanner : BroadcastReceiver() {
 
 
     fun enable(interval: Int, context: Context) {
+        Timber.d("enable")
         val alarmManager = BLEController.getAlarmManager(context)
         AlarmManagerCompat.setExactAndAllowWhileIdle(alarmManager,
             AlarmManager.RTC_WAKEUP,
@@ -98,7 +101,7 @@ class BLEScanner : BroadcastReceiver() {
 
 
 
-    private fun startScan() {
+     fun startScan() {
         if (mScanning) {
             Log.w(TAG,"Already scanning")
             return
@@ -112,12 +115,11 @@ class BLEScanner : BroadcastReceiver() {
 
 
         val settings = ScanSettings.Builder()
-            .setScanMode(ScanSettings.SCAN_MODE_BALANCED)
+            .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
             .build()
 
         try {
-            BLEController.bluetoothLeScanner!!.startScan(listOf(androidScanFilter), settings, ScanCallbackImpl)
-            ScanCallbackImpl.handler.postDelayed(Runnable { stopScan() }, SCAN_PERIOD)
+            BLEController.bluetoothLeScanner!!.startScan(listOf(androidScanFilter), settings, scanCallback)
             mScanning = true
             Log.d(TAG, "+++++++Started scanning.")
         } catch (exception: Exception) {
@@ -132,8 +134,13 @@ class BLEScanner : BroadcastReceiver() {
         synchronized(BLEController) {
             try {
                 if (mScanning && BLEController.bluetoothManager!!.adapter.isEnabled) {
-                    BLEController.bluetoothLeScanner!!.stopScan(ScanCallbackImpl)
-                    scanComplete()
+                    Timber.d("stopScan")
+                    BLEController.bluetoothLeScanner!!.stopScan(scanCallback)
+                    ScanCallbackImpl.mScanResults.clear()
+                    GlobalScope.launch { DeviceRepository.deleteAll() }
+                    stopHandler()
+                   isHandlerStarted = false
+                   isListChecked = false
                 }
 
             } catch (exception: Exception) {
@@ -145,8 +152,46 @@ class BLEScanner : BroadcastReceiver() {
         Log.d(TAG, "-------Stopped scanning.")
     }
 
-    private fun scanComplete() {
-        Timber.d("scanComplete")
+    private val taskHandler: Handler = Handler()
+    private var isHandlerStarted = false
+    private var isListChecked = false
+
+
+    private fun startHandler() {
+        taskHandler.postDelayed(repeatableTaskRunnable, CHECK_PERIOD)
+    }
+
+    private fun stopHandler() {
+        taskHandler.removeCallbacks(repeatableTaskRunnable)
+    }
+
+    private val repeatableTaskRunnable = Runnable {
+        isListChecked = false //Reset flag every 15 seconds
+        startHandler()
+    }
+
+
+
+    private val scanCallback = object : ScanCallback() {
+        override fun onScanResult(callbackType: Int, result: ScanResult?) {
+            Timber.d("onScanResult")
+            result?.let {
+                if(!isHandlerStarted){ //Start handler only one time
+                    startHandler()
+                    isHandlerStarted = true
+                }
+                ScanCallbackImpl.addScanResult(it)
+
+                if(!isListChecked){
+                    checkResultList()
+                    isListChecked = true //Flag to make sure data is alarm only trigger one time for every 15 seconds
+                }
+            }
+
+        }
+    }
+    private fun checkResultList() {
+        Timber.d("checkResultList")
         var noCurrentDevices = true
 
         if (ScanCallbackImpl.mScanResults.isNotEmpty()) {
@@ -168,9 +213,8 @@ class BLEScanner : BroadcastReceiver() {
 
             // Clear the scan results
             ScanCallbackImpl.mScanResults.clear()
-        } else {
-            Timber.d("empty")
         }
+
         if (noCurrentDevices) {
             GlobalScope.launch { DeviceRepository.noCurrentDevices() }
         }

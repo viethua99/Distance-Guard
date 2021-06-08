@@ -23,7 +23,7 @@ class MainActivity : BaseActivity() {
     private lateinit var mainActivityViewModel: MainActivityViewModel
 
     private lateinit var serviceIntent: Intent
-    private var distanceGuardService: DistanceGuardService? = null
+    var distanceGuardService: DistanceGuardService? = null
     override fun getResLayoutId(): Int {
         return R.layout.activity_main
     }
@@ -103,19 +103,20 @@ class MainActivity : BaseActivity() {
 
      fun triggerDistanceGuardService() {
         Timber.d("triggerDistanceGuardService")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (!isServiceRunning(distanceGuardService!!::class.java)) {
-                startService(serviceIntent)
-            } else {
-                stopService(serviceIntent)
-            }
-        } else {
-            showToastMessage("Only Android 8.0 (Oreo) or higher can use this feature")
-        }
-
+         if (!isServiceRunning(distanceGuardService!!::class.java)) {
+             startService(serviceIntent)
+         } else {
+             stopService(serviceIntent)
+         }
     }
 
-    private fun isServiceRunning(serviceClass: Class<*>): Boolean{
+    fun stopService(){
+        if(isServiceRunning(distanceGuardService!!::class.java)){
+            stopService(serviceIntent)
+        }
+    }
+
+    fun isServiceRunning(serviceClass: Class<*>): Boolean{
         val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         for(service in manager.getRunningServices(Int.MAX_VALUE)){
             if(serviceClass.name == service.service.className){

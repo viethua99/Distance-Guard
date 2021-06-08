@@ -155,7 +155,7 @@ object NotificationUtils {
         return NotificationCompat.Builder(context, TOO_CLOSE_CHANNEL_ID)
             .setContentTitle(context.getString(R.string.too_close_notification_title))
             .setContentText(context.getString(R.string.too_close_notification_text))
-            .setSmallIcon(R.drawable.ic_report_red_24dp)
+            .setSmallIcon(R.drawable.ic_my_app)
             .setAutoCancel(true).setContentIntent(notificationPendingIntent)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setDefaults(NotificationCompat.DEFAULT_ALL)!!
@@ -181,7 +181,7 @@ object NotificationUtils {
         return NotificationCompat.Builder(context, DANGER_CHANNEL_ID)
             .setContentTitle(context.getString(R.string.danger_notification_title))
             .setContentText(context.getString(R.string.danger_notification_text))
-            .setSmallIcon(R.drawable.ic_warning_orange_24dp)
+            .setSmallIcon(R.drawable.ic_my_app)
             .setAutoCancel(true).setContentIntent(notificationPendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setDefaults(NotificationCompat.DEFAULT_ALL)!!

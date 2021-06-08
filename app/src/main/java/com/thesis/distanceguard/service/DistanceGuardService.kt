@@ -62,10 +62,6 @@ class DistanceGuardService : Service() {
         super.onDestroy()
         Log.d(TAG, "onDestroy")
         BLEController.isPaused = true
-        val broadcastIntent = Intent()
-        broadcastIntent.action = "restartService"
-        broadcastIntent.setClass(this, Restarter::class.java)
-        this.sendBroadcast(broadcastIntent)
 
     }
 

@@ -27,6 +27,7 @@ import com.thesis.distanceguard.ble_module.util.BluetoothUtils
 import com.thesis.distanceguard.ble_module.util.Constants
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
+import com.thesis.distanceguard.service.DistanceGuardService
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_scanner.*
 import kotlinx.android.synthetic.main.fragment_team.*
@@ -49,6 +50,7 @@ class ScannerFragment : BaseFragment() {
     private lateinit var scannerViewModel: ScannerViewModel
     private lateinit var scannerRecyclerViewAdapter: ScannerRecyclerViewAdapter
 
+    private lateinit var item: MenuItem
     override fun getResLayoutId(): Int {
         return R.layout.fragment_scanner
     }
@@ -82,15 +84,40 @@ class ScannerFragment : BaseFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_scanner,menu)
-        super.onCreateOptionsMenu(menu, inflater)
+       activity?.menuInflater!!.inflate(R.menu.menu_scanner, menu)
+         item = menu?.findItem(R.id.item_background_scan)
+        item?.let {
+            val mainActivity = activity as MainActivity
+            if (mainActivity.isServiceRunning(DistanceGuardService::class.java)) {
+                item.icon = resources.getDrawable(R.drawable.ic_background_scan_off)
+            } else {
+                item.icon = resources.getDrawable(R.drawable.ic_background_scan_on)
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.item_background_scan -> {
              val mainActivity = activity as MainActivity
-                mainActivity.triggerDistanceGuardService()
+                if (isLocationEnabled() && BluetoothAdapter.getDefaultAdapter().isEnabled) {
+                    mainActivity.triggerDistanceGuardService()
+                    if (mainActivity.distanceGuardService != null) {
+
+                        if (mainActivity.isServiceRunning(mainActivity.distanceGuardService!!::class.java)) {
+                            showToastMessage("Background scan started")
+                            item.icon = resources.getDrawable(R.drawable.ic_background_scan_off)
+                            item.title = "Stop Background"
+                        } else {
+                            showToastMessage("Background scan stopped")
+                            item.icon = resources.getDrawable(R.drawable.ic_background_scan_on)
+                            item.title = "Start Background"
+                        }
+                    }
+                } else {
+                    showToastMessage("Please check bluetooth and location")
+                }
+
             }
         }
         return true
@@ -109,12 +136,18 @@ class ScannerFragment : BaseFragment() {
                     BLEStatus.BLUETOOTH_STATE_CHANGED -> {
                         showBluetoothEnableView()
                         if (!BluetoothAdapter.getDefaultAdapter().isEnabled) {
+                            item.icon = resources.getDrawable(R.drawable.ic_background_scan_on)
+                            val activity = activity as MainActivity
+                            activity.stopService()
                             BLEController.isPaused = true
                         }
                     }
                     BLEStatus.LOCATION_STATE_CHANGED -> {
                         showLocationEnableView()
                         if (!isLocationEnabled()) {
+                            item.icon = resources.getDrawable(R.drawable.ic_background_scan_on)
+                            val activity = activity as MainActivity
+                            activity.stopService()
                             BLEController.isPaused = true
                         }
                     }
