@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
@@ -18,7 +19,7 @@
 
     <!-- LOCATION PERMISSIONS -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <!--CAMERA PERMISSIONS -->
@@ -35,13 +36,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DistanceGuard">
+        <service android:name=".service.DistanceGuardService" android:enabled="true" />
+        <receiver
+            android:name=".service.Restarter"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="restartService" />
+            </intent-filter>
+        </receiver>
         <receiver
             android:enabled="true"
-            android:exported="false"
+            android:exported="true"
             android:name=".ble_module.core.BLEScanner" />
         <receiver
             android:enabled="true"
-            android:exported="false"
+            android:exported="true"
             android:name=".ble_module.core.BLEAdvertiser" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"

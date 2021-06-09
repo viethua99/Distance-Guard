@@ -47,11 +47,18 @@ class TeamFragment : BaseFragment() {
             showWarningDialogWithConfirm("Exiting your team will remove teammates you scanned",
                 SweetAlertDialog.OnSweetClickListener {
                     //Confirm Listener
-                    showToastMessage("Leave your team succeed")
-                    BLEController.leaveTeam()
-                    setQRCode()
-                    setTeamCount()
-                    hideDialog()
+                    val count = BLEController.teamUuids?.let { it.size } ?: 0
+                    if(count > 0) {
+                        showToastMessage("Leave your team succeed")
+                        BLEController.leaveTeam()
+                        setQRCode()
+                        setTeamCount()
+                        hideDialog()
+                    } else {
+                        showToastMessage("You are not inside any team")
+                        hideDialog()
+                    }
+
                 }
             )
         }

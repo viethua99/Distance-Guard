@@ -3,10 +3,15 @@ package com.thesis.distanceguard.presentation.scanner
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.LocationManager
 import android.os.Build
+import android.provider.Settings
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -17,9 +22,12 @@ import com.thesis.distanceguard.R
 import com.thesis.distanceguard.ble_module.BLEController
 import com.thesis.distanceguard.ble_module.dao.Device
 import com.thesis.distanceguard.ble_module.repository.DeviceRepository
+import com.thesis.distanceguard.ble_module.state.BLEStatus
 import com.thesis.distanceguard.ble_module.util.BluetoothUtils
 import com.thesis.distanceguard.ble_module.util.Constants
 import com.thesis.distanceguard.presentation.base.BaseFragment
+import com.thesis.distanceguard.presentation.main.activity.MainActivity
+import com.thesis.distanceguard.service.DistanceGuardService
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_scanner.*
 import kotlinx.android.synthetic.main.fragment_team.*
@@ -42,12 +50,14 @@ class ScannerFragment : BaseFragment() {
     private lateinit var scannerViewModel: ScannerViewModel
     private lateinit var scannerRecyclerViewAdapter: ScannerRecyclerViewAdapter
 
+    private lateinit var item: MenuItem
     override fun getResLayoutId(): Int {
         return R.layout.fragment_scanner
     }
 
     override fun onMyViewCreated(view: View) {
         Timber.d("onMyViewCreated")
+        setHasOptionsMenu(true)
         setupViewModel()
         setupViews()
     }
@@ -66,8 +76,6 @@ class ScannerFragment : BaseFragment() {
                         }
                         if (!BluetoothAdapter.getDefaultAdapter().isEnabled || !isLocationEnabled()) {
                             showToastMessage("Please enable bluetooth and location")
-                        } else {
-                            scannerViewModel.triggerBLEScan()
                         }
                     }
                 }
@@ -75,12 +83,77 @@ class ScannerFragment : BaseFragment() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+       activity?.menuInflater!!.inflate(R.menu.menu_scanner, menu)
+         item = menu?.findItem(R.id.item_background_scan)
+        item?.let {
+            val mainActivity = activity as MainActivity
+            if (mainActivity.isServiceRunning(DistanceGuardService::class.java)) {
+                item.icon = resources.getDrawable(R.drawable.ic_background_scan_off)
+            } else {
+                item.icon = resources.getDrawable(R.drawable.ic_background_scan_on)
+            }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.item_background_scan -> {
+             val mainActivity = activity as MainActivity
+                if (isLocationEnabled() && BluetoothAdapter.getDefaultAdapter().isEnabled) {
+                    mainActivity.triggerDistanceGuardService()
+                    if (mainActivity.distanceGuardService != null) {
+
+                        if (mainActivity.isServiceRunning(mainActivity.distanceGuardService!!::class.java)) {
+                            showToastMessage("Background scan started")
+                            item.icon = resources.getDrawable(R.drawable.ic_background_scan_off)
+                            item.title = "Stop Background"
+                        } else {
+                            showToastMessage("Background scan stopped")
+                            item.icon = resources.getDrawable(R.drawable.ic_background_scan_on)
+                            item.title = "Start Background"
+                        }
+                    }
+                } else {
+                    showToastMessage("Please check bluetooth and location")
+                }
+
+            }
+        }
+        return true
+    }
+
+
     private fun setupViewModel() {
         Timber.d("setupViewModel")
         AndroidSupportInjection.inject(this)
         scannerViewModel =
             ViewModelProvider(this, viewModelFactory).get(ScannerViewModel::class.java)
 
+        scannerViewModel.bleStatus.observe(viewLifecycleOwner, Observer {
+            it.let {
+                when(it) {
+                    BLEStatus.BLUETOOTH_STATE_CHANGED -> {
+                        showBluetoothEnableView()
+                        if (!BluetoothAdapter.getDefaultAdapter().isEnabled) {
+                            item.icon = resources.getDrawable(R.drawable.ic_background_scan_on)
+                            val activity = activity as MainActivity
+                            activity.stopService()
+                            BLEController.isPaused = true
+                        }
+                    }
+                    BLEStatus.LOCATION_STATE_CHANGED -> {
+                        showLocationEnableView()
+                        if (!isLocationEnabled()) {
+                            item.icon = resources.getDrawable(R.drawable.ic_background_scan_on)
+                            val activity = activity as MainActivity
+                            activity.stopService()
+                            BLEController.isPaused = true
+                        }
+                    }
+                }
+            }
+        })
         scannerViewModel.isBLEStarted.observe(viewLifecycleOwner, Observer { isStarted ->
             Timber.d("isStarted = $isStarted")
             isStarted?.let {
@@ -112,6 +185,8 @@ class ScannerFragment : BaseFragment() {
     }
 
     private fun setupViews() {
+        showBluetoothEnableView()
+        showLocationEnableView()
         BLEController.isStarted.value?.let {
             setupVisibilities(it)
         }
@@ -128,6 +203,38 @@ class ScannerFragment : BaseFragment() {
             layoutManager = linearLayoutManager
             setHasFixedSize(true)
             adapter = scannerRecyclerViewAdapter
+        }
+    }
+
+    private fun showBluetoothEnableView() {
+        Timber.d("showBluetoothEnableView")
+        if (!BluetoothAdapter.getDefaultAdapter().isEnabled) {
+
+            bluetooth_enable.visibility = View.VISIBLE
+            bluetooth_enable_btn.setOnClickListener {
+                BluetoothAdapter.getDefaultAdapter().enable()
+            }
+        } else {
+            bluetooth_enable.visibility = View.GONE
+        }
+    }
+
+    private fun showLocationEnableView() {
+        Timber.d("showLocationEnableView")
+        if (!isLocationEnabled()) {
+            location_enable.visibility = View.VISIBLE
+            location_enable_btn.setOnClickListener {
+                location_enable.visibility = View.GONE
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+                if (Build.VERSION.SDK_INT >= 23)
+                    requestPermissions(
+                        arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+                        PERMISSIONS_REQUEST_CODE
+                    )
+            }
+        } else {
+            location_enable.visibility = View.GONE
         }
     }
 
@@ -160,6 +267,7 @@ class ScannerFragment : BaseFragment() {
                 showToastMessage("Please enable bluetooth and location")
             } else {
                 scannerViewModel.triggerBLEScan()
+
             }
         }
     }
