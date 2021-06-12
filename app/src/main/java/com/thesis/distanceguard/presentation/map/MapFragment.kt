@@ -43,9 +43,9 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, OnCameraIdleListener {
     private val markers = mutableListOf<Marker>()
     private var googleMap: GoogleMap? = null
     private var pulseCircle: Circle? = null
-    private lateinit var listCountry: List<CountryEntity> // list countries to get item show near countries
+    private lateinit var listCountry: List<CountryEntity>
     private val caseType by lazy {
-        arguments?.getInt(TYPE) ?: CaseType.FULL
+        arguments?.getInt(TYPE) ?: CaseType.CASES
     }
 
     private lateinit var mapViewModel: MapViewModel
@@ -57,9 +57,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, OnCameraIdleListener {
         private const val LAT_DEFAULT = 30.360227
         private const val LON_DEFAULT = 114.8260094
 
-        private val RECOVERED_COLOR = Color.argb(70, 0, 204, 153)
         private val CONFIRMED_COLOR = Color.argb(70, 0, 123, 255)
-        private val DEATH_COLOR = Color.argb(70, 226, 108, 90)
 
         private const val TYPE = "type"
 
@@ -80,20 +78,14 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, OnCameraIdleListener {
         val mainActivity = activity as MainActivity
         mainActivity.appBarLayout.visibility = View.GONE
 
-        //bottom sheet
-        setupBottomSheet();
+        setupBottomSheet()
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map_fr) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         edt_search.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 val filteredList = CountriesAdapter.filter(
@@ -129,17 +121,6 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, OnCameraIdleListener {
 
     private fun setupBottomSheet() {
         bottomSheetBehavior = BottomSheetBehavior.from(layout_bottom_sheet)
-
-        bottomSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            }
-
-        })
     }
 
     fun onSlideBottomSheet() {
@@ -263,10 +244,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, OnCameraIdleListener {
 
         valueAnimator.addUpdateListener {
             pulseCircle?.fillColor = when (caseType) {
-                CaseType.RECOVERED -> RECOVERED_COLOR
-                CaseType.DEATHS -> DEATH_COLOR
                 else -> CONFIRMED_COLOR
-
             }
             pulseCircle?.radius = (valueAnimator.animatedValue as Float).toDouble()
         }
@@ -315,8 +293,6 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, OnCameraIdleListener {
     }
 
     object CaseType {
-        const val DEATHS = 1
-        const val RECOVERED = 2
-        const val FULL = 3
+        const val CASES = 3
     }
 }

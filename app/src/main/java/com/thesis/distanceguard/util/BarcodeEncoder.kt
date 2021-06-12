@@ -39,7 +39,6 @@ class BarcodeEncoder {
         } catch (e: WriterException) {
             throw e
         } catch (e: Exception) {
-            // ZXing sometimes throws an IllegalArgumentException
             throw WriterException(e)
         }
     }
@@ -59,27 +58,6 @@ class BarcodeEncoder {
         } catch (e: Exception) {
             throw WriterException(e)
         }
-    }
-
-    @Throws(WriterException::class)
-    fun encodeBitmap(
-        contents: String?,
-        format: BarcodeFormat?,
-        width: Int,
-        height: Int
-    ): Bitmap {
-        return createBitmap(encode(contents, format, width, height))
-    }
-
-    @Throws(WriterException::class)
-    fun encodeBitmap(
-        contents: String?,
-        format: BarcodeFormat?,
-        width: Int,
-        height: Int,
-        hints: Map<EncodeHintType?, *>?
-    ): Bitmap {
-        return createBitmap(encode(contents, format, width, height, hints))
     }
 
     companion object {

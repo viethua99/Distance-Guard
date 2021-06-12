@@ -119,12 +119,12 @@
                     <ImageView
                         android:layout_width="84.97dp"
                         android:layout_height="71.95dp"
-                        android:src="@drawable/elip"/>
+                        android:src="@drawable/img_elip"/>
                     <ImageView
                         android:layout_width="54dp"
                         android:layout_height="73dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/headache" />
+                        android:src="@drawable/img_headache" />
                 </FrameLayout>
 
                 <TextView
@@ -155,13 +155,13 @@
                     <ImageView
                         android:layout_width="84.97dp"
                         android:layout_height="71.95dp"
-                        android:src="@drawable/elip"/>
+                        android:src="@drawable/img_elip"/>
 
                     <ImageView
                         android:layout_width="54dp"
                         android:layout_height="73dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/cough" />
+                        android:src="@drawable/img_cough" />
                 </FrameLayout>
 
                 <TextView
@@ -194,13 +194,13 @@
                     <ImageView
                         android:layout_width="84.97dp"
                         android:layout_height="71.95dp"
-                        android:src="@drawable/elip"/>
+                        android:src="@drawable/img_elip"/>
 
                     <ImageView
                         android:layout_width="54dp"
                         android:layout_height="73dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/fever" />
+                        android:src="@drawable/img_fever" />
                 </FrameLayout>
 
                 <TextView

@@ -31,7 +31,6 @@ class CameraActivity : BaseActivity(), View.OnClickListener {
     private var preview: CameraSourcePreview? = null
     private var graphicOverlay: GraphicOverlay? = null
     private var settingsButton: View? = null
-    private var flashButton: View? = null
     private var promptChip: Chip? = null
     private var promptChipAnimator: AnimatorSet? = null
     private var cameraViewModel: CameraViewModel? = null
@@ -58,9 +57,6 @@ class CameraActivity : BaseActivity(), View.OnClickListener {
             }
 
         findViewById<View>(R.id.close_button).setOnClickListener(this)
-        flashButton = findViewById<View>(R.id.flash_button).apply {
-            setOnClickListener(this@CameraActivity)
-        }
 
         setUpWorkflowModel()
     }
@@ -110,7 +106,6 @@ class CameraActivity : BaseActivity(), View.OnClickListener {
         val workflowModel = this.cameraViewModel ?: return
         if (workflowModel.isCameraLive) {
             workflowModel.markCameraFrozen()
-            flashButton?.isSelected = false
             preview?.stop()
         }
     }
@@ -120,8 +115,6 @@ class CameraActivity : BaseActivity(), View.OnClickListener {
         cameraViewModel = ViewModelProvider(this, viewModelFactory).get(CameraViewModel::class.java)
 
 
-        // Observes the workflow state changes, if happens, update the overlay view indicators and
-        // camera preview state.
         cameraViewModel!!.workflowState.observe(this, Observer { workflowState ->
             if (workflowState == null || (currentCameraViewState == workflowState)) {
                 return@Observer
@@ -177,17 +170,6 @@ class CameraActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view.id) {
             R.id.close_button -> onBackPressed()
-            R.id.flash_button -> {
-                flashButton?.let {
-                    if (it.isSelected) {
-                        it.isSelected = false
-                        cameraSource?.updateFlashMode(Camera.Parameters.FLASH_MODE_OFF)
-                    } else {
-                        it.isSelected = true
-                        cameraSource!!.updateFlashMode(Camera.Parameters.FLASH_MODE_TORCH)
-                    }
-                }
-            }
         }
     }
 

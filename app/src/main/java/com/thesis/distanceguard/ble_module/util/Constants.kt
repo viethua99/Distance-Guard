@@ -15,14 +15,12 @@ object Constants {
 
 
     const val CHECK_PERIOD: Long = 2000
-    const val REBROADCAST_PERIOD = 10000
-    const val BACKGROUND_TRACE_INTERVAL = 10000
     const val FOREGROUND_TRACE_INTERVAL = 10000
 
-    const val SIGNAL_DISTANCE_OK = 23 // This or lower is socially distant = green
-    const val SIGNAL_DISTANCE_LIGHT_WARN = 37 // This to SIGNAL_DISTANCE_OK warning = yellow
-    const val SIGNAL_DISTANCE_STRONG_WARN = 52 // This to SIGNAL_DISTANCE_LIGHT_WARN strong warning = orange
-    // ...and above this is not socially distant = red
+    const val SIGNAL_DISTANCE_OK = 23
+    const val SIGNAL_DISTANCE_LIGHT_WARN = 37
+    const val SIGNAL_DISTANCE_STRONG_WARN = 52
+
 
     const val ASSUMED_TX_POWER = 127
 }

@@ -1,19 +1,3 @@
-/*
- * Copyright 2019 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.thesis.distanceguard.barcode_detection
 
 import android.animation.ValueAnimator
@@ -31,7 +15,6 @@ import com.thesis.distanceguard.camera_module.FrameProcessorBase
 import com.thesis.distanceguard.util.BarcodePreferenceUtils
 import java.io.IOException
 
-/** A processor to run the barcode detector.  */
 class BarcodeProcessor(graphicOverlay: GraphicOverlay, private val cameraViewModel: CameraViewModel) :
     FrameProcessorBase<List<FirebaseVisionBarcode>>() {
 
@@ -52,7 +35,6 @@ class BarcodeProcessor(graphicOverlay: GraphicOverlay, private val cameraViewMod
 
         Log.d(TAG, "Barcode result size: ${results.size}")
 
-        // Picks the barcode, if exists, that covers the center of graphic overlay.
 
         val barcodeInCenter = results.firstOrNull { barcode ->
             val boundingBox = barcode.boundingBox ?: return@firstOrNull false
@@ -69,11 +51,9 @@ class BarcodeProcessor(graphicOverlay: GraphicOverlay, private val cameraViewMod
             cameraReticleAnimator.cancel()
             val sizeProgress = BarcodePreferenceUtils.getProgressToMeetBarcodeSizeRequirement(graphicOverlay, barcodeInCenter)
             if (sizeProgress < 1) {
-                // Barcode in the camera view is too small, so prompt user to move camera closer.
                 graphicOverlay.add(BarcodeConfirmingGraphic(graphicOverlay, barcodeInCenter))
                 cameraViewModel.setWorkflowState(WorkflowState.CONFIRMING)
             } else {
-                // Barcode size in the camera view is sufficient.
                 if (BarcodePreferenceUtils.shouldDelayLoadingBarcodeResult(graphicOverlay.context)) {
                     val loadingAnimator = createLoadingAnimator(graphicOverlay, barcodeInCenter)
                     loadingAnimator.start()

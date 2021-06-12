@@ -26,16 +26,6 @@ public class AndroidDialogUtil {
         return INSTANCE;
     }
 
-    public void showSuccessDialog(Context context, String message) {
-        hideDialog();
-        sweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE);
-        sweetAlertDialog
-                .setTitleText(message)
-                .setCustomImage(null)
-                .show();
-    }
-
-
     public void showWarningDialogWithConfirm(Context context, String message, SweetAlertDialog.OnSweetClickListener confirmListener) {
         hideDialog();
         sweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
@@ -46,23 +36,6 @@ public class AndroidDialogUtil {
                 .show();
     }
 
-    public void showWarningDialog(Context context, String message) {
-        hideDialog();
-        sweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
-        sweetAlertDialog
-                .setTitleText(message)
-                .setCustomImage(null)
-                .show();
-    }
-
-    public void showFailureDialog(Context context, String message) {
-        hideDialog();
-        sweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE);
-        sweetAlertDialog
-                .setTitleText(message)
-                .setCustomImage(null)
-                .show();
-    }
 
     public void showLoadingDialog(Context context, String message) {
         hideDialog();

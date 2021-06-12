@@ -157,7 +157,7 @@ object BLEController {
 
 
 
-    fun startBLEScan() {
+    private fun startBLEScan() {
         Timber.d("start")
         synchronized(this) {
             if (isStarted.value!!) stopBLEScan()
@@ -167,7 +167,7 @@ object BLEController {
 
 
 
-    fun stopBLEScan() {
+    private fun stopBLEScan() {
         synchronized(this) {
           stopForeground()
         }
@@ -179,14 +179,6 @@ object BLEController {
         if (isEnabled() && !isPaused) {
             Log.i(TAG, "startForeground")
             isStarted.postValue(true)
-//            mBLEAdvertiser.enable(
-//                Constants.REBROADCAST_PERIOD,
-//                context
-//            )
-//            mBLEScanner.enable(
-//                Constants.FOREGROUND_TRACE_INTERVAL,
-//                context
-//            )
              mBLEAdvertiser.startAdvertising()
              mBLEScanner.startScan()
         } else {
@@ -201,14 +193,6 @@ object BLEController {
 
     private fun stopForeground() {
         if (isEnabled()) {
-//            mBLEAdvertiser.disable(
-//                Constants.REBROADCAST_PERIOD,
-//                context
-//            )
-//            mBLEScanner.disable(
-//                Constants.FOREGROUND_TRACE_INTERVAL,
-//                context
-//            )
             mBLEScanner.stopScan()
             mBLEAdvertiser.stopAdvertising()
 
@@ -220,14 +204,14 @@ object BLEController {
 
 
 
-    fun isEnabled(): Boolean {
+    private fun isEnabled(): Boolean {
         bluetoothManager?.let {
-            if (uuidString == null || it.adapter == null || !it.adapter.isEnabled()) return false
+            if (uuidString == null || it.adapter == null || !it.adapter.isEnabled) return false
         }
 
-        if (!isInit) init(context) // If bluetooth was off we need to complete the init
+        if (!isInit) init(context)
 
-        return isInit  // && isLocationEnabled() Location doesn't need to be on
+        return isInit
     }
 
 
@@ -245,7 +229,7 @@ object BLEController {
                 bluetoothManager =
                     context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
                 bluetoothManager?.let {
-                    if (it.adapter == null || !it.adapter.isEnabled()) return // bail if bluetooth isn't on
+                    if (it.adapter == null || !it.adapter.isEnabled) return
                     bluetoothLeScanner = it.adapter.bluetoothLeScanner
                     bluetoothGattServer =
                         it.openGattServer(
@@ -257,7 +241,7 @@ object BLEController {
 
                 isInit = true
 
-                // If we weren't paused we're started and in the background...
+
                 if (!isPaused) isStarted.postValue(true) else isStarted.postValue(false)
             }
         }
@@ -265,13 +249,6 @@ object BLEController {
 
         NotificationUtils.init(applicationContext)
 
-    }
-
-
-
-
-    fun getAlarmManager(applicationContext: Context): AlarmManager {
-        return applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     }
 
 }

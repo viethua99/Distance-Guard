@@ -14,13 +14,4 @@
         android:layout_gravity="start"
         android:padding="12dp"
         app:srcCompat="@drawable/ic_close_vd_white_24"/>
-
-    <ImageView
-        android:id="@+id/flash_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:padding="12dp"
-        app:srcCompat="@drawable/camera_flash"/>
-
 </RelativeLayout>

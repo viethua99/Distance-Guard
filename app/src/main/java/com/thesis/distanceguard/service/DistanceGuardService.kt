@@ -93,24 +93,4 @@ class DistanceGuardService : Service() {
         startForeground(2, notification)
     }
 
-    private var timer: Timer? = null
-    private lateinit var timerTask: TimerTask
-
-    fun startTimer() {
-        timer = Timer()
-        timerTask = object : TimerTask() {
-            override fun run() {
-                Timber.i("Count: --- ${counter++}")
-            }
-        }
-        timer!!.schedule(timerTask, 1000, 1000)
-    }
-
-    fun stopTimerTask() {
-        if (timer != null) {
-            timer!!.cancel()
-            timer = null
-        }
-    }
-
 }

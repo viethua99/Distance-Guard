@@ -16,7 +16,7 @@ import kotlinx.coroutines.GlobalScope
 object DeviceRepository {
 
     private lateinit var deviceDao: DeviceDao
-    val currentDevices: MutableLiveData<List<Device>> = MutableLiveData<List<Device>>()
+    val currentDevices: MutableLiveData<List<Device>> = MutableLiveData()
 
     lateinit var allDevices: LiveData<List<Device>>
 
@@ -28,7 +28,6 @@ object DeviceRepository {
         allDevices = deviceDao.getAllDevices()
     }
 
-    // thread, blocking the UI.
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun insert(device: Device) {
@@ -37,7 +36,6 @@ object DeviceRepository {
             getCurrentDevices()
         )
 
-        // Alert if we need to...
         if (!device.isTeamMember) {
             val signal = BluetoothUtils.calculateSignal(device.rssi, device.txPower)
 
@@ -56,7 +54,6 @@ object DeviceRepository {
         }
     }
 
-    // thread, blocking the UI.
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun updateCurrentDevices() {
@@ -65,7 +62,6 @@ object DeviceRepository {
         )
     }
 
-    // thread, blocking the UI.
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun noCurrentDevices() {
@@ -73,7 +69,6 @@ object DeviceRepository {
     }
 
 
-    // thread, blocking the UI.
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun deleteAll() {
@@ -81,7 +76,6 @@ object DeviceRepository {
     }
 
     private fun getCurrentDevices(): List<Device> {
-        // Get a rolling average of the devices seen over the last two scans
         val devices = deviceDao.getCurrentDevicesOrderByRssi(
             System.currentTimeMillis() - (Constants.FOREGROUND_TRACE_INTERVAL * 2),
             System.currentTimeMillis())

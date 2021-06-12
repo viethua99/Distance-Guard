@@ -5,7 +5,6 @@ import java.util.*
 
 object AppUtil {
     private const val DATE_FORMAT = "MMMM dd, yyyy HH:mm:ss"
-    private const val SHORT_DATE_FORMAT = "MMMM dd, yyyy"
 
     fun toNumberWithCommas(input: Long): String {
         return "%,d".format(input)

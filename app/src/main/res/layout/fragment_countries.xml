@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/bg_rounded_grey_stroke"
+        android:background="@drawable/background_rounded_grey_stroke"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:gravity="center_vertical"
