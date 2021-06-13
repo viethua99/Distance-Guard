@@ -45,14 +45,6 @@
                 <action android:name="restartService" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:enabled="true"
-            android:exported="true"
-            android:name=".ble_module.core.BLEScanner" />
-        <receiver
-            android:enabled="true"
-            android:exported="true"
-            android:name=".ble_module.core.BLEAdvertiser" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/API_MAPS" />

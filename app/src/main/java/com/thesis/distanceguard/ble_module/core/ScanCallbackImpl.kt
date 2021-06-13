@@ -1,15 +1,11 @@
 package com.thesis.distanceguard.ble_module.core
 
-import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
 import android.os.Build
-import android.os.Handler
 import android.os.ParcelUuid
-import android.util.Log
 import com.thesis.distanceguard.ble_module.BLEController
 import com.thesis.distanceguard.ble_module.dao.Device
 import com.thesis.distanceguard.ble_module.util.Constants
-import timber.log.Timber
 
 
 object ScanCallbackImpl {
@@ -21,7 +17,6 @@ object ScanCallbackImpl {
             var uuid: ParcelUuid? = result.scanRecord?.serviceUuids?.get(0)
 
 
-            // Only record devices where the UUID is one from our app...
 
             if ((uuid.toString().startsWith(Constants.SERVICE_PREFIX))) {
                 var rssi: Int = result.rssi
@@ -45,7 +40,7 @@ object ScanCallbackImpl {
                     BLEController.isTeamMember(uuid.toString())
                 )
 
-                // Use a rolling average...
+
                 if (mScanResults.containsKey(deviceAddress)) {
                     newDevice.rssi = (newDevice.rssi + mScanResults[deviceAddress]!!.rssi).div(2)
                     newDevice.txPower =

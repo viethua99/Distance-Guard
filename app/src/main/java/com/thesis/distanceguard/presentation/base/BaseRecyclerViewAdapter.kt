@@ -14,20 +14,12 @@ abstract class BaseRecyclerViewAdapter<T, VH : RecyclerView.ViewHolder>(val cont
         return dataList.size
     }
 
-    fun addItemClickListener(itemClickListener: ItemClickListener<T>) {
-        this.itemClickListener = itemClickListener
-    }
-
     fun setDataList(list: List<T>) {
         dataList.clear()
         dataList.addAll(list)
         notifyDataSetChanged()
     }
 
-    fun addData(t: T) {
-        dataList.add(t)
-        notifyItemInserted(dataList.size - 1)
-    }
 
     fun clear() {
         dataList.clear()

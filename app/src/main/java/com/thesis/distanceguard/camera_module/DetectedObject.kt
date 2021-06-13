@@ -1,19 +1,3 @@
-/*
- * Copyright 2019 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.thesis.distanceguard.camera_module
 
 import android.graphics.Bitmap
@@ -25,9 +9,7 @@ import com.google.firebase.ml.vision.objects.FirebaseVisionObject
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 
-/**
- * Holds the detected object and its related image info.
- */
+
 class DetectedObject(
     private val visionObject: FirebaseVisionObject,
     val objectIndex: Int,
@@ -60,15 +42,21 @@ class DetectedObject(
         return bitmap ?: let {
             val boundingBox = visionObject.boundingBox
             val createdBitmap = Bitmap.createBitmap(
-                    image.bitmap,
-                    boundingBox.left,
-                    boundingBox.top,
-                    boundingBox.width(),
-                    boundingBox.height()
+                image.bitmap,
+                boundingBox.left,
+                boundingBox.top,
+                boundingBox.width(),
+                boundingBox.height()
             )
             if (createdBitmap.width > MAX_IMAGE_WIDTH) {
-                val dstHeight = (MAX_IMAGE_WIDTH.toFloat() / createdBitmap.width * createdBitmap.height).toInt()
-                bitmap = Bitmap.createScaledBitmap(createdBitmap, MAX_IMAGE_WIDTH, dstHeight, /* filter= */ false)
+                val dstHeight =
+                    (MAX_IMAGE_WIDTH.toFloat() / createdBitmap.width * createdBitmap.height).toInt()
+                bitmap = Bitmap.createScaledBitmap(
+                    createdBitmap,
+                    MAX_IMAGE_WIDTH,
+                    dstHeight, /* filter= */
+                    false
+                )
             }
             createdBitmap
         }

@@ -39,14 +39,6 @@ abstract class BaseFragment : Fragment() {
         mainActivity.setToolbarTitle(title)
     }
 
-    fun replaceFragment(fragment: Fragment, tag: String, containerId: Int) {
-        Timber.d("replaceFragment: name=${fragment.javaClass.name}")
-        val fragmentManager = childFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(containerId, fragment, tag)
-            .addToBackStack(tag)
-            .commit()
-    }
 
     fun showProgressDialog(message: String) {
         activity?.runOnUiThread {
@@ -59,28 +51,6 @@ abstract class BaseFragment : Fragment() {
     ) {
         activity?.runOnUiThread {
             AndroidDialogUtil.getInstance().showWarningDialogWithConfirm(activity, message,confirmListener)
-
-        }
-    }
-
-    fun showWarningDialog(message: String) {
-        activity?.runOnUiThread {
-            AndroidDialogUtil.getInstance().showWarningDialog(activity, message)
-
-        }
-    }
-
-    fun showSuccessDialog(message: String) {
-        activity?.runOnUiThread {
-            AndroidDialogUtil.getInstance().showSuccessDialog(activity, message)
-
-        }
-    }
-
-
-    fun showFailedDialog(message: String) {
-        activity?.runOnUiThread {
-            AndroidDialogUtil.getInstance().showFailureDialog(activity, message)
 
         }
     }
