@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +20,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.EntryXComparator
 import com.thesis.distanceguard.R
+import com.thesis.distanceguard.databinding.FragmentDashboardBinding
 import com.thesis.distanceguard.model.ChartDate
 import com.thesis.distanceguard.model.ChartType
 import com.thesis.distanceguard.model.DashboardMode
@@ -36,12 +38,11 @@ import com.thesis.distanceguard.util.AppUtil
 import com.thesis.distanceguard.util.DateValueFormatter
 import com.thesis.distanceguard.util.MyMarkerView
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.fragment_dashboard.*
 import timber.log.Timber
 import java.util.*
 
 
-class DashboardFragment : BaseFragment() {
+class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
 
 
     private lateinit var dashboardViewModel: DashboardViewModel
@@ -94,11 +95,11 @@ class DashboardFragment : BaseFragment() {
     }
 
     private fun setupViews() {
-        tv_chart_type.setOnClickListener {
+        binding.tvChartType.setOnClickListener {
             showChartTypeMenu()
         }
 
-        chip_group_filters.setOnCheckedChangeListener { _, checkedId ->
+        binding.chipGroupFilters.setOnCheckedChangeListener { _, checkedId ->
             showProgressDialog("Fetching Data")
             when (checkedId) {
                 R.id.chip_thirty_days -> {
@@ -116,7 +117,7 @@ class DashboardFragment : BaseFragment() {
         setupLineChart()
         toggleWorldwideSwitch()
 
-        btn_click_here.setOnClickListener {
+        binding.btnClickHere.setOnClickListener {
             val mainActivity = activity as MainActivity
             mainActivity.addFragment(
                 InformationFragment(),
@@ -135,9 +136,9 @@ class DashboardFragment : BaseFragment() {
 
     private fun checkAllChipVisibility() {
         if (!isNetworkAvailable()) {
-            chip_all.visibility = View.GONE
+            binding.chipAll.visibility = View.GONE
         } else {
-            chip_all.visibility = View.VISIBLE
+            binding.chipAll.visibility = View.VISIBLE
         }
     }
 
@@ -159,7 +160,7 @@ class DashboardFragment : BaseFragment() {
         val linearLayoutManager = LinearLayoutManager(view!!.context)
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         dashboardRecyclerViewAdapter = DashboardRecyclerViewAdapter(view!!.context)
-        rv_top_country.apply {
+        binding.rvTopCountry.apply {
             layoutManager = linearLayoutManager
             setHasFixedSize(true)
             adapter = dashboardRecyclerViewAdapter
@@ -187,33 +188,37 @@ class DashboardFragment : BaseFragment() {
 
     private fun setupLineChart() {
         val mv = MyMarkerView(activity, R.layout.custom_marker_view)
-        mv.chartView = chart_spread
-        chart_spread.marker = mv
-        chart_spread.legend.textColor = ContextCompat.getColor(context!!, R.color.primary_color)
-        chart_spread.description = null
-        chart_spread.axisRight.isEnabled = false
-        chart_spread.axisLeft.textColor = ContextCompat.getColor(context!!, R.color.primary_color)
-        chart_spread.axisLeft.setDrawGridLines(false)
-        chart_spread.xAxis.setDrawGridLines(false)
-        chart_spread.xAxis.isEnabled = true
-        chart_spread.xAxis.textColor = ContextCompat.getColor(context!!, R.color.primary_color)
-        chart_spread.xAxis.position = XAxis.XAxisPosition.BOTTOM
-        chart_spread.xAxis.valueFormatter = DateValueFormatter()
-        chart_spread.setExtraOffsets(0f, 0f, 0f, 15f)
+        binding.apply {
+            mv.chartView = chartSpread
+            chartSpread.marker = mv
+            chartSpread.legend.textColor = ContextCompat.getColor(context!!, R.color.primary_color)
+            chartSpread.description = null
+            chartSpread.axisRight.isEnabled = false
+            chartSpread.axisLeft.textColor =
+                ContextCompat.getColor(context!!, R.color.primary_color)
+            chartSpread.axisLeft.setDrawGridLines(false)
+            chartSpread.xAxis.setDrawGridLines(false)
+            chartSpread.xAxis.isEnabled = true
+            chartSpread.xAxis.textColor = ContextCompat.getColor(context!!, R.color.primary_color)
+            chartSpread.xAxis.position = XAxis.XAxisPosition.BOTTOM
+            chartSpread.xAxis.valueFormatter = DateValueFormatter()
+            chartSpread.setExtraOffsets(0f, 0f, 0f, 15f)
+        }
+
     }
 
     private fun showChartTypeMenu() {
-        val popupMenu = PopupMenu(context, tv_chart_type)
+        val popupMenu = PopupMenu(context, binding.tvChartType)
         popupMenu.menuInflater.inflate(R.menu.menu_chart_type, popupMenu.menu)
         popupMenu.setOnMenuItemClickListener {
             showProgressDialog("Fetching Data")
             when (it.itemId) {
                 R.id.item_daily -> {
-                    tv_chart_type.text = "Daily"
+                    binding.tvChartType.text = "Daily"
                     dashboardViewModel.fetchChartDataByType(ChartType.DAILY)
                 }
                 R.id.item_cumulative -> {
-                    tv_chart_type.text = "Cumulative"
+                    binding.tvChartType.text = "Cumulative"
                     dashboardViewModel.fetchChartDataByType(ChartType.CUMULATIVE)
 
                 }
@@ -237,7 +242,7 @@ class DashboardFragment : BaseFragment() {
     }
 
     private fun toggleWorldwideSwitch() {
-        sw_worldwide.setOnCheckedChangeListener { _, isChecked ->
+        binding.swWorldwide.setOnCheckedChangeListener { _, isChecked ->
             showProgressDialog("Fetching Data")
             if (isChecked) {
                 dashboardViewModel.fetchDashboardData(DashboardMode.VIETNAM)
@@ -253,12 +258,12 @@ class DashboardFragment : BaseFragment() {
             val cases = getNewCaseList(it.cases!!.toList().sortedBy { value -> value.second })
             val casesEntries = mutableListOf<Entry>()
             cases.forEachIndexed { _, pair ->
-                val first = pair.first
-
-                val mill = AppUtil.convertStringDateToMillisecond(pair.first)
-                val time = AppUtil.convertMillisecondsToDateFormat(mill)
-                Timber.d("testt: first=$first --- mill=$mill -- time=$time")
-                casesEntries.add(Entry(AppUtil.convertStringDateToMillisecond(pair.first).toFloat(), pair.second))
+                casesEntries.add(
+                    Entry(
+                        AppUtil.convertStringDateToMillisecond(pair.first).toFloat(),
+                        pair.second
+                    )
+                )
             }
             casesEntries.sortWith(EntryXComparator())
 
@@ -266,7 +271,11 @@ class DashboardFragment : BaseFragment() {
                 getNewCaseList(it.recovered!!.toList().sortedBy { value -> value.second })
             val recoveredEntries = mutableListOf<Entry>()
             recovered.forEachIndexed { _, pair ->
-                recoveredEntries.add(Entry(AppUtil.convertStringDateToMillisecond(pair.first).toFloat(), pair.second))
+                recoveredEntries.add(
+                    Entry(
+                        AppUtil.convertStringDateToMillisecond(pair.first).toFloat(), pair.second
+                    )
+                )
             }
             recoveredEntries.sortWith(EntryXComparator())
 
@@ -274,7 +283,11 @@ class DashboardFragment : BaseFragment() {
             val deaths = getNewCaseList(it.deaths!!.toList().sortedBy { value -> value.second })
             val deathsEntries = mutableListOf<Entry>()
             deaths.forEachIndexed { _, pair ->
-                deathsEntries.add(Entry(AppUtil.convertStringDateToMillisecond(pair.first).toFloat(), pair.second))
+                deathsEntries.add(
+                    Entry(
+                        AppUtil.convertStringDateToMillisecond(pair.first).toFloat(), pair.second
+                    )
+                )
             }
 
             deathsEntries.sortWith(EntryXComparator())
@@ -318,19 +331,23 @@ class DashboardFragment : BaseFragment() {
                     })
             }
 
-            if (chart_spread.data != null) {
-                chart_spread.clearValues()
-                chart_spread.clear()
-                chart_spread.resetZoom()
+            binding.apply {
+                if (chartSpread.data != null) {
+                    chartSpread.clearValues()
+                    chartSpread.clear()
+                    chartSpread.resetZoom()
 
+                }
+
+                chartSpread.data = LineData(lines).apply {
+                    setDrawValues(false)
+                }
+
+                chartSpread.data.notifyDataChanged()
+                chartSpread.invalidate()
             }
 
-            chart_spread.data = LineData(lines).apply {
-                setDrawValues(false)
-            }
 
-            chart_spread.data.notifyDataChanged()
-            chart_spread.invalidate()
         }
     }
 
@@ -339,7 +356,12 @@ class DashboardFragment : BaseFragment() {
             val cases = it.cases!!.toList().sortedBy { value -> value.second }
             val casesEntries = mutableListOf<Entry>()
             cases.forEachIndexed { _, pair ->
-                casesEntries.add(Entry(AppUtil.convertStringDateToMillisecond(pair.first).toFloat(), pair.second.toFloat()))
+                casesEntries.add(
+                    Entry(
+                        AppUtil.convertStringDateToMillisecond(pair.first).toFloat(),
+                        pair.second.toFloat()
+                    )
+                )
             }
             casesEntries.sortWith(EntryXComparator())
 
@@ -347,7 +369,12 @@ class DashboardFragment : BaseFragment() {
             val recovered = it.recovered!!.toList().sortedBy { value -> value.second }
             val recoveredEntries = mutableListOf<Entry>()
             recovered.forEachIndexed { _, pair ->
-                recoveredEntries.add(Entry(AppUtil.convertStringDateToMillisecond(pair.first).toFloat(), pair.second.toFloat()))
+                recoveredEntries.add(
+                    Entry(
+                        AppUtil.convertStringDateToMillisecond(pair.first).toFloat(),
+                        pair.second.toFloat()
+                    )
+                )
             }
             recoveredEntries.sortWith(EntryXComparator())
 
@@ -355,7 +382,12 @@ class DashboardFragment : BaseFragment() {
             val deaths = it.deaths!!.toList().sortedBy { value -> value.second }
             val deathsEntries = mutableListOf<Entry>()
             deaths.forEachIndexed { _, pair ->
-                deathsEntries.add(Entry(AppUtil.convertStringDateToMillisecond(pair.first).toFloat(), pair.second.toFloat()))
+                deathsEntries.add(
+                    Entry(
+                        AppUtil.convertStringDateToMillisecond(pair.first).toFloat(),
+                        pair.second.toFloat()
+                    )
+                )
             }
             deathsEntries.sortWith(EntryXComparator())
 
@@ -398,18 +430,22 @@ class DashboardFragment : BaseFragment() {
                     })
             }
 
-            if (chart_spread.data != null) {
-                chart_spread.clearValues()
-                chart_spread.clear()
-                chart_spread.resetZoom()
+            binding.apply {
+                if (chartSpread.data != null) {
+                    chartSpread.clearValues()
+                    chartSpread.clear()
+                    chartSpread.resetZoom()
+                }
+
+                chartSpread.data = LineData(lines).apply {
+                    setDrawValues(false)
+                }
+
+                chartSpread.data.notifyDataChanged()
+                chartSpread.invalidate()
             }
 
-            chart_spread.data = LineData(lines).apply {
-                setDrawValues(false)
-            }
 
-            chart_spread.data.notifyDataChanged()
-            chart_spread.invalidate()
         }
     }
 
@@ -418,15 +454,17 @@ class DashboardFragment : BaseFragment() {
         it?.let {
             activity?.runOnUiThread {
                 hideDialog()
-                tv_update_time.text =
-                    "Last update ${AppUtil.convertMillisecondsToDateFormat(it.updated!!)}"
-                tv_total_cases_count.text = AppUtil.toNumberWithCommas(it.cases!!)
-                tv_total_recovered_count.text = AppUtil.toNumberWithCommas(it.recovered!!)
-                tv_total_death_count.text = AppUtil.toNumberWithCommas(it.deaths!!)
-                tv_today_cases_count.text = "(+${AppUtil.toNumberWithCommas(it.todayCases!!)})"
-                tv_today_recovered_count.text =
-                    "(+${AppUtil.toNumberWithCommas(it.todayRecovered!!.toLong())})"
-                tv_today_deaths_count.text = "(+${AppUtil.toNumberWithCommas(it.todayDeaths!!)})"
+                binding.apply {
+                    tvUpdateTime.text =
+                        "Last update ${AppUtil.convertMillisecondsToDateFormat(it.updated!!)}"
+                    tvTotalCasesCount.text = AppUtil.toNumberWithCommas(it.cases!!)
+                    tvTotalRecoveredCount.text = AppUtil.toNumberWithCommas(it.recovered!!)
+                    tvTotalDeathCount.text = AppUtil.toNumberWithCommas(it.deaths!!)
+                    tvTodayCasesCount.text = "(+${AppUtil.toNumberWithCommas(it.todayCases!!)})"
+                    tvTodayRecoveredCount.text =
+                        "(+${AppUtil.toNumberWithCommas(it.todayRecovered!!.toLong())})"
+                    tvTodayDeathsCount.text = "(+${AppUtil.toNumberWithCommas(it.todayDeaths!!)})"
+                }
 
             }
 
@@ -448,18 +486,22 @@ class DashboardFragment : BaseFragment() {
 
     private val vietnamDataObserver = Observer<CountryEntity?> {
         it?.let { countryEntity ->
-            tv_update_time.text =
-                "Last update ${AppUtil.convertMillisecondsToDateFormat(countryEntity.updated!!)}"
-            tv_total_cases_count.text = AppUtil.toNumberWithCommas(countryEntity.cases!!.toLong())
-            tv_total_recovered_count.text =
-                AppUtil.toNumberWithCommas(countryEntity.recovered!!.toLong())
-            tv_total_death_count.text = AppUtil.toNumberWithCommas(countryEntity.deaths!!.toLong())
-            tv_today_cases_count.text =
-                "(+${AppUtil.toNumberWithCommas(countryEntity.todayCases!!.toLong())})"
-            tv_today_recovered_count.text =
-                "(+${AppUtil.toNumberWithCommas(countryEntity.todayRecovered!!.toLong())})"
-            tv_today_deaths_count.text =
-                "(+${AppUtil.toNumberWithCommas(countryEntity.todayDeaths!!.toLong())})"
+            binding.apply {
+                tvUpdateTime.text =
+                    "Last update ${AppUtil.convertMillisecondsToDateFormat(countryEntity.updated!!)}"
+                tvTotalCasesCount.text =
+                    AppUtil.toNumberWithCommas(countryEntity.cases!!.toLong())
+                tvTotalRecoveredCount.text =
+                    AppUtil.toNumberWithCommas(countryEntity.recovered!!.toLong())
+                tvTotalDeathCount.text =
+                    AppUtil.toNumberWithCommas(countryEntity.deaths!!.toLong())
+                tvTodayCasesCount.text =
+                    "(+${AppUtil.toNumberWithCommas(countryEntity.todayCases!!.toLong())})"
+                tvTodayRecoveredCount.text =
+                    "(+${AppUtil.toNumberWithCommas(countryEntity.todayRecovered!!.toLong())})"
+                tvTodayDeathsCount.text =
+                    "(+${AppUtil.toNumberWithCommas(countryEntity.todayDeaths!!.toLong())})"
+            }
 
         }
 
@@ -468,10 +510,13 @@ class DashboardFragment : BaseFragment() {
     private val vietnamHistoryObserver = Observer<HistoricalCountryEntity?> {
         hideDialog()
         if (it == null) {
-            if (chart_spread.data != null) {
-                chart_spread.clearValues()
-                chart_spread.clear()
+            binding.apply {
+                if (chartSpread.data != null) {
+                    chartSpread.clearValues()
+                    chartSpread.clear()
+                }
             }
+
         }
         it?.let {
             val timeline = it.timeline

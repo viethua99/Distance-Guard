@@ -6,6 +6,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.thesis.distanceguard.R
+import com.thesis.distanceguard.databinding.FragmentDetailBinding
 import com.thesis.distanceguard.retrofit.response.CountryResponse
 import com.thesis.distanceguard.retrofit.response.HistoricalCountryResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
@@ -14,10 +15,9 @@ import com.thesis.distanceguard.room.entities.CountryEntity
 import com.thesis.distanceguard.room.entities.HistoricalCountryEntity
 import com.thesis.distanceguard.util.AppUtil
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.fragment_detail.*
 import timber.log.Timber
 
-class DetailFragment(private val itemCountry: CountryEntity) : BaseFragment() {
+class DetailFragment(private val itemCountry: CountryEntity) : BaseFragment<FragmentDetailBinding>() {
 
     companion object {
         const val TAG = "DetailFragment"
@@ -63,28 +63,30 @@ class DetailFragment(private val itemCountry: CountryEntity) : BaseFragment() {
     }
 
     private fun setupLineChart() {
-        chart_cases.gradientFillColors =
-            intArrayOf(
-                Color.parseColor("#99caff"),
-                Color.TRANSPARENT
-            )
-        chart_cases.animation.duration = animationDuration
+        binding.apply {
+            chartCases.gradientFillColors =
+                intArrayOf(
+                    Color.parseColor("#99caff"),
+                    Color.TRANSPARENT
+                )
+            chartCases.animation.duration = animationDuration
 
 
-        chart_recovered.gradientFillColors =
-            intArrayOf(
-                Color.parseColor("#a6ecbb"),
-                Color.TRANSPARENT
-            )
-        chart_recovered.animation.duration = animationDuration
+            chartRecovered.gradientFillColors =
+                intArrayOf(
+                    Color.parseColor("#a6ecbb"),
+                    Color.TRANSPARENT
+                )
+            chartRecovered.animation.duration = animationDuration
 
 
-        chart_death.gradientFillColors =
-            intArrayOf(
-                Color.parseColor("#ffb9b9"),
-                Color.TRANSPARENT
-            )
-        chart_death.animation.duration = animationDuration
+            chartDeath.gradientFillColors =
+                intArrayOf(
+                    Color.parseColor("#ffb9b9"),
+                    Color.TRANSPARENT
+                )
+            chartDeath.animation.duration = animationDuration
+        }
     }
 
     private fun fetchCountry() {
@@ -95,63 +97,69 @@ class DetailFragment(private val itemCountry: CountryEntity) : BaseFragment() {
 
     private val countryObserver = Observer<HistoricalCountryEntity?> {
         if(it == null){
-            chart_cases.visibility = View.INVISIBLE
-            chart_recovered.visibility = View.INVISIBLE
-            chart_death.visibility = View.INVISIBLE
+            binding.apply {
+                chartCases.visibility = View.INVISIBLE
+                chartRecovered.visibility = View.INVISIBLE
+                chartDeath.visibility = View.INVISIBLE
+            }
         }
         it?.let {
             hideDialog()
-            chart_cases.visibility = View.VISIBLE
-            chart_recovered.visibility = View.VISIBLE
-            chart_death.visibility = View.VISIBLE
-            chart_cases.animate(
-                AppUtil.convertPairLongToPairFloat(
-                    it.timeline!!.cases!!.toList().sortedBy { value -> value.second })
-            )
+            binding.apply {
+                chartCases.visibility = View.VISIBLE
+                chartRecovered.visibility = View.VISIBLE
+                chartDeath.visibility = View.VISIBLE
+                chartCases.animate(
+                    AppUtil.convertPairLongToPairFloat(
+                        it.timeline!!.cases!!.toList().sortedBy { value -> value.second })
+                )
 
-            chart_recovered.animate(
-                AppUtil.convertPairLongToPairFloat(
-                    it.timeline!!.recovered!!.toList().sortedBy { value -> value.second })
-            )
+                chartRecovered.animate(
+                    AppUtil.convertPairLongToPairFloat(
+                        it.timeline!!.recovered!!.toList().sortedBy { value -> value.second })
+                )
 
-            chart_death.animate(
-                AppUtil.convertPairLongToPairFloat(
-                    it.timeline!!.deaths!!.toList().sortedBy { value -> value.second })
-            )
+                chartDeath.animate(
+                    AppUtil.convertPairLongToPairFloat(
+                        it.timeline!!.deaths!!.toList().sortedBy { value -> value.second })
+                )
 
-            //update text view
-            val length = it.timeline!!.cases!!.toList().size - 1
-            tv_comfirmed_count.text = AppUtil.toNumberWithCommas(
-                it.timeline!!.cases!!.toList().sortedBy { value -> value.second }[length].second
-            )
-            tv_recovered_count.text = AppUtil.toNumberWithCommas(
-                it.timeline!!.recovered!!.toList().sortedBy { value -> value.second }[length].second
-            )
-            tv_death_count.text = AppUtil.toNumberWithCommas(
-                it.timeline!!.deaths!!.toList().sortedBy { value -> value.second }[length].second
-            )
-
+                //update text view
+                val length = it.timeline!!.cases!!.toList().size - 1
+                tvComfirmedCount.text = AppUtil.toNumberWithCommas(
+                    it.timeline!!.cases!!.toList().sortedBy { value -> value.second }[length].second
+                )
+                tvRecoveredCount.text = AppUtil.toNumberWithCommas(
+                    it.timeline!!.recovered!!.toList().sortedBy { value -> value.second }[length].second
+                )
+                tvDeathCount.text = AppUtil.toNumberWithCommas(
+                    it.timeline!!.deaths!!.toList().sortedBy { value -> value.second }[length].second
+                )
+            }
         }
 
     }
 
 
     private fun updateOtherInformation() {
-        tv_test_count.text = AppUtil.toNumberWithCommas(itemCountry.tests!!.toLong())
-        tv_population_count.text = AppUtil.toNumberWithCommas(itemCountry.population!!.toLong())
-        tv_one_case_per_people_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.oneCasePerPeople!!.toLong())
-        tv_one_test_per_people_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.oneTestPerPeople!!.toLong())
-        tv_one_death_per_people_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.oneDeathPerPeople!!.toLong())
-        tv_case_per_one_million_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.casesPerOneMillion!!.toLong())
-        tv_death_per_one_million_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.deathsPerOneMillion!!.toLong())
-        tv_test_per_one_million_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.testsPerOneMillion!!.toLong())
-        tv_active_per_one_million_count.text =
-            AppUtil.toNumberWithCommas(itemCountry.activePerOneMillion!!.toLong())
+        binding.apply {
+            tvTestCount.text = AppUtil.toNumberWithCommas(itemCountry.tests!!.toLong())
+            tvPopulationCount.text = AppUtil.toNumberWithCommas(itemCountry.population!!.toLong())
+            tvOneCasePerPeopleCount.text =
+                AppUtil.toNumberWithCommas(itemCountry.oneCasePerPeople!!.toLong())
+            tvOneTestPerPeopleCount.text =
+                AppUtil.toNumberWithCommas(itemCountry.oneTestPerPeople!!.toLong())
+            tvOneDeathPerPeopleCount.text =
+                AppUtil.toNumberWithCommas(itemCountry.oneDeathPerPeople!!.toLong())
+            tvCasePerOneMillionCount.text =
+                AppUtil.toNumberWithCommas(itemCountry.casesPerOneMillion!!.toLong())
+            tvDeathPerOneMillionCount.text =
+                AppUtil.toNumberWithCommas(itemCountry.deathsPerOneMillion!!.toLong())
+            tvTestPerOneMillionCount.text =
+                AppUtil.toNumberWithCommas(itemCountry.testsPerOneMillion!!.toLong())
+            tvActivePerOneMillionCount.text =
+                AppUtil.toNumberWithCommas(itemCountry.activePerOneMillion!!.toLong())
+        }
+
     }
 }

@@ -1,413 +1,438 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FF4B63"
-    android:fillViewport="true">
-    <androidx.constraintlayout.widget.ConstraintLayout
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_header"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.2"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                app:layout_constraintBottom_toTopOf="@id/btn_sms"
-                android:text="What To Do\nIf You Are Sick ?"
-                android:textColor="@color/white"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/imageView2"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:src="@drawable/img_character_2"
-                app:layout_constraintBottom_toBottomOf="@+id/cl_header"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <Button
-                android:id="@+id/btn_call"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:paddingVertical="5dp"
-                android:layout_marginBottom="20dp"
-                android:text="Call here"
-                app:layout_constraintTop_toTopOf="@id/btn_sms"
-                android:textColor="#FF4B63"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textView2"
-        />
-
-            <Button
-                android:id="@+id/btn_sms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:paddingVertical="5dp"
-                android:text="Send SMS"
-                android:layout_marginBottom="20dp"
-                android:textColor="#007bff"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/textView2"
-                app:layout_constraintStart_toEndOf="@+id/btn_call" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
+        android:layout_height="match_parent"
+        android:background="#FF4B63"
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_content"
-            android:paddingStart="10dp"
-            android:paddingTop="25dp"
-            android:paddingEnd="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cl_header"
-            app:layout_constraintHeight_percent="0.75"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/txv_symptom"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_header"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.2"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintBottom_toTopOf="@id/btn_sms"
+                    android:text="What To Do\nIf You Are Sick ?"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/img_character_2"
+                    app:layout_constraintBottom_toBottomOf="@+id/cl_header"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <Button
+                    android:id="@+id/btn_call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:paddingVertical="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="Call here"
+                    app:layout_constraintTop_toTopOf="@id/btn_sms"
+                    android:textColor="#FF4B63"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/textView2" />
+
+                <Button
+                    android:id="@+id/btn_sms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:paddingVertical="5dp"
+                    android:text="Send SMS"
+                    android:layout_marginBottom="20dp"
+                    android:textColor="#007bff"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/textView2"
+                    app:layout_constraintStart_toEndOf="@+id/btn_call" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Symptoms"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/header_red"
-                android:layout_marginStart="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_headache"
-                android:layout_width="0dp"
-                android:layout_height="111dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="10dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="10dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txv_symptom"
-                app:layout_constraintEnd_toStartOf="@+id/cv_cough">
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="center_horizontal">
-                    <ImageView
-                        android:layout_width="84.97dp"
-                        android:layout_height="71.95dp"
-                        android:src="@drawable/img_elip"/>
-                    <ImageView
-                        android:layout_width="54dp"
-                        android:layout_height="73dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/img_headache" />
-                </FrameLayout>
+                android:background="@drawable/background_content"
+                android:paddingStart="10dp"
+                android:paddingTop="25dp"
+                android:paddingEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cl_header"
+                app:layout_constraintHeight_percent="0.75"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/txv_symptom"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginBottom="7dp"
-                    android:text="Headache"
-                    android:textColor="@color/header_red" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_cough"
-                android:layout_width="0dp"
-                android:layout_height="111dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="11dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="10dp"
-                app:layout_constraintStart_toEndOf="@+id/cv_headache"
-                app:layout_constraintTop_toBottomOf="@+id/txv_symptom"
-                app:layout_constraintEnd_toStartOf="@id/cv_fever">
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="center_horizontal">
-                    <ImageView
-                        android:layout_width="84.97dp"
-                        android:layout_height="71.95dp"
-                        android:src="@drawable/img_elip"/>
-
-                    <ImageView
-                        android:layout_width="54dp"
-                        android:layout_height="73dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/img_cough" />
-                </FrameLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginBottom="7dp"
-                    android:text="Cough"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/header_red" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_fever"
-                android:layout_width="0dp"
-                android:layout_height="111dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="11dp"
-                android:layout_marginEnd="10dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="10dp"
-                app:layout_constraintStart_toEndOf="@+id/cv_cough"
-                app:layout_constraintTop_toBottomOf="@+id/txv_symptom"
-                app:layout_constraintEnd_toEndOf="parent">
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="center_horizontal">
-                    <ImageView
-                        android:layout_width="84.97dp"
-                        android:layout_height="71.95dp"
-                        android:src="@drawable/img_elip"/>
-
-                    <ImageView
-                        android:layout_width="54dp"
-                        android:layout_height="73dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/img_fever" />
-                </FrameLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginBottom="7dp"
-                    android:text="Fever"
+                    android:text="Symptoms"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
                     android:textColor="@color/header_red"
-                    android:gravity="center_horizontal" />
-            </androidx.cardview.widget.CardView>
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/txv_prevention"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Preventions"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/header_red"
-                android:layout_marginStart="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cv_cough" />
-            <FrameLayout
-                android:id="@+id/fl_wear_face_mask"
-                android:layout_width="match_parent"
-                android:layout_height="156dp"
-                android:layout_marginTop="5dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txv_prevention">
-                <FrameLayout
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_headache"
+                    android:layout_width="0dp"
+                    android:layout_height="111dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="10dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txv_symptom"
+                    app:layout_constraintEnd_toStartOf="@+id/cv_cough">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center_horizontal">
+
+                        <ImageView
+                            android:layout_width="84.97dp"
+                            android:layout_height="71.95dp"
+                            android:src="@drawable/img_elip" />
+
+                        <ImageView
+                            android:layout_width="54dp"
+                            android:layout_height="73dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/img_headache" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:layout_marginBottom="7dp"
+                        android:text="Headache"
+                        android:textColor="@color/header_red" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_cough"
+                    android:layout_width="0dp"
+                    android:layout_height="111dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="11dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="10dp"
+                    app:layout_constraintStart_toEndOf="@+id/cv_headache"
+                    app:layout_constraintTop_toBottomOf="@+id/txv_symptom"
+                    app:layout_constraintEnd_toStartOf="@id/cv_fever">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center_horizontal">
+
+                        <ImageView
+                            android:layout_width="84.97dp"
+                            android:layout_height="71.95dp"
+                            android:src="@drawable/img_elip" />
+
+                        <ImageView
+                            android:layout_width="54dp"
+                            android:layout_height="73dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/img_cough" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:layout_marginBottom="7dp"
+                        android:text="Cough"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/header_red" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_fever"
+                    android:layout_width="0dp"
+                    android:layout_height="111dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginEnd="10dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="10dp"
+                    app:layout_constraintStart_toEndOf="@+id/cv_cough"
+                    app:layout_constraintTop_toBottomOf="@+id/txv_symptom"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center_horizontal">
+
+                        <ImageView
+                            android:layout_width="84.97dp"
+                            android:layout_height="71.95dp"
+                            android:src="@drawable/img_elip" />
+
+                        <ImageView
+                            android:layout_width="54dp"
+                            android:layout_height="73dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/img_fever" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:layout_marginBottom="7dp"
+                        android:text="Fever"
+                        android:textColor="@color/header_red"
+                        android:gravity="center_horizontal" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/txv_prevention"
                     android:layout_width="match_parent"
-                    android:layout_height="156dp">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Preventions"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/header_red"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cv_cough" />
 
-                    <androidx.cardview.widget.CardView
+                <FrameLayout
+                    android:id="@+id/fl_wear_face_mask"
+                    android:layout_width="match_parent"
+                    android:layout_height="156dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txv_prevention">
+
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="136dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="10dp">
+                        android:layout_height="156dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="138dp"
-                            android:layout_marginTop="10dp"
-                            android:text="Wear face mask"
-                            android:textColor="@color/header_red"
-                            android:textSize="16sp" />
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="136dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="10dp">
 
-                        <TextView
-                            android:textColor="@color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="138dp"
-                            android:layout_marginTop="39dp"
-                            android:layout_marginEnd="15dp"
-                            android:textSize="12sp"
-                            android:text="Everyone should wear a cloth face cover when they have to go out in public, for example to the grocery store or to pick up other necessities." />
-                    </androidx.cardview.widget.CardView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="138dp"
+                                android:layout_marginTop="10dp"
+                                android:text="Wear face mask"
+                                android:textColor="@color/header_red"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:textColor="@color/black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="138dp"
+                                android:layout_marginTop="39dp"
+                                android:layout_marginEnd="15dp"
+                                android:textSize="12sp"
+                                android:text="Everyone should wear a cloth face cover when they have to go out in public, for example to the grocery store or to pick up other necessities." />
+                        </androidx.cardview.widget.CardView>
+                    </FrameLayout>
+
+                    <ImageView
+                        android:layout_width="138dp"
+                        android:layout_height="156dp"
+                        android:src="@drawable/ic_group_1" />
                 </FrameLayout>
 
-                <ImageView
-                    android:layout_width="138dp"
+                <FrameLayout
+                    android:id="@+id/fl_wash_your_hands"
+                    android:layout_width="match_parent"
                     android:layout_height="156dp"
-                    android:src="@drawable/ic_group_1" />
-            </FrameLayout>
-            <FrameLayout
-                android:id="@+id/fl_wash_your_hands"
-                android:layout_width="match_parent"
-                android:layout_height="156dp"
-                android:layout_marginTop="5dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fl_wear_face_mask">
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fl_wear_face_mask">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="156dp">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_height="136dp"
+                            android:layout_gravity="center_vertical"
+                            app:cardElevation="10dp"
+                            app:cardCornerRadius="20dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="138dp"
+                                android:text="Wash your hands"
+                                android:layout_marginTop="10dp"
+                                android:textSize="16sp"
+                                android:textColor="@color/header_red" />
+
+                            <TextView
+                                android:textColor="@color/black"
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="15dp"
+                                android:layout_marginStart="138dp"
+                                android:layout_marginTop="39dp"
+                                android:textSize="12sp"
+                                android:text="Wash your hands often with soap and water for at least 20 seconds especially after you have been in a public place, or after blowing your nose, coughing, or sneezing." />
+                        </androidx.cardview.widget.CardView>
+                    </FrameLayout>
+
+                    <ImageView
+                        android:layout_width="138dp"
+                        android:layout_height="156dp"
+                        android:src="@drawable/ic_group_3" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/fl_use_nose_rag"
+                    android:layout_width="match_parent"
+                    android:layout_height="156dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fl_wash_your_hands">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="156dp">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_height="136dp"
+                            android:layout_gravity="center_vertical"
+                            app:cardElevation="10dp"
+                            app:cardCornerRadius="20dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="138dp"
+                                android:text="Use Nose Rag or Tissue"
+                                android:layout_marginTop="10dp"
+                                android:textColor="@color/header_red"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:textColor="@color/black"
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="15dp"
+                                android:layout_marginStart="138dp"
+                                android:layout_marginTop="39dp"
+                                android:textSize="11.3sp"
+                                android:text="If you are in a private setting and do not have on your cloth face covering, remember to always cover your mouth and nose with a tissue when you cough or sneeze or use the inside of your elbow." />
+                        </androidx.cardview.widget.CardView>
+                    </FrameLayout>
+
+                    <ImageView
+                        android:layout_width="138dp"
+                        android:layout_height="156dp"
+                        android:src="@drawable/ic_group_4" />
+                </FrameLayout>
+
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="156dp">
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_height="136dp"
-                        android:layout_gravity="center_vertical"
-                        app:cardElevation="10dp"
-                        app:cardCornerRadius="20dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="138dp"
-                            android:text="Wash your hands"
-                            android:layout_marginTop="10dp"
-                            android:textSize="16sp"
-                            android:textColor="@color/header_red" />
-
-                        <TextView
-                            android:textColor="@color/black"
-
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="15dp"
-                            android:layout_marginStart="138dp"
-                            android:layout_marginTop="39dp"
-                            android:textSize="12sp"
-                            android:text="Wash your hands often with soap and water for at least 20 seconds especially after you have been in a public place, or after blowing your nose, coughing, or sneezing." />
-                    </androidx.cardview.widget.CardView>
-                </FrameLayout>
-                <ImageView
-                    android:layout_width="138dp"
                     android:layout_height="156dp"
-                    android:src="@drawable/ic_group_3" />
-            </FrameLayout>
-            <FrameLayout
-                android:id="@+id/fl_use_nose_rag"
-                android:layout_width="match_parent"
-                android:layout_height="156dp"
-                android:layout_marginTop="5dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fl_wash_your_hands">
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="156dp">
-                    <androidx.cardview.widget.CardView
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fl_use_nose_rag">
+
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_height="136dp"
-                        android:layout_gravity="center_vertical"
-                        app:cardElevation="10dp"
-                        app:cardCornerRadius="20dp">
+                        android:layout_height="156dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="138dp"
-                            android:text="Use Nose Rag or Tissue"
-                            android:layout_marginTop="10dp"
-                            android:textColor="@color/header_red"
-                            android:textSize="16sp" />
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_height="136dp"
+                            android:layout_gravity="center_vertical"
+                            app:cardElevation="10dp"
+                            app:cardCornerRadius="20dp">
 
-                        <TextView
-                            android:textColor="@color/black"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="138dp"
+                                android:text="Avoid Contact"
+                                android:layout_marginTop="10dp"
+                                android:textColor="@color/header_red"
+                                android:textSize="16sp" />
 
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="15dp"
-                            android:layout_marginStart="138dp"
-                            android:layout_marginTop="39dp"
-                            android:textSize="11.3sp"
-                            android:text="If you are in a private setting and do not have on your cloth face covering, remember to always cover your mouth and nose with a tissue when you cough or sneeze or use the inside of your elbow." />
-                    </androidx.cardview.widget.CardView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="15dp"
+                                android:textColor="@color/black"
+                                android:layout_marginStart="138dp"
+                                android:layout_marginTop="39dp"
+                                android:textSize="12sp"
+                                android:text="Avoid close contact with people who are sick, even inside your home. If possible, maintain 6 feet between the person who is sick and other household members." />
+                        </androidx.cardview.widget.CardView>
+                    </FrameLayout>
+
+                    <ImageView
+                        android:layout_width="138dp"
+                        android:layout_height="156dp"
+                        android:src="@drawable/ic_group_2" />
                 </FrameLayout>
-                <ImageView
-                    android:layout_width="138dp"
-                    android:layout_height="156dp"
-                    android:src="@drawable/ic_group_4" />
-            </FrameLayout>
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="156dp"
-                android:layout_marginTop="5dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fl_use_nose_rag">
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="156dp">
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_height="136dp"
-                        android:layout_gravity="center_vertical"
-                        app:cardElevation="10dp"
-                        app:cardCornerRadius="20dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="138dp"
-                            android:text="Avoid Contact"
-                            android:layout_marginTop="10dp"
-                            android:textColor="@color/header_red"
-                            android:textSize="16sp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="15dp"
-                            android:textColor="@color/black"
-                            android:layout_marginStart="138dp"
-                            android:layout_marginTop="39dp"
-                            android:textSize="12sp"
-                            android:text="Avoid close contact with people who are sick, even inside your home. If possible, maintain 6 feet between the person who is sick and other household members." />
-                    </androidx.cardview.widget.CardView>
-                </FrameLayout>
-                <ImageView
-                    android:layout_width="138dp"
-                    android:layout_height="156dp"
-                    android:src="@drawable/ic_group_2" />
-            </FrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
+</layout>

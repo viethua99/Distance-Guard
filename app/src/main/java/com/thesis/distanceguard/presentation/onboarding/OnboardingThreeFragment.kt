@@ -5,20 +5,19 @@ import android.content.SharedPreferences
 import android.view.View
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.ble_module.BLEController
+import com.thesis.distanceguard.databinding.FragmentOnboardingThreeBinding
 import com.thesis.distanceguard.myapp.Constants
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import com.thesis.distanceguard.presentation.main.fragment.MainFragment
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_onboarding_three.*
 
-class OnboardingThreeFragment : BaseFragment(){
+class OnboardingThreeFragment : BaseFragment<FragmentOnboardingThreeBinding>(){
     override fun getResLayoutId(): Int {
         return R.layout.fragment_onboarding_three
     }
 
     override fun onMyViewCreated(view: View) {
-        btn_start.setOnClickListener {
+        binding.btnStart.setOnClickListener {
             boardingCompleted()
             (activity as MainActivity).replaceFragmentWithoutAddToBackStack(MainFragment(), MainFragment.TAG, R.id.container_main)
         }

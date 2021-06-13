@@ -13,10 +13,10 @@ import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.thesis.distanceguard.R
 import com.thesis.distanceguard.ble_module.BLEController
+import com.thesis.distanceguard.databinding.FragmentTeamBinding
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.camera.CameraActivity
 import com.thesis.distanceguard.util.BarcodeEncoder
-import kotlinx.android.synthetic.main.fragment_team.*
 import timber.log.Timber
 import java.util.*
 
@@ -24,7 +24,7 @@ import java.util.*
  * Created by Viet Hua on 04/10/2021.
  */
 
-class TeamFragment : BaseFragment() {
+class TeamFragment : BaseFragment<FragmentTeamBinding>() {
     private val REQUEST_CAMERA = 4
     private val CAMERA_ACTIVITY = 1
 
@@ -35,7 +35,7 @@ class TeamFragment : BaseFragment() {
     override fun onMyViewCreated(view: View) {
         Timber.d("onMyViewCreated")
         setQRCode()
-        btn_scan_qr.setOnClickListener {
+        binding.btnScanQr.setOnClickListener {
             if (requireContext().applicationContext.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA)
             } else {
@@ -43,7 +43,7 @@ class TeamFragment : BaseFragment() {
             }
         }
 
-        btn_exit_team.setOnClickListener {
+        binding.btnExitTeam.setOnClickListener {
             showWarningDialogWithConfirm("Exiting your team will remove teammates you scanned",
                 SweetAlertDialog.OnSweetClickListener {
                     //Confirm Listener
@@ -127,7 +127,7 @@ class TeamFragment : BaseFragment() {
     private fun setTeamCount() {
         val text = getString(R.string.your_team_has_0_people)
         val count = BLEController.teamUuids?.let { it.size } ?: 0
-        tv_team_count?.let { it.text = text.replace("0", count.toString(), true) }
+        binding.tvTeamCount?.let { it.text = text.replace("0", count.toString(), true) }
     }
 
 

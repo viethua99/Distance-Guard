@@ -1,50 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="16dp">
 
 
-    <ImageView
-        android:layout_marginTop="20dp"
-        android:id="@+id/img_wash_your_hand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_wash_your_hand"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:layout_marginTop="20dp"
+            android:id="@+id/img_wash_your_hand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_wash_your_hand"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+        <TextView
 
-        android:id="@+id/tv_wash_your_hand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Wash Your Hands"
-        android:textAlignment="center"
-        android:textColor="#FF4B63"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toTopOf="@id/tv_wash_your_hand_message"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_wash_your_hand" />
+            android:id="@+id/tv_wash_your_hand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wash Your Hands"
+            android:textAlignment="center"
+            android:textColor="#FF4B63"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_wash_your_hand_message"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.504"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_wash_your_hand" />
 
-    <TextView
-        android:id="@+id/tv_wash_your_hand_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text="Clean your hands often. Use soap and\nwater, or an alcohol-based hand rub."
-        android:textAlignment="center"
-        android:textColor="#0F0C08"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_wash_your_hand" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_wash_your_hand_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="Clean your hands often. Use soap and\nwater, or an alcohol-based hand rub."
+            android:textAlignment="center"
+            android:textColor="#0F0C08"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_wash_your_hand" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
