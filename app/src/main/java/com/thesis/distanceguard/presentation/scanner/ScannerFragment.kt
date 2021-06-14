@@ -49,7 +49,7 @@ class ScannerFragment : BaseFragment<FragmentScannerBinding>() {
     private lateinit var scannerViewModel: ScannerViewModel
     private lateinit var scannerRecyclerViewAdapter: ScannerRecyclerViewAdapter
 
-    private lateinit var item: MenuItem
+    private var item: MenuItem? = null
     override fun getResLayoutId(): Int {
         return R.layout.fragment_scanner
     }
@@ -84,13 +84,13 @@ class ScannerFragment : BaseFragment<FragmentScannerBinding>() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         activity?.menuInflater!!.inflate(R.menu.menu_scanner, menu)
-        item = menu?.findItem(R.id.item_background_scan)
+        item = menu.findItem(R.id.item_background_scan)
         item?.let {
             val mainActivity = activity as MainActivity
             if (mainActivity.isServiceRunning(DistanceGuardService::class.java)) {
-                item.icon = resources.getDrawable(R.drawable.ic_background_scan_off)
+                it.icon = resources.getDrawable(R.drawable.ic_background_scan_off)
             } else {
-                item.icon = resources.getDrawable(R.drawable.ic_background_scan_on)
+                it.icon = resources.getDrawable(R.drawable.ic_background_scan_on)
             }
         }
     }
@@ -135,7 +135,7 @@ class ScannerFragment : BaseFragment<FragmentScannerBinding>() {
                     BLEStatus.BLUETOOTH_STATE_CHANGED -> {
                         showBluetoothEnableView()
                         if (!BluetoothAdapter.getDefaultAdapter().isEnabled) {
-                            item.icon = resources.getDrawable(R.drawable.ic_background_scan_on)
+                            item?.icon = resources.getDrawable(R.drawable.ic_background_scan_on)
                             val activity = activity as MainActivity
                             activity.stopService()
                             BLEController.isPaused = true
@@ -144,7 +144,7 @@ class ScannerFragment : BaseFragment<FragmentScannerBinding>() {
                     BLEStatus.LOCATION_STATE_CHANGED -> {
                         showLocationEnableView()
                         if (!isLocationEnabled()) {
-                            item.icon = resources.getDrawable(R.drawable.ic_background_scan_on)
+                            item?.icon = resources.getDrawable(R.drawable.ic_background_scan_on)
                             val activity = activity as MainActivity
                             activity.stopService()
                             BLEController.isPaused = true
