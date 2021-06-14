@@ -3,12 +3,12 @@ package com.thesis.distanceguard.presentation.main.activity
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.thesis.distanceguard.R
+import com.thesis.distanceguard.databinding.ActivityMainBinding
 import com.thesis.distanceguard.myapp.Constants
 import com.thesis.distanceguard.presentation.base.BaseActivity
 import com.thesis.distanceguard.presentation.main.fragment.MainFragment
@@ -16,10 +16,9 @@ import com.thesis.distanceguard.presentation.onboarding.OnboardingContainerFragm
 import com.thesis.distanceguard.service.DistanceGuardService
 import com.thesis.distanceguard.service.Restarter
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity<ActivityMainBinding>() {
     private lateinit var mainActivityViewModel: MainActivityViewModel
 
     private lateinit var serviceIntent: Intent
@@ -49,7 +48,7 @@ class MainActivity : BaseActivity() {
 
 
     fun setToolbarTitle(title:String){
-        tv_toolbar_title.text = title
+        binding.tvToolbarTitle.text = title
     }
 
     private fun setupViewModel() {
@@ -61,7 +60,7 @@ class MainActivity : BaseActivity() {
 
     private fun setupViews(){
         Timber.d("setupViews")
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
         moveToDashboard()
 
@@ -74,10 +73,10 @@ class MainActivity : BaseActivity() {
         )
 
         if (sharedPrefs == null || !sharedPrefs.getBoolean(Constants.IS_ONBOARD_COMPLETED_KEY, false)) {
-            appBarLayout.visibility = View.GONE
+            binding.appBarLayout.visibility = View.GONE
             replaceFragmentWithoutAddToBackStack(OnboardingContainerFragment(), OnboardingContainerFragment.TAG, R.id.container_main)
         } else {
-            appBarLayout.visibility = View.VISIBLE
+            binding.appBarLayout.visibility = View.VISIBLE
             replaceFragmentWithoutAddToBackStack(MainFragment(), MainFragment.TAG, R.id.container_main)
         }
     }

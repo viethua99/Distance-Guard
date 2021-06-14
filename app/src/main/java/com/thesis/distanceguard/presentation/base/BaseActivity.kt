@@ -1,32 +1,45 @@
 package com.thesis.distanceguard.presentation.base
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.thesis.distanceguard.factory.ViewModelFactory
 import timber.log.Timber
 import javax.inject.Inject
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity<VB: ViewDataBinding> : AppCompatActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    lateinit var binding : VB
 
     private lateinit var fragmentManager: FragmentManager
     protected abstract fun getResLayoutId(): Int
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(getResLayoutId())
+        setupViewDataBinding()
+    }
+
+    private fun setupViewDataBinding(){
+        binding = DataBindingUtil.setContentView(this, getResLayoutId())
+        binding.lifecycleOwner = this
     }
 
     private fun generateFragmentManager() {
         Timber.d("generateFragmentManager")
         fragmentManager = supportFragmentManager
     }
+
+
 
     fun showToastMessage(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

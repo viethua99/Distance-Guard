@@ -16,6 +16,7 @@ import com.thesis.distanceguard.barcode_detection.BarcodeProcessor
 import com.thesis.distanceguard.camera_module.CameraSource
 import com.thesis.distanceguard.camera_module.CameraSourcePreview
 import com.thesis.distanceguard.camera_module.GraphicOverlay
+import com.thesis.distanceguard.databinding.ActivityCameraBinding
 import com.thesis.distanceguard.presentation.base.BaseActivity
 import dagger.android.AndroidInjection
 import timber.log.Timber
@@ -25,7 +26,7 @@ import java.io.IOException
  * Created by Viet Hua on 04/19/2021.
  */
 
-class CameraActivity : BaseActivity(), View.OnClickListener {
+class CameraActivity : BaseActivity<ActivityCameraBinding>(), View.OnClickListener {
 
     private var cameraSource: CameraSource? = null
     private var preview: CameraSourcePreview? = null
@@ -69,10 +70,6 @@ class CameraActivity : BaseActivity(), View.OnClickListener {
         currentCameraViewState = CameraViewModel.WorkflowState.NOT_STARTED
         cameraSource?.setFrameProcessor(BarcodeProcessor(graphicOverlay!!, cameraViewModel!!))
         cameraViewModel?.setWorkflowState(CameraViewModel.WorkflowState.DETECTING)
-    }
-
-    override fun onPostResume() {
-        super.onPostResume()
     }
 
     override fun onPause() {

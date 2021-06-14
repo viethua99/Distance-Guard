@@ -1,102 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="10dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
-        android:id="@+id/rl_search"
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/background_rounded_grey_stroke"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:gravity="center_vertical"
-        android:padding="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:paddingTop="10dp">
 
-        <ImageView
-            android:id="@+id/img_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            app:srcCompat="@drawable/ic_search" />
-
-        <EditText
-            android:id="@+id/edt_search"
+        <RelativeLayout
+            android:id="@+id/rl_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:layout_toStartOf="@+id/img_clear"
-            android:layout_toLeftOf="@+id/img_clear"
-            android:layout_toEndOf="@id/img_search"
-            android:layout_toRightOf="@id/img_search"
-            android:background="@null"
-            android:hint="Type country or province region"
-            android:inputType="text"
-            android:textColorHint="#80bdff"
-            android:textSize="14sp" />
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/background_rounded_grey_stroke"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
+            android:padding="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/img_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:visibility="visible"
-            app:srcCompat="@drawable/ic_close"
-            tools:visibility="visible" />
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/img_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/ic_search" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_countries"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rl_search"
-        tools:listitem="@layout/item_country" />
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/rl_empty"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/rl_search" >
+            <EditText
+                android:id="@+id/edt_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_toStartOf="@+id/img_clear"
+                android:layout_toLeftOf="@+id/img_clear"
+                android:layout_toEndOf="@id/img_search"
+                android:layout_toRightOf="@id/img_search"
+                android:background="@null"
+                android:hint="Type country or province region"
+                android:inputType="text"
+                android:textColorHint="#80bdff"
+                android:textSize="14sp" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/img_empty"
+            <ImageView
+                android:id="@+id/img_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:visibility="visible"
+                app:srcCompat="@drawable/ic_close"
+                tools:visibility="visible" />
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_countries"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/rl_search"
+            tools:listitem="@layout/item_country" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="No country found\n Please check your Internet"
-            android:textColor="@color/black"
-            android:textSize="20sp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rl_empty"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toTopOf="@id/rl_search">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/img_empty"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="No country found\n Please check your Internet"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

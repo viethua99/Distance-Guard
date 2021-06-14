@@ -11,20 +11,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thesis.distanceguard.R
+import com.thesis.distanceguard.databinding.FragmentCountriesBinding
 import com.thesis.distanceguard.retrofit.response.CountryResponse
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.detail.DetailFragment
 import com.thesis.distanceguard.presentation.main.activity.MainActivity
 import com.thesis.distanceguard.room.entities.CountryEntity
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.fragment_countries.*
 import timber.log.Timber
 
 /**
  * Created by Viet Hua on 04/10/2021.
  */
 
-class CountriesFragment : BaseFragment() {
+class CountriesFragment : BaseFragment<FragmentCountriesBinding>() {
 
     private lateinit var countriesViewModel: CountriesViewModel
     private lateinit var countriesAdapter: CountriesAdapter
@@ -38,7 +38,7 @@ class CountriesFragment : BaseFragment() {
         setupViewModel()
         setupRecyclerView()
 
-        edt_search.addTextChangedListener(object : TextWatcher {
+        binding.edtSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {}
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
@@ -48,11 +48,11 @@ class CountriesFragment : BaseFragment() {
                     p0.toString()
                 )
                 countriesAdapter.replaceAll(filteredList!!)
-                rv_countries.scrollToPosition(0)
+                binding.rvCountries.scrollToPosition(0)
             }
         })
-        img_clear.setOnClickListener {
-            edt_search.text.clear()
+        binding.imgClear.setOnClickListener {
+            binding.edtSearch.text.clear()
         }
     }
 
@@ -89,7 +89,7 @@ class CountriesFragment : BaseFragment() {
         Timber.d("setupRecyclerView")
         val linearLayoutManager = LinearLayoutManager(context)
         countriesAdapter = CountriesAdapter(context!!)
-        rv_countries.apply {
+        binding.rvCountries.apply {
             layoutManager = linearLayoutManager
             adapter = countriesAdapter
         }
@@ -120,10 +120,10 @@ class CountriesFragment : BaseFragment() {
         hideDialog()
         it?.let {
             if(it.isNotEmpty()){
-                rl_empty.visibility = View.GONE
+                binding.rlEmpty.visibility = View.GONE
                 countriesAdapter.add(it)
             } else {
-                rl_empty.visibility = View.VISIBLE
+                binding.rlEmpty.visibility = View.VISIBLE
             }
 
         }

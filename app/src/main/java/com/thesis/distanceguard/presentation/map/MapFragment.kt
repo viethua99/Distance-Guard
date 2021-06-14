@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.maps.android.ui.IconGenerator
 import com.thesis.distanceguard.R
+import com.thesis.distanceguard.databinding.FragmentMapBinding
 import com.thesis.distanceguard.presentation.base.BaseFragment
 import com.thesis.distanceguard.presentation.countries.CountriesAdapter
 import com.thesis.distanceguard.presentation.countries.MapAdapter
@@ -39,7 +40,7 @@ import kotlinx.android.synthetic.main.layout_bottom_sheet.*
 import timber.log.Timber
 import kotlin.math.pow
 
-class MapFragment : BaseFragment(), OnMapReadyCallback, OnCameraIdleListener {
+class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback, OnCameraIdleListener {
     private val markers = mutableListOf<Marker>()
     private var googleMap: GoogleMap? = null
     private var pulseCircle: Circle? = null

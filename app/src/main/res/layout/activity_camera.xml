@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:keepScreenOn="true">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.thesis.distanceguard.camera_module.CameraSourcePreview
-        android:id="@+id/camera_preview"
+    <data>
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:keepScreenOn="true">
 
-        <include layout="@layout/layout_camera_preview"/>
+        <com.thesis.distanceguard.camera_module.CameraSourcePreview
+            android:id="@+id/camera_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </com.thesis.distanceguard.camera_module.CameraSourcePreview>
+            <include layout="@layout/layout_camera_preview" />
 
-    <include
-        layout="@layout/layout_top_camera"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"/>
+        </com.thesis.distanceguard.camera_module.CameraSourcePreview>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <include
+            layout="@layout/layout_top_camera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

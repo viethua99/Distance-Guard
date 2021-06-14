@@ -1,51 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="16dp">
 
 
-    <ImageView
-        android:layout_marginTop="20dp"
+        <ImageView
+            android:layout_marginTop="20dp"
 
-        android:id="@+id/img_wear_mask"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_wear_mask"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/img_wear_mask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_wear_mask"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_wear_mask"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Wear Mask"
-        android:textAlignment="center"
-        android:textColor="#FF4B63"
-        android:textSize="25sp"
-        android:layout_marginTop="20dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/tv_wear_mask_message"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_wear_mask" />
+        <TextView
+            android:id="@+id/tv_wear_mask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wear Mask"
+            android:textAlignment="center"
+            android:textColor="#FF4B63"
+            android:textSize="25sp"
+            android:layout_marginTop="20dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tv_wear_mask_message"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.529"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_wear_mask" />
 
-    <TextView
-        android:id="@+id/tv_wear_mask_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text="Cover mouth and nose with mask and no\ngaps between your face and the mask."
-        android:textAlignment="center"
-        android:textSize="16sp"
-        android:textColor="#0F0C08"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_wear_mask" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_wear_mask_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="Cover mouth and nose with mask and no\ngaps between your face and the mask."
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textColor="#0F0C08"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_wear_mask" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,61 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
-    <ImageView
-        android:layout_marginTop="20dp"
-        android:id="@+id/img_nose_rag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_use_nose_rag"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:layout_marginTop="20dp"
+            android:id="@+id/img_nose_rag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_use_nose_rag"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_nose_rag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Use Nose Rag"
-        android:textAlignment="center"
-        android:textColor="#FF4B63"
-        android:layout_marginTop="20dp"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/tv_nose_rag_message"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_nose_rag" />
+        <TextView
+            android:id="@+id/tv_nose_rag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Use Nose Rag"
+            android:textAlignment="center"
+            android:textColor="#FF4B63"
+            android:layout_marginTop="20dp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tv_nose_rag_message"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_nose_rag" />
 
-    <TextView
-        android:id="@+id/tv_nose_rag_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text="Cover your nose and mouth with your\nbent elbow or a tissue when you cough."
-        android:textAlignment="center"
-        android:textColor="#0F0C08"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_nose_rag" />
+        <TextView
+            android:id="@+id/tv_nose_rag_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="Cover your nose and mouth with your\nbent elbow or a tissue when you cough."
+            android:textAlignment="center"
+            android:textColor="#0F0C08"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_nose_rag" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/red_rounded_corner_button"
-        android:paddingHorizontal="40dp"
-        android:text="Start Now"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_nose_rag_message" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/red_rounded_corner_button"
+            android:paddingHorizontal="40dp"
+            android:text="Start Now"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_nose_rag_message" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
